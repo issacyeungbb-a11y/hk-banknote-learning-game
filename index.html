@@ -85,7 +85,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .shop{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0}
 .shop-left{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:52px}
 .shop-em{font-size:34px;line-height:1}
-.shop-img{width:72px;height:72px;object-fit:contain;display:block}
+.shop-img{width:140px;height:140px;object-fit:contain;display:block}
 .shop-nm{font-size:11px;color:var(--mu);text-align:center}
 .shop-right{flex:1}
 .shop-pr-lbl{font-size:11px;color:var(--mu)}
@@ -96,7 +96,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .slbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;margin-top:2px}
 
 /* Note bank: 2-col layout, each note is a proper draggable card */
-.bank{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.bank{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;margin-bottom:4px}
 .nchip{
   position:relative;border-radius:8px;overflow:hidden;
   border:2px solid rgba(200,168,75,.35);
@@ -108,8 +108,8 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .nchip:active{transform:scale(.96)}
 .nchip img{width:100%;height:auto;display:block;pointer-events:none}
 .nchip .cv{
-  position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
-  font-size:13px;font-weight:700;color:#fff;
+  position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  font-size:10px;font-weight:700;color:#fff;
   text-shadow:0 1px 4px rgba(0,0,0,1);
   background:rgba(0,0,0,.5);border-radius:4px;padding:1px 6px;
   pointer-events:none;white-space:nowrap;
