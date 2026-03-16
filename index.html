@@ -30,7 +30,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .pf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),#F5E199);transition:width .4s}
 
 /* scrollable body */
-.body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.body{flex:1;overflow:hidden;overflow-x:hidden;padding:8px 14px;display:flex;flex-direction:column;gap:6px}
 
 /* footer */
 .ftr{flex-shrink:0;padding:8px 14px 12px;display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--bd);background:var(--bg)}
@@ -82,10 +82,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 
 /* === PAY === */
 /* Shop display - compact */
-.shop{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.shop{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:7px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .shop-left{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:52px}
 .shop-em{font-size:34px;line-height:1}
-.shop-img{width:140px;height:140px;object-fit:contain;display:block}
+.shop-img{width:80px;height:80px;object-fit:contain;display:block}
 .shop-nm{font-size:11px;color:var(--mu);text-align:center}
 .shop-right{flex:1}
 .shop-pr-lbl{font-size:11px;color:var(--mu)}
@@ -96,7 +96,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .slbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;margin-top:2px}
 
 /* Note bank: 2-col layout, each note is a proper draggable card */
-.bank{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;margin-bottom:4px}
+.bank{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;margin-bottom:0;flex-shrink:0}
 .nchip{
   position:relative;border-radius:8px;overflow:hidden;
   border:2px solid rgba(200,168,75,.35);
@@ -109,7 +109,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .nchip img{width:100%;height:auto;display:block;pointer-events:none}
 .nchip .cv{
   position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
-  font-size:10px;font-weight:700;color:#fff;
+  font-size:9px;font-weight:700;color:#fff;
   text-shadow:0 1px 4px rgba(0,0,0,1);
   background:rgba(0,0,0,.5);border-radius:4px;padding:1px 6px;
   pointer-events:none;white-space:nowrap;
@@ -118,10 +118,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 
 /* Drop zone */
 .dz{
-  min-height:80px;border:2px dashed rgba(200,168,75,.35);border-radius:10px;
-  display:flex;flex-wrap:wrap;gap:6px;padding:8px;align-content:flex-start;
+  flex:1;min-height:50px;border:2px dashed rgba(200,168,75,.35);border-radius:10px;
+  display:flex;flex-wrap:wrap;gap:4px;padding:6px;align-content:flex-start;
   transition:border-color .2s,background .2s;background:rgba(200,168,75,.02);
-  position:relative;
+  position:relative;overflow:hidden;
 }
 .dz.over{border-color:var(--gold);background:rgba(200,168,75,.1);border-style:solid}
 .dz-ph{
@@ -130,7 +130,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 }
 /* dropped chips inside dz */
 .dc{
-  position:relative;width:calc(50% - 3px);border-radius:6px;overflow:hidden;
+  position:relative;width:calc(20% - 4px);border-radius:6px;overflow:hidden;
   border:1.5px solid rgba(200,168,75,.45);box-shadow:0 2px 8px rgba(0,0,0,.5);
   cursor:pointer;flex-shrink:0;
 }
