@@ -307,11 +307,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <!-- Drop zone -->
     <div class="slbl">付款欄（點擊已放入嘅紙幣可移除）</div>
     <div class="dz" id="pay-dz"><div class="dz-ph">👆 點擊上方紙幣加入</div></div>
-    <!-- Total -->
-    <div class="totalbar">
-      <span class="tlbl">已選金額</span>
-      <span class="tval" id="pay-total">HK$0</span>
-    </div>
     <!-- 找續選擇 -->
     <div class="change-box" id="pay-change-box">
       <div class="change-lbl">💬 你需要找續嗎？</div>
@@ -600,7 +595,7 @@ function loadPayQ(){
   el('pay-nm').textContent=q.item;
   el('pay-pr').textContent='HK$'+q.price;
   el('pay-pf').style.width=Math.round(payQ/PAY_QS.length*100)+'%';
-  el('pay-total').textContent='HK$0';
+  const pt=el('pay-total');if(pt)pt.textContent='HK$0';
 
   /* 重設找續選擇 */
   el('cbtn-no').className='cbtn';
@@ -667,7 +662,7 @@ function removePayNote(dc,v){
 
 function updPayTotal(){
   const t=paySel.reduce((a,b)=>a+b,0);
-  el('pay-total').textContent='HK$'+t;
+  const e=el('pay-total');if(e)e.textContent='HK$'+t;
 }
 
 function resetPayGame(){
