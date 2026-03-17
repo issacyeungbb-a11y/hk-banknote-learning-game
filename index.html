@@ -30,7 +30,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .pf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),#F5E199);transition:width .4s}
 
 /* scrollable body */
-.body{flex:1;overflow:hidden;overflow-x:hidden;padding:8px 14px;display:flex;flex-direction:column;gap:6px}
+.body{flex:1;overflow:hidden;padding:8px 14px;display:flex;flex-direction:column;gap:6px}
 
 /* footer */
 .ftr{flex-shrink:0;padding:8px 14px 12px;display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--bd);background:var(--bg)}
@@ -67,52 +67,65 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .ans.err{border-color:var(--err);background:rgba(248,113,113,.08);color:var(--err)}
 
 /* === COUNT === */
-.nimg-cnt{width:100%;max-height:76px;object-fit:contain;border-radius:6px;display:block;box-shadow:0 3px 10px rgba(0,0,0,.5);border:1px solid rgba(200,168,75,.22)}
-.inpbox{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:9px 11px}
-.inplbl{font-size:11px;color:var(--mu);margin-bottom:5px}
+.cnt-notes-row{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.nimg-cnt{
+  flex:none;
+  width:100%;
+  border-radius:5px;
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+  border:1px solid rgba(200,168,75,.22);
+  display:block;
+}
+.nimg-cnt img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:4px;
+  max-height:55px;
+  object-fit:contain;
+}
+.inpbox{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:8px 11px;flex-shrink:0}
+.inplbl{font-size:11px;color:var(--mu);margin-bottom:4px}
 .inprow{display:flex;align-items:center;gap:6px}
 .pre{font-size:20px;font-weight:700;color:var(--gold)}
-.ni{flex:1;background:rgba(200,168,75,.08);border:1.5px solid var(--bd);border-radius:8px;padding:7px;font-size:22px;font-weight:700;color:var(--tx);text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
+.ni{flex:1;background:rgba(200,168,75,.08);border:1.5px solid var(--bd);border-radius:8px;padding:6px;font-size:22px;font-weight:700;color:var(--tx);text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
 .ni.ok{border-color:var(--ok);color:var(--ok)}
 .ni.err{border-color:var(--err);color:var(--err)}
-.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
-.npb{background:var(--card);border:1px solid var(--bd);border-radius:9px;padding:10px;font-size:17px;font-weight:600;color:var(--tx);cursor:pointer;text-align:center;font-family:inherit}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;flex-shrink:0}
+.npb{background:var(--card);border:1px solid var(--bd);border-radius:9px;padding:9px 6px;font-size:16px;font-weight:600;color:var(--tx);cursor:pointer;text-align:center;font-family:inherit}
 .npb:active{background:rgba(200,168,75,.15);transform:scale(.93)}
-.npb.fn{font-size:12px;color:var(--mu)}
+.npb.fn{font-size:11px;color:var(--mu)}
 
 /* === PAY === */
-/* Shop display - compact */
-.shop{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:7px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
-.shop-left{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:52px}
-.shop-em{font-size:34px;line-height:1}
-.shop-img{width:80px;height:80px;object-fit:contain;display:block}
-.shop-nm{font-size:11px;color:var(--mu);text-align:center}
-.shop-right{flex:1}
+.shop{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0}
+.shop-img{width:110px;height:110px;object-fit:contain;display:block}
+.shop-nm{font-size:13px;font-weight:600;color:var(--tx);text-align:center}
 .shop-pr-lbl{font-size:11px;color:var(--mu)}
-.shop-pr{font-size:28px;font-weight:700;color:var(--gold);line-height:1.1}
-.shop-q{font-size:11px;color:var(--mu);margin-top:2px}
+.shop-pr{font-size:30px;font-weight:700;color:var(--gold);line-height:1.1;text-align:center}
+.shop-hint{font-size:11px;color:var(--mu);text-align:center;margin-top:2px}
 
 /* Section label */
-.slbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;margin-top:2px}
+.slbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
 
-/* Note bank: 2-col layout, each note is a proper draggable card */
-.bank{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px;margin-bottom:0;flex-shrink:0}
+/* Note bank: 豎排一行6張 */
+.bank{display:flex;flex-direction:row;gap:4px;flex-shrink:0}
 .nchip{
-  position:relative;border-radius:8px;overflow:hidden;
+  position:relative;border-radius:6px;overflow:hidden;
   border:2px solid rgba(200,168,75,.35);
-  box-shadow:0 4px 14px rgba(0,0,0,.55);
-  cursor:grab;touch-action:none;user-select:none;
+  box-shadow:0 3px 10px rgba(0,0,0,.5);
+  cursor:pointer;touch-action:none;user-select:none;
   transition:transform .15s,opacity .2s;
   background:rgba(0,0,0,.2);
+  flex:1;
 }
 .nchip:active{transform:scale(.96)}
-.nchip img{width:100%;height:auto;display:block;pointer-events:none}
+.nchip img{width:100%;height:auto;display:block;pointer-events:none;max-height:50px;object-fit:contain;}
 .nchip .cv{
   position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
   font-size:9px;font-weight:700;color:#fff;
   text-shadow:0 1px 4px rgba(0,0,0,1);
-  background:rgba(0,0,0,.5);border-radius:4px;padding:1px 6px;
-  pointer-events:none;white-space:nowrap;
+  background:rgba(0,0,0,.6);border-radius:3px;padding:1px 4px;
+  pointer-events:none;white-space:nowrap;z-index:2;
 }
 .nchip.dragging{opacity:.4;transform:scale(1.06)}
 
@@ -128,29 +141,36 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   font-size:12px;color:var(--mu);pointer-events:none;
 }
-/* dropped chips inside dz */
+/* dropped chips - 完整顯示 */
 .dc{
-  position:relative;width:calc(20% - 4px);border-radius:6px;overflow:hidden;
-  border:1.5px solid rgba(200,168,75,.45);box-shadow:0 2px 8px rgba(0,0,0,.5);
-  cursor:pointer;flex-shrink:0;
+  position:relative;border-radius:5px;overflow:hidden;
+  border:1.5px solid rgba(200,168,75,.45);box-shadow:0 2px 6px rgba(0,0,0,.5);
+  cursor:pointer;flex-shrink:0;width:calc(20% - 4px);background:rgba(0,0,0,.15);
 }
-.dc img{width:100%;display:block;pointer-events:none}
+.dc img{width:100%;height:auto;display:block;pointer-events:none;max-height:38px;object-fit:contain;}
 .dc .rm{
-  position:absolute;top:2px;right:2px;width:18px;height:18px;
+  position:absolute;top:2px;right:2px;width:14px;height:14px;
   background:rgba(200,40,40,.9);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:10px;color:#fff;font-weight:700;pointer-events:none;
+  font-size:8px;color:#fff;font-weight:700;pointer-events:none;z-index:3;
 }
 
 /* Total bar */
-.totalbar{display:flex;justify-content:space-between;align-items:center;background:rgba(200,168,75,.08);border:1px solid var(--bd);border-radius:9px;padding:8px 12px}
+.totalbar{display:flex;justify-content:space-between;align-items:center;background:rgba(200,168,75,.08);border:1px solid var(--bd);border-radius:9px;padding:6px 12px;flex-shrink:0}
 .tlbl{font-size:12px;color:var(--mu)}.tval{font-size:20px;font-weight:700;color:var(--gold)}
 
-/* Change input */
-.chbox{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:9px 11px}
-.chlbl{font-size:11px;color:var(--mu);margin-bottom:5px}
+/* 找續選擇 */
+.change-box{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:8px 11px;flex-shrink:0}
+.change-lbl{font-size:11px;color:var(--mu);margin-bottom:6px}
+.change-btns{display:flex;gap:8px}
+.cbtn{flex:1;padding:8px 0;border-radius:9px;border:1.5px solid var(--bd);background:none;color:var(--mu);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.cbtn:active{transform:scale(.96)}
+.cbtn.sel-no{border-color:var(--ok);background:rgba(74,222,128,.15);color:var(--ok)}
+.cbtn.sel-yes{border-color:#60a5fa;background:rgba(96,165,250,.15);color:#60a5fa}
+.chg-inp{margin-top:8px;display:none}
+.chg-inp.show{display:block}
 .chrow{display:flex;align-items:center;gap:6px}
-.chi{flex:1;background:rgba(200,168,75,.08);border:1.5px solid var(--bd);border-radius:8px;padding:7px;font-size:20px;font-weight:700;color:var(--tx);text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
+.chi{flex:1;background:rgba(200,168,75,.08);border:1.5px solid var(--bd);border-radius:8px;padding:6px;font-size:20px;font-weight:700;color:var(--tx);text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
 .chi.ok{border-color:var(--ok);color:var(--ok)}
 .chi.err{border-color:var(--err);color:var(--err)}
 
@@ -162,7 +182,25 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .reslb{font-size:11px;color:var(--mu)}
 .resmsg{font-size:12px;color:var(--mu);line-height:1.7;margin-top:10px}
 
-/* toast */
+/* === MODAL 數字鍵盤 === */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:8000;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--bd);border-radius:18px 18px 0 0;width:100%;max-width:480px;padding:16px 16px 24px;display:flex;flex-direction:column;gap:10px}
+.modal-title{font-size:14px;font-weight:700;color:var(--gold);text-align:center}
+.modal-sub{font-size:12px;color:var(--mu);text-align:center;margin-top:-4px}
+.modal-inp-row{display:flex;align-items:center;gap:8px;background:rgba(200,168,75,.08);border:1.5px solid var(--bd);border-radius:10px;padding:8px 12px}
+.modal-pre{font-size:22px;font-weight:700;color:var(--gold)}
+.modal-inp{flex:1;background:none;border:none;font-size:28px;font-weight:700;color:var(--tx);text-align:center;outline:none;font-family:inherit}
+.modal-inp.ok{color:var(--ok)}
+.modal-inp.err{color:var(--err)}
+.modal-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.modal-npb{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px 6px;font-size:18px;font-weight:600;color:var(--tx);cursor:pointer;text-align:center;font-family:inherit}
+.modal-npb:active{background:rgba(200,168,75,.2);transform:scale(.93)}
+.modal-npb.fn{font-size:12px;color:var(--mu)}
+.modal-confirm{width:100%;padding:14px;border-radius:11px;background:linear-gradient(135deg,#C8A84B,#E8C860);border:none;color:#1a1000;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:2px}
+.modal-confirm:active{opacity:.82}
+
+
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(12,20,40,.96);border:1px solid var(--bd);border-radius:18px;padding:8px 18px;font-size:13px;font-weight:600;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;z-index:9999}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{color:var(--ok);border-color:rgba(74,222,128,.4)}
@@ -194,15 +232,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <div class="lvinfo"><div class="lvt">計算面值</div><div class="lvd">睇住真實鈔票，輸入正確總額</div></div>
       <span class="bdg bhot">熱門</span><div class="lva">›</div>
     </div>
-    <div class="lv" onclick="go('pay1');initPay(1)">
+    <div class="lv" onclick="go('pay');initPay()">
       <div class="lvic" style="background:rgba(122,37,37,.25)">🛒</div>
-      <div class="lvinfo"><div class="lvt">模擬付款 — 程度一</div><div class="lvd">拖曳紙幣付款（整數金額，毋需找續）</div></div>
-      <div class="lva">›</div>
-    </div>
-    <div class="lv" onclick="go('pay2');initPay(2)">
-      <div class="lvic" style="background:rgba(74,40,112,.25)">💰</div>
-      <div class="lvinfo"><div class="lvt">模擬付款 — 程度二</div><div class="lvd">拖曳紙幣並輸入找續金額</div></div>
-      <div class="lva">›</div>
+      <div class="lvinfo"><div class="lvt">模擬付款</div><div class="lvd">15題：選擇紙幣付款，判斷是否需要找續</div></div>
+      <span class="bdg bhot">熱門</span><div class="lva">›</div>
     </div>
     <div class="lv off">
       <div class="lvic" style="background:rgba(58,72,13,.25)">💱</div>
@@ -239,7 +272,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="body">
     <div class="qlbl" id="cnt-ql">第 1 題 / 共 6 題</div>
     <div class="qtxt" style="font-size:13px">以下紙幣加埋係幾多錢？</div>
-    <div id="cnt-notes" style="display:flex;flex-direction:column;gap:5px"></div>
+    <div id="cnt-notes" class="cnt-notes-row"></div>
     <div class="inpbox">
       <div class="inplbl">輸入你嘅答案</div>
       <div class="inprow"><span class="pre">HK$</span><input class="ni" id="cnt-inp" type="text" placeholder="0" readonly></div>
@@ -252,87 +285,66 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
 </div>
 
-<!-- ══ PAY1 ══ -->
-<div class="pg" id="pg-pay1">
+<!-- ══ PAY ══ -->
+<div class="pg" id="pg-pay">
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
-    <div class="htit">模擬付款<span class="lvbdg">程度一</span></div>
-    <div class="hsc" id="pay1-sc">0 分</div>
+    <div class="htit">模擬付款</div>
+    <div class="hsc" id="pay-sc">0 分</div>
   </div>
-  <div class="pbrow"><div class="pb"><div class="pf" id="pay1-pf" style="width:0%"></div></div></div>
+  <div class="pbrow"><div class="pb"><div class="pf" id="pay-pf" style="width:0%"></div></div></div>
   <div class="body">
-    <!-- Shop -->
-    <div class="shop" id="pay1-shop">
-      <div class="shop-left">
-        <img class="shop-img" id="pay1-em" src="" alt="貨品">
-        <div class="shop-nm" id="pay1-nm">貨品</div>
-      </div>
-      <div class="shop-right">
-        <div class="shop-pr-lbl">需要付款</div>
-        <div class="shop-pr" id="pay1-pr">HK$0</div>
-        <div class="shop-q" id="pay1-hint"></div>
-      </div>
+    <!-- Shop 放中間放大 -->
+    <div class="shop" id="pay-shop">
+      <img class="shop-img" id="pay-em" src="" alt="貨品">
+      <div class="shop-nm" id="pay-nm">貨品</div>
+      <div class="shop-pr-lbl">需要付款</div>
+      <div class="shop-pr" id="pay-pr">HK$0</div>
     </div>
-    <!-- Note bank -->
-    <div class="slbl">紙幣庫 — 拖曳紙幣到付款欄 ↓</div>
-    <div class="bank" id="pay1-bank"></div>
+    <!-- Note bank 豎排 -->
+    <div class="slbl">點擊紙幣放入付款欄 ↓</div>
+    <div class="bank" id="pay-bank"></div>
     <!-- Drop zone -->
     <div class="slbl">付款欄（點擊已放入嘅紙幣可移除）</div>
-    <div class="dz" id="pay1-dz"><div class="dz-ph">🖐 拖曳紙幣到此處</div></div>
+    <div class="dz" id="pay-dz"><div class="dz-ph">👆 點擊上方紙幣加入</div></div>
     <!-- Total -->
     <div class="totalbar">
       <span class="tlbl">已選金額</span>
-      <span class="tval" id="pay1-total">HK$0</span>
+      <span class="tval" id="pay-total">HK$0</span>
+    </div>
+    <!-- 找續選擇 -->
+    <div class="change-box" id="pay-change-box">
+      <div class="change-lbl">💬 你需要找續嗎？</div>
+      <div class="change-btns">
+        <button class="cbtn" id="cbtn-no" onclick="selectChange(false)">❌ 不用找續</button>
+        <button class="cbtn" id="cbtn-yes" onclick="selectChange(true)">💵 需要找續</button>
+      </div>
+      <div class="chg-inp" id="pay-chg-inp">
+        <div style="margin-top:6px;font-size:11px;color:var(--mu)">已輸入找續：</div>
+        <div class="chrow" style="margin-top:4px">
+          <span class="pre" style="font-size:18px">HK$</span>
+          <input class="chi" id="pay-chi" type="text" placeholder="點此輸入" readonly onclick="openModal()">
+          <button style="background:rgba(200,168,75,.2);border:1px solid var(--bd);border-radius:7px;color:var(--gold);padding:6px 10px;font-size:12px;cursor:pointer" onclick="openModal()">✏️ 輸入</button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="ftr">
-    <button class="btn" onclick="submitPay(1)">確認付款</button>
-    <button class="btn2" onclick="resetPay(1)">清除選擇</button>
+    <button class="btn" onclick="submitPay()">確認付款</button>
+    <button class="btn2" onclick="resetPayGame()">清除選擇</button>
   </div>
 </div>
 
-<!-- ══ PAY2 ══ -->
-<div class="pg" id="pg-pay2">
-  <div class="hdr">
-    <button class="bk" onclick="go('home')">← 返回</button>
-    <div class="htit">模擬付款<span class="lvbdg">程度二</span></div>
-    <div class="hsc" id="pay2-sc">0 分</div>
-  </div>
-  <div class="pbrow"><div class="pb"><div class="pf" id="pay2-pf" style="width:0%"></div></div></div>
-  <div class="body">
-    <!-- Shop -->
-    <div class="shop" id="pay2-shop">
-      <div class="shop-left">
-        <img class="shop-img" id="pay2-em" src="" alt="貨品">
-        <div class="shop-nm" id="pay2-nm">貨品</div>
-      </div>
-      <div class="shop-right">
-        <div class="shop-pr-lbl">需要付款</div>
-        <div class="shop-pr" id="pay2-pr">HK$0</div>
-        <div class="shop-q" id="pay2-hint"></div>
-      </div>
+<!-- ══ MODAL 找續數字鍵盤 ══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="modalBgClick(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title">💵 輸入找續金額</div>
+    <div class="modal-inp-row">
+      <span class="modal-pre">HK$</span>
+      <input class="modal-inp" id="modal-inp" type="text" placeholder="0" readonly>
     </div>
-    <!-- Note bank -->
-    <div class="slbl">紙幣庫 — 拖曳紙幣到付款欄 ↓</div>
-    <div class="bank" id="pay2-bank"></div>
-    <!-- Drop zone -->
-    <div class="slbl">付款欄（點擊已放入嘅紙幣可移除）</div>
-    <div class="dz" id="pay2-dz"><div class="dz-ph">🖐 拖曳紙幣到此處</div></div>
-    <!-- Total -->
-    <div class="totalbar">
-      <span class="tlbl">已選金額</span>
-      <span class="tval" id="pay2-total">HK$0</span>
-    </div>
-    <!-- Change input -->
-    <div class="chbox">
-      <div class="chlbl">💬 應找幾多找續？</div>
-      <div class="chrow"><span class="pre" style="font-size:18px">HK$</span><input class="chi" id="pay2-chi" type="text" placeholder="0" readonly></div>
-    </div>
-    <div class="numpad" id="np-pay2"></div>
-  </div>
-  <div class="ftr">
-    <button class="btn" onclick="submitPay2()">確認付款及找續</button>
-    <button class="btn2" onclick="resetPay(2)">清除選擇</button>
+    <div class="modal-numpad" id="modal-numpad"></div>
+    <button class="modal-confirm" onclick="modalConfirm()">確認找續金額</button>
   </div>
 </div>
 
@@ -380,8 +392,7 @@ function go(name){
 function retry(){
   if(curGame==='identify')initId();
   else if(curGame==='count')initCnt();
-  else if(curGame==='pay1')initPay(1);
-  else if(curGame==='pay2')initPay(2);
+  else if(curGame==='pay')initPay();
 }
 
 /* TOAST */
@@ -476,6 +487,11 @@ function npHit(k,pfx){
     else if(k==='清除')p2chV='';
     else if(p2chV.length<5)p2chV+=k;
     const i=el('pay2-chi');if(i){i.value=p2chV;i.className='chi';}
+  }else if(pfx==='payChg'){
+    if(k==='刪除')payChgV=payChgV.slice(0,-1);
+    else if(k==='清除')payChgV='';
+    else if(payChgV.length<5)payChgV+=k;
+    const i=el('pay-chi');if(i){i.value=payChgV;i.className='chi';}
   }
 }
 function clearCnt(){cntV='';const i=el('cnt-inp');if(i){i.value='';i.className='ni';}}
@@ -487,9 +503,10 @@ function loadCnt(){
   const inp=el('cnt-inp');if(inp){inp.value='';inp.className='ni';}
   const ns=el('cnt-notes');if(!ns)return;ns.innerHTML='';
   q.bills.forEach(v=>{
-    const img=document.createElement('img');
-    img.className='nimg-cnt';img.src=IMGS[v];img.alt='HK$'+v;
-    ns.appendChild(img);
+    const wrap=document.createElement('div');wrap.className='nimg-cnt';
+    const img=document.createElement('img');img.src=IMGS[v];img.alt='HK$'+v;
+    wrap.appendChild(img);
+    ns.appendChild(wrap);
   });
 }
 function submitCnt(){
@@ -506,202 +523,227 @@ function submitCnt(){
   cntQ++;setTimeout(()=>{if(inp)inp.className='ni';loadCnt();},1600);
 }
 
-/* ════ PAY ════ */
-const PAY1_QS=[
-  {item:'地鐵車費',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRTYwMDEyIi8+CiAgPHJlY3QgeD0iMTUiIHk9IjM1IiB3aWR0aD0iNzAiIGhlaWdodD0iMzgiIHJ4PSIxMCIgZmlsbD0iI2ZmZiIvPgogIDxyZWN0IHg9IjE4IiB5PSIzOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIiByeD0iNSIgZmlsbD0iI0U2MDAxMiIvPgogIDxyZWN0IHg9IjUyIiB5PSIzOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIiByeD0iNSIgZmlsbD0iI0U2MDAxMiIvPgogIDxyZWN0IHg9IjIwIiB5PSI2MiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjUiIHJ4PSIyIiBmaWxsPSIjNTU1Ii8+CiAgPHJlY3QgeD0iNjgiIHk9IjYyIiB3aWR0aD0iMTIiIGhlaWdodD0iNSIgcng9IjIiIGZpbGw9IiM1NTUiLz4KICA8cmVjdCB4PSIxNSIgeT0iNTYiIHdpZHRoPSI3MCIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iI2NjYyIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyOCIgZm9udC1zaXplPSIxMSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5NVFI8L3RleHQ+CiAgPGNpcmNsZSBjeD0iMzUiIGN5PSI0OCIgcj0iNyIgZmlsbD0iI2ZmZiIvPgogIDxjaXJjbGUgY3g9IjY1IiBjeT0iNDgiIHI9IjciIGZpbGw9IiNmZmYiLz4KPC9zdmc+',       price:20,   hint:'提示：用一張 $20'},
-  {item:'樽裝水',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMjE5NkYzIi8+CiAgPHJlY3QgeD0iMzYiIHk9IjIwIiB3aWR0aD0iMjgiIGhlaWdodD0iOCIgcng9IjMiIGZpbGw9IiM5MENBRjkiLz4KICA8cmVjdCB4PSIzMCIgeT0iMjgiIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MiIgcng9IjEwIiBmaWxsPSIjRTNGMkZEIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjI4IiB3aWR0aD0iNDAiIGhlaWdodD0iMTUiIHJ4PSI1IiBmaWxsPSIjOTBDQUY5Ii8+CiAgPGVsbGlwc2UgY3g9IjUwIiBjeT0iNjgiIHJ4PSIxMiIgcnk9IjYiIGZpbGw9IiNCQkRFRkIiLz4KICA8dGV4dCB4PSI1MCIgeT0iODIiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzE1NjVDMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuawtDwvdGV4dD4KPC9zdmc+',     price:10,   hint:'提示：用一張 $10'},
-  {item:'茶餐廳早餐', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRkY4RjAwIi8+CiAgPGVsbGlwc2UgY3g9IjUwIiBjeT0iNjIiIHJ4PSIzMiIgcnk9IjIyIiBmaWxsPSIjRkZGOUM0Ii8+CiAgPGVsbGlwc2UgY3g9IjUwIiBjeT0iNjIiIHJ4PSIzMiIgcnk9IjIyIiBmaWxsPSJub25lIiBzdHJva2U9IiM3OTU1NDgiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxlbGxpcHNlIGN4PSI1MCIgY3k9IjYyIiByeD0iMTgiIHJ5PSIxMyIgZmlsbD0iI0ZGRjhFMSIvPgogIDxlbGxpcHNlIGN4PSI1MCIgY3k9IjYyIiByeD0iMTIiIHJ5PSI4IiBmaWxsPSIjRkZGNTlEIi8+CiAgPGVsbGlwc2UgY3g9IjQyIiBjeT0iNTUiIHJ4PSIxMCIgcnk9IjciIGZpbGw9IiNGRkNDMDIiLz4KICA8Y2lyY2xlIGN4PSI0MiIgY3k9IjU1IiByPSI1IiBmaWxsPSIjRkREODM1Ii8+CiAgPHRleHQgeD0iNTAiIHk9IjMwIiBmb250LXNpemU9IjEyIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPuaXqemkkDwvdGV4dD4KPC9zdmc+', price:50,   hint:'提示：用一張 $50'},
-  {item:'藥房購物',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRTUzOTM1Ii8+CiAgPHJlY3QgeD0iMjAiIHk9IjQyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI0ZGQ0REMiIvPgogIDxyZWN0IHg9IjIwIiB5PSI0MiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiNFNTM5MzUiLz4KICA8cmVjdCB4PSI0NCIgeT0iNDIiIHdpZHRoPSI0IiBoZWlnaHQ9IjI4IiBmaWxsPSIjQjcxQzFDIi8+CiAgPHRleHQgeD0iMzQiIHk9IjYxIiBmb250LXNpemU9IjE0IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPis8L3RleHQ+CiAgPGVsbGlwc2UgY3g9IjY1IiBjeT0iMzIiIHJ4PSIxMiIgcnk9IjgiIGZpbGw9IiNFRjlBOUEiIHRyYW5zZm9ybT0icm90YXRlKC0zMCw2NSwzMikiLz4KICA8ZWxsaXBzZSBjeD0iMzUiIGN5PSI3NSIgcng9IjEyIiByeT0iOCIgZmlsbD0iI0VGOUE5QSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLDM1LDc1KSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyMiIgZm9udC1zaXplPSIxMSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuiXpTwvdGV4dD4KPC9zdmc+',  price:100,  hint:'提示：用一張 $100'},
-  {item:'超市購物',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMzg4RTNDIi8+CiAgPHBhdGggZD0iTTE1IDI1IEwyNSAyNSBMMzUgNjUgTDgwIDY1IEw4OCAzOCBMMjggMzgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8Y2lyY2xlIGN4PSI0MiIgY3k9Ijc1IiByPSI3IiBmaWxsPSIjZmZmIi8+CiAgPGNpcmNsZSBjeD0iNzIiIGN5PSI3NSIgcj0iNyIgZmlsbD0iI2ZmZiIvPgogIDxyZWN0IHg9IjQwIiB5PSI0NSIgd2lkdGg9IjUiIGhlaWdodD0iMTQiIHJ4PSIyIiBmaWxsPSIjQTVENkE3Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjQ1IiB3aWR0aD0iNSIgaGVpZ2h0PSIxNCIgcng9IjIiIGZpbGw9IiNBNUQ2QTciLz4KICA8cmVjdCB4PSI3MCIgeT0iNDUiIHdpZHRoPSI1IiBoZWlnaHQ9IjE0IiByeD0iMiIgZmlsbD0iI0E1RDZBNyIvPgo8L3N2Zz4=',      price:500,  hint:'提示：用一張 $500'},
-  {item:'機場快線',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMEQ0N0ExIi8+CiAgPHBhdGggZD0iTTUwIDIwIEM1MCAyMCAzMCA1MCAyMCA2MCBMMzUgNTggTDQyIDcyIEw1MCA2OCBMNTggNzIgTDY1IDU4IEw4MCA2MCBDNzAgNTAgNTAgMjAgNTAgMjBaIiBmaWxsPSIjRTNGMkZEIi8+CiAgPHBhdGggZD0iTTMwIDYyIEw3MCA2MiBMNjggNjggTDMyIDY4WiIgZmlsbD0iIzkwQ0FGOSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI4OCIgZm9udC1zaXplPSI5IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+5qmf5aC05b+r57eaPC90ZXh0Pgo8L3N2Zz4=',   price:1000, hint:'提示：用一張 $1000'},
-];
-const PAY2_QS=[
-  {item:'珍珠奶茶',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjNzk1NTQ4Ii8+CiAgPHJlY3QgeD0iMzIiIHk9IjMwIiB3aWR0aD0iMzYiIGhlaWdodD0iNTAiIHJ4PSI4IiBmaWxsPSIjRkZGOUM0Ii8+CiAgPHJlY3QgeD0iMzIiIHk9IjMwIiB3aWR0aD0iMzYiIGhlaWdodD0iMTUiIHJ4PSI2IiBmaWxsPSIjRjhCQkQwIi8+CiAgPHJlY3QgeD0iNDQiIHk9IjE1IiB3aWR0aD0iMTIiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjRTBFMEUwIi8+CiAgPGNpcmNsZSBjeD0iNDAiIGN5PSI2NSIgcj0iNSIgZmlsbD0iIzVENDAzNyIvPgogIDxjaXJjbGUgY3g9IjUyIiBjeT0iNzAiIHI9IjUiIGZpbGw9IiM1RDQwMzciLz4KICA8Y2lyY2xlIGN4PSI2MiIgY3k9IjY1IiByPSI1IiBmaWxsPSIjNUQ0MDM3Ii8+CiAgPGNpcmNsZSBjeD0iNDQiIGN5PSI3NSIgcj0iNSIgZmlsbD0iIzVENDAzNyIvPgogIDxjaXJjbGUgY3g9IjU4IiBjeT0iNzUiIHI9IjUiIGZpbGw9IiM1RDQwMzciLz4KICA8dGV4dCB4PSI1MCIgeT0iMTIiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuePjeePoDwvdGV4dD4KPC9zdmc+', price:38},
-  {item:'快餐午餐',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRjU3RjE3Ii8+CiAgPHJlY3QgeD0iMTgiIHk9IjQwIiB3aWR0aD0iNjQiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjRkZGOUM0Ii8+CiAgPHJlY3QgeD0iMTgiIHk9IjQwIiB3aWR0aD0iNjQiIGhlaWdodD0iNiIgcng9IjMiIGZpbGw9IiNGRjhGMDAiLz4KICA8cmVjdCB4PSIyMCIgeT0iNTAiIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNiIgcng9IjQiIGZpbGw9IiNBNUQ2QTciLz4KICA8cmVjdCB4PSI1MiIgeT0iNTAiIHdpZHRoPSIyOCIgaGVpZ2h0PSIxMiIgcng9IjQiIGZpbGw9IiNGRkNDODAiLz4KICA8cmVjdCB4PSI1MiIgeT0iNjQiIHdpZHRoPSIyOCIgaGVpZ2h0PSIxMiIgcng9IjQiIGZpbGw9IiNFRjlBOUEiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzIiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+5b+r6aSQPC90ZXh0Pgo8L3N2Zz4=',     price:68},
-  {item:'書店買書',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMTU2NUMwIi8+CiAgPHJlY3QgeD0iMjAiIHk9IjI1IiB3aWR0aD0iMTgiIGhlaWdodD0iNTUiIHJ4PSIzIiBmaWxsPSIjRTUzOTM1Ii8+CiAgPHJlY3QgeD0iMjIiIHk9IjI1IiB3aWR0aD0iNCIgaGVpZ2h0PSI1NSIgZmlsbD0iI0I3MUMxQyIvPgogIDxyZWN0IHg9IjQyIiB5PSIzMCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjUwIiByeD0iMyIgZmlsbD0iIzJFN0QzMiIvPgogIDxyZWN0IHg9IjQ0IiB5PSIzMCIgd2lkdGg9IjQiIGhlaWdodD0iNTAiIGZpbGw9IiMxQjVFMjAiLz4KICA8cmVjdCB4PSI2NCIgeT0iMjIiIHdpZHRoPSIxOCIgaGVpZ2h0PSI1OCIgcng9IjMiIGZpbGw9IiNGNTdGMTciLz4KICA8cmVjdCB4PSI2NiIgeT0iMjIiIHdpZHRoPSI0IiBoZWlnaHQ9IjU4IiBmaWxsPSIjRTY1MTAwIi8+CiAgPHJlY3QgeD0iMTgiIHk9Ijc2IiB3aWR0aD0iNjUiIGhlaWdodD0iNiIgcng9IjIiIGZpbGw9IiM1NTUiLz4KPC9zdmc+',     price:85},
-  {item:'便利店零食', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRjlBODI1Ii8+CiAgPHJlY3QgeD0iMjgiIHk9IjQ4IiB3aWR0aD0iNDQiIGhlaWdodD0iMzUiIHJ4PSI1IiBmaWxsPSIjRUY1MzUwIi8+CiAgPHJlY3QgeD0iMjgiIHk9IjQ4IiB3aWR0aD0iNDQiIGhlaWdodD0iMzUiIHJ4PSI1IiBmaWxsPSJub25lIiBzdHJva2U9IiNCNzFDMUMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxsaW5lIHgxPSI1MCIgeTE9IjQ4IiB4Mj0iNTAiIHkyPSI4MyIgc3Ryb2tlPSIjQjcxQzFDIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8bGluZSB4MT0iMjgiIHkxPSI2NSIgeDI9IjcyIiB5Mj0iNjUiIHN0cm9rZT0iI0I3MUMxQyIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjUwIiB3aWR0aD0iMTgiIGhlaWdodD0iMTMiIGZpbGw9IiNGRkY5QzQiLz4KICA8cmVjdCB4PSI1MiIgeT0iNTAiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgZmlsbD0iI0ZGRjlDNCIvPgogIDxlbGxpcHNlIGN4PSIzNiIgY3k9IjMzIiByeD0iMTAiIHJ5PSIxMiIgZmlsbD0iI0ZGRjlDNCIvPgogIDxlbGxpcHNlIGN4PSI1MCIgY3k9IjI4IiByeD0iMTAiIHJ5PSIxNCIgZmlsbD0iI0ZGRjlDNCIvPgogIDxlbGxpcHNlIGN4PSI2NCIgY3k9IjMzIiByeD0iMTAiIHJ5PSIxMiIgZmlsbD0iI0ZGRjlDNCIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyMCIgZm9udC1zaXplPSI5IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+6Zu26aOfPC90ZXh0Pgo8L3N2Zz4=',     price:25},
-  {item:'電影戲票',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjNEExNDhDIi8+CiAgPHJlY3QgeD0iMTUiIHk9IjMyIiB3aWR0aD0iNzAiIGhlaWdodD0iNDUiIHJ4PSI2IiBmaWxsPSIjRURFN0Y2Ii8+CiAgPHJlY3QgeD0iMTUiIHk9IjMyIiB3aWR0aD0iNzAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjN0IxRkEyIi8+CiAgPGNpcmNsZSBjeD0iMTUiIGN5PSI2MCIgcj0iOCIgZmlsbD0iIzRBMTQ4QyIvPgogIDxjaXJjbGUgY3g9Ijg1IiBjeT0iNjAiIHI9IjgiIGZpbGw9IiM0QTE0OEMiLz4KICA8cmVjdCB4PSIxNSIgeT0iNTYiIHdpZHRoPSI3MCIgaGVpZ2h0PSI4IiBmaWxsPSIjNEExNDhDIiBvcGFjaXR5PSIwLjIiLz4KICA8cG9seWdvbiBwb2ludHM9IjQzLDUwIDQzLDcwIDY1LDYwIiBmaWxsPSIjN0IxRkEyIi8+CiAgPHRleHQgeD0iNTAiIHk9IjI4IiBmb250LXNpemU9IjkiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+6Zu75b2xPC90ZXh0Pgo8L3N2Zz4=',     price:120},
-  {item:'日用品',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMDA2OTVDIi8+CiAgPHJlY3QgeD0iMzUiIHk9IjI1IiB3aWR0aD0iMzAiIGhlaWdodD0iNTUiIHJ4PSI4IiBmaWxsPSIjRTBGMkYxIi8+CiAgPHJlY3QgeD0iMzUiIHk9IjI1IiB3aWR0aD0iMzAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjODBDQkM0Ii8+CiAgPHJlY3QgeD0iNDIiIHk9IjE2IiB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHJ4PSI0IiBmaWxsPSIjQjJERkRCIi8+CiAgPHJlY3QgeD0iMzciIHk9IjQyIiB3aWR0aD0iMjYiIGhlaWdodD0iMyIgcng9IjEiIGZpbGw9IiM0REI2QUMiLz4KICA8dGV4dCB4PSI1MCIgeT0iNjIiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzAwNjk1QyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj7ml6XnlKg8L3RleHQ+CiAgPHRleHQgeD0iNTAiIHk9IjczIiBmb250LXNpemU9IjgiIGZpbGw9IiMwMDY5NUMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj7lk4E8L3RleHQ+Cjwvc3ZnPg==',     price:280},
+/* ════ PAY (15 題合併版) ════ */
+/* 前5題：多張紙幣，整數，不找續（但必須用多過一張紙幣）
+   後10題：需找續 */
+const PAY_QS=[
+  /* 1-5: 整數，需用多張紙幣 */
+  {item:'茶葉蛋+咖啡',  img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjNzk1NTQ4Ii8+PGNpcmNsZSBjeD0iMzUiIGN5PSI1NSIgcj0iMjAiIGZpbGw9IiNGRkU0QjUiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjU1IiByPSIxNSIgZmlsbD0iI0Q0QTA3NiIvPjxyZWN0IHg9IjU1IiB5PSI0MCIgd2lkdGg9IjI1IiBoZWlnaHQ9IjMwIiByeD0iNSIgZmlsbD0iI0ZGRjlDNCIvPjxwYXRoIGQ9Ik04MCA1MCBROTUgNTAgOTAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRjlDNCIgc3Ryb2tlLXdpZHRoPSIzIi8+PHRleHQgeD0iNTAiIHk9IjI1IiBmb250LXNpemU9IjEwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPuaXqemkkzwvdGV4dD48L3N2Zz4=', price:30, needChange:false},
+  {item:'書簿+文具',    img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMTU2NUMwIi8+PHJlY3QgeD0iMjAiIHk9IjMwIiB3aWR0aD0iMjUiIGhlaWdodD0iNDUiIHJ4PSIzIiBmaWxsPSIjRTUzOTM1Ii8+PHJlY3QgeD0iNTUiIHk9IjI1IiB3aWR0aD0iMjUiIGhlaWdodD0iNTAiIHJ4PSIzIiBmaWxsPSIjNENCQjhBIi8+PHJlY3QgeD0iMzAiIHk9IjYwIiB3aWR0aD0iMTUiIGhlaWdodD0iMyIgcng9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii41Ii8+PHRleHQgeD0iNTAiIHk9IjE4IiBmb250LXNpemU9IjEwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPuaWh+aWh+aJsTwvdGV4dD48L3N2Zz4=', price:70, needChange:false},
+  {item:'超市購物',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMzg4RTNDIi8+PHBhdGggZD0iTTE1IDI1IEwyNSAyNSBMMzUgNjUgTDgwIDY1IEw4OCAzOCBMMjggMzgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0MiIgY3k9Ijc1IiByPSI3IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSI3NSIgcj0iNyIgZmlsbD0iI2ZmZiIvPjx0ZXh0IHg9IjUwIiB5PSIyMCIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuiwgeW/lugo5YWIPC90ZXh0Pjwvc3ZnPg==', price:150, needChange:false},
+  {item:'藥房購物',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRTUzOTM1Ii8+PHJlY3QgeD0iMjAiIHk9IjQyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI0ZGQ0REMiIvPjxyZWN0IHg9IjIwIiB5PSI0MiIgd2lkdGg9IjMwIiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiNFNTM5MzUiLz48cmVjdCB4PSI0NCIgeT0iNDIiIHdpZHRoPSI0IiBoZWlnaHQ9IjI4IiBmaWxsPSIjQjcxQzFDIi8+PHRleHQgeD0iMzQiIHk9IjYxIiBmb250LXNpemU9IjE0IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPis8L3RleHQ+PHRleHQgeD0iNTAiIHk9IjI1IiBmb250LXNpemU9IjEwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+6JelPC90ZXh0Pjwvc3ZnPg==', price:200, needChange:false},
+  {item:'餐廳晚飯',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRkY4RjAwIi8+PGVsbGlwc2UgY3g9IjUwIiBjeT0iNjAiIHJ4PSIzMCIgcnk9IjIwIiBmaWxsPSIjRkZGOUM0Ii8+PGVsbGlwc2UgY3g9IjUwIiBjeT0iNjAiIHJ4PSIzMCIgcnk9IjIwIiBmaWxsPSJub25lIiBzdHJva2U9IiM3OTU1NDgiIHN0cm9rZS13aWR0aD0iMiIvPjxsaW5lIHgxPSIyNSIgeTE9IjMwIiB4Mj0iMjUiIHkyPSI1MCIgc3Ryb2tlPSIjNzk1NTQ4IiBzdHJva2Utd2lkdGg9IjMiLz48bGluZSB4MT0iNzUiIHkxPSIzMCIgeDI9Ijc1IiB5Mj0iNTAiIHN0cm9rZT0iIzc5NTU0OCIgc3Ryb2tlLXdpZHRoPSIzIi8+PHRleHQgeD0iNTAiIHk9IjI0IiBmb250LXNpemU9IjEwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPumHkeWNqDwvdGV4dD48L3N2Zz4=', price:600, needChange:false},
+  /* 6-15: 需找續 */
+  {item:'珍珠奶茶',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjNzk1NTQ4Ii8+PHJlY3QgeD0iMzIiIHk9IjMwIiB3aWR0aD0iMzYiIGhlaWdodD0iNTAiIHJ4PSI4IiBmaWxsPSIjRkZGOUM0Ii8+PHJlY3QgeD0iMzIiIHk9IjMwIiB3aWR0aD0iMzYiIGhlaWdodD0iMTUiIHJ4PSI2IiBmaWxsPSIjRjhCQkQwIi8+PHJlY3QgeD0iNDQiIHk9IjE1IiB3aWR0aD0iMTIiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjRTBFMEUwIi8+PGNpcmNsZSBjeD0iNDAiIGN5PSI2NSIgcj0iNSIgZmlsbD0iIzVENDAzNyIvPjxjaXJjbGUgY3g9IjUyIiBjeT0iNzAiIHI9IjUiIGZpbGw9IiM1RDQwMzciLz48dGV4dCB4PSI1MCIgeT0iMTIiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuePjeePoDwvdGV4dD48L3N2Zz4=', price:38, needChange:true},
+  {item:'便利店零食',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRjlBODI1Ii8+PHJlY3QgeD0iMjgiIHk9IjQ4IiB3aWR0aD0iNDQiIGhlaWdodD0iMzUiIHJ4PSI1IiBmaWxsPSIjRUY1MzUwIi8+PGVsbGlwc2UgY3g9IjM2IiBjeT0iMzMiIHJ4PSIxMCIgcnk9IjEyIiBmaWxsPSIjRkZGOUM0Ii8+PGVsbGlwc2UgY3g9IjUwIiBjeT0iMjgiIHJ4PSIxMCIgcnk9IjE0IiBmaWxsPSIjRkZGOUM0Ii8+PGVsbGlwc2UgY3g9IjY0IiBjeT0iMzMiIHJ4PSIxMCIgcnk9IjEyIiBmaWxsPSIjRkZGOUM0Ii8+PHRleHQgeD0iNTAiIHk9IjIwIiBmb250LXNpemU9IjkiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIj7pm7bpo58=PC90ZXh0Pjwvc3ZnPg==', price:25, needChange:true},
+  {item:'快餐午餐',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRjU3RjE3Ii8+PHJlY3QgeD0iMTgiIHk9IjQwIiB3aWR0aD0iNjQiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjRkZGOUM0Ii8+PHJlY3QgeD0iMTgiIHk9IjQwIiB3aWR0aD0iNjQiIGhlaWdodD0iNiIgcng9IjMiIGZpbGw9IiNGRjhGMDAiLz48cmVjdCB4PSIyMCIgeT0iNTAiIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNiIgcng9IjQiIGZpbGw9IiNBNUQ2QTciLz48cmVjdCB4PSI1MiIgeT0iNTAiIHdpZHRoPSIyOCIgaGVpZ2h0PSIxMiIgcng9IjQiIGZpbGw9IiNGRkNDODAiLz48dGV4dCB4PSI1MCIgeT0iMzIiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+5b+r6aSQPC90ZXh0Pjwvc3ZnPg==', price:68, needChange:true},
+  {item:'書店買書',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMTU2NUMwIi8+PHJlY3QgeD0iMjAiIHk9IjI1IiB3aWR0aD0iMTgiIGhlaWdodD0iNTUiIHJ4PSIzIiBmaWxsPSIjRTUzOTM1Ii8+PHJlY3QgeD0iNDIiIHk9IjMwIiB3aWR0aD0iMTgiIGhlaWdodD0iNTAiIHJ4PSIzIiBmaWxsPSIjMkU3RDMyIi8+PHJlY3QgeD0iNjQiIHk9IjIyIiB3aWR0aD0iMTgiIGhlaWdodD0iNTgiIHJ4PSIzIiBmaWxsPSIjRjU3RjE3Ii8+PHJlY3QgeD0iMTgiIHk9Ijc2IiB3aWR0aD0iNjUiIGhlaWdodD0iNiIgcng9IjIiIGZpbGw9IiM1NTUiLz48dGV4dCB4PSI1MCIgeT0iMTUiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuWNqOGAjjwvdGV4dD48L3N2Zz4=', price:85, needChange:true},
+  {item:'電影戲票',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjNEExNDhDIi8+PHJlY3QgeD0iMTUiIHk9IjMyIiB3aWR0aD0iNzAiIGhlaWdodD0iNDUiIHJ4PSI2IiBmaWxsPSIjRURFN0Y2Ii8+PHJlY3QgeD0iMTUiIHk9IjMyIiB3aWR0aD0iNzAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjN0IxRkEyIi8+PGNpcmNsZSBjeD0iMTUiIGN5PSI2MCIgcj0iOCIgZmlsbD0iIzRBMTQ4QyIvPjxjaXJjbGUgY3g9Ijg1IiBjeT0iNjAiIHI9IjgiIGZpbGw9IiM0QTE0OEMiLz48cG9seWdvbiBwb2ludHM9IjQzLDUwIDQzLDcwIDY1LDYwIiBmaWxsPSIjN0IxRkEyIi8+PHRleHQgeD0iNTAiIHk9IjI4IiBmb250LXNpemU9IjkiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+6Zu75b2xPC90ZXh0Pjwvc3ZnPg==', price:120, needChange:true},
+  {item:'日用品',       img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMDA2OTVDIi8+PHJlY3QgeD0iMzUiIHk9IjI1IiB3aWR0aD0iMzAiIGhlaWdodD0iNTUiIHJ4PSI4IiBmaWxsPSIjRTBGMkYxIi8+PHJlY3QgeD0iMzUiIHk9IjI1IiB3aWR0aD0iMzAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjODBDQkM0Ii8+PHJlY3QgeD0iNDIiIHk9IjE2IiB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHJ4PSI0IiBmaWxsPSIjQjJERkRCIi8+PHRleHQgeD0iNTAiIHk9IjYyIiBmb250LXNpemU9IjkiIGZpbGw9IiMwMDY5NUMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+5pel5pys8L3RleHQ+PC9zdmc+', price:280, needChange:true},
+  {item:'茶餐廳早餐',   img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRkY4RjAwIi8+PGVsbGlwc2UgY3g9IjUwIiBjeT0iNjIiIHJ4PSIzMiIgcnk9IjIyIiBmaWxsPSIjRkZGOUM0Ii8+PGVsbGlwc2UgY3g9IjUwIiBjeT0iNjIiIHJ4PSIzMiIgcnk9IjIyIiBmaWxsPSJub25lIiBzdHJva2U9IiM3OTU1NDgiIHN0cm9rZS13aWR0aD0iMyIvPjxlbGxpcHNlIGN4PSI0MiIgY3k9IjU1IiByeD0iMTAiIHJ5PSI3IiBmaWxsPSIjRkZDQzAyIi8+PGNpcmNsZSBjeD0iNDIiIGN5PSI1NSIgcj0iNSIgZmlsbD0iI0ZERDgzNSIvPjx0ZXh0IHg9IjUwIiB5PSIzMCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj7ml6npmZI8L3RleHQ+PC9zdmc+', price:52, needChange:true},
+  {item:'樽裝飲品',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMjE5NkYzIi8+PHJlY3QgeD0iMzYiIHk9IjIwIiB3aWR0aD0iMjgiIGhlaWdodD0iOCIgcng9IjMiIGZpbGw9IiM5MENBRjkiLz48cmVjdCB4PSIzMCIgeT0iMjgiIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MiIgcng9IjEwIiBmaWxsPSIjRTNGMkZEIi8+PHJlY3QgeD0iMzAiIHk9IjI4IiB3aWR0aD0iNDAiIGhlaWdodD0iMTUiIHJ4PSI1IiBmaWxsPSIjOTBDQUY5Ii8+PGVsbGlwc2UgY3g9IjUwIiBjeT0iNjgiIHJ4PSIxMiIgcnk9IjYiIGZpbGw9IiNCQkRFRkIiLz48dGV4dCB4PSI1MCIgeT0iOTAiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPumWi+aWtOWIqzwvdGV4dD48L3N2Zz4=', price:18, needChange:true},
+  {item:'地鐵車費',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjRTYwMDEyIi8+PHJlY3QgeD0iMTUiIHk9IjM1IiB3aWR0aD0iNzAiIGhlaWdodD0iMzgiIHJ4PSIxMCIgZmlsbD0iI2ZmZiIvPjxyZWN0IHg9IjE4IiB5PSIzOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIiByeD0iNSIgZmlsbD0iI0U2MDAxMiIvPjxyZWN0IHg9IjUyIiB5PSIzOCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIwIiByeD0iNSIgZmlsbD0iI0U2MDAxMiIvPjx0ZXh0IHg9IjUwIiB5PSIyOCIgZm9udC1zaXplPSIxMSIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5NVFI8L3RleHQ+PGNpcmNsZSBjeD0iMzUiIGN5PSI0OCIgcj0iNyIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjY1IiBjeT0iNDgiIHI9IjciIGZpbGw9IiNmZmYiLz48L3N2Zz4=', price:56, needChange:true},
+  {item:'機場快線',     img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjE4IiBmaWxsPSIjMEQ0N0ExIi8+PHBhdGggZD0iTTUwIDIwIEM1MCAyMCAzMCA1MCAyMCA2MCBMMzUgNTggTDQyIDcyIEw1MCA2OCBMNTggNzIgTDY1IDU4IEw4MCA2MCBDNzAgNTAgNTAgMjAgNTAgMjBaIiBmaWxsPSIjRTNGMkZEIi8+PHBhdGggZD0iTTMwIDYyIEw3MCA2MiBMNjggNjggTDMyIDY4WiIgZmlsbD0iIzkwQ0FGOSIvPjx0ZXh0IHg9IjUwIiB5PSI4OCIgZm9udC1zaXplPSI5IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+5qmf5aC05b+r57eaPC90ZXh0Pjwvc3ZnPg==', price:115, needChange:true},
 ];
 
-const PS={1:{q:0,sc:0,sel:[]},2:{q:0,sc:0,sel:[]}};
-let p2chV='';
-let dragV=0,dragLv=0,dragOn=false;
+/* 題目索引、分數、已選紙幣 */
+let payQ=0,paySc=0,paySel=[],payChgV='',payChgChoice=null;
 
-function initPay(lv){
-  curGame='pay'+lv;
-  PS[lv]={q:0,sc:0,sel:[]};
-  p2chV='';
-  el('pay'+lv+'-sc').textContent='0 分';
-  if(lv===2)buildNP('np-pay2','p2ch');
-  loadPay(lv);
+/* ════ MODAL 找續數字鍵盤 ════ */
+let modalV='';
+function buildModalNP(){
+  const np=el('modal-numpad');if(!np)return;np.innerHTML='';
+  [1,2,3,4,5,6,7,8,9,'清除',0,'刪除'].forEach(k=>{
+    const b=document.createElement('div');
+    b.className='modal-npb'+(k==='刪除'||k==='清除'?' fn':'');
+    b.textContent=k;
+    b.addEventListener('pointerdown',e=>{e.preventDefault();modalNpHit(k);});
+    np.appendChild(b);
+  });
+}
+function modalNpHit(k){
+  if(k==='刪除')modalV=modalV.slice(0,-1);
+  else if(k==='清除')modalV='';
+  else if(modalV.length<5)modalV+=k;
+  const i=el('modal-inp');if(i)i.value=modalV||'';
+}
+function openModal(){
+  modalV=payChgV||'';
+  const i=el('modal-inp');if(i){i.value=modalV;i.className='modal-inp';}
+  buildModalNP();
+  const ov=el('modal-overlay');if(ov)ov.classList.add('show');
+}
+function closeModal(){
+  const ov=el('modal-overlay');if(ov)ov.classList.remove('show');
+}
+function modalBgClick(e){if(e.target===el('modal-overlay'))closeModal();}
+function modalConfirm(){
+  payChgV=modalV;
+  const ci=el('pay-chi');if(ci){ci.value=payChgV;ci.className='chi';}
+  closeModal();
 }
 
-function loadPay(lv){
-  const qs=lv===1?PAY1_QS:PAY2_QS;
-  const st=PS[lv];
-  if(st.q>=qs.length){showResult(st.sc);return;}
-  const sc=qs[st.q];
-  st.sel=[];p2chV='';
+function initPay(){
+  curGame='pay';
+  payQ=0;paySc=0;paySel=[];payChgV='';payChgChoice=null;
+  el('pay-sc').textContent='0 分';
+  loadPayQ();
+}
 
-  /* — update shop display — */
-  el('pay'+lv+'-em').src=sc.img;
-  el('pay'+lv+'-nm').textContent=sc.item;
-  el('pay'+lv+'-pr').textContent='HK$'+sc.price;
-  el('pay'+lv+'-hint').textContent=sc.hint||'';
-  el('pay'+lv+'-pf').style.width=Math.round(st.q/qs.length*100)+'%';
-  el('pay'+lv+'-total').textContent='HK$0';
-  if(lv===2){const ci=el('pay2-chi');if(ci){ci.value='';ci.className='chi';}}
+function loadPayQ(){
+  if(payQ>=PAY_QS.length){showResult(paySc);return;}
+  const q=PAY_QS[payQ];
+  paySel=[];payChgV='';payChgChoice=null;
 
-  /* — build note bank with actual note images — */
-  const bank=el('pay'+lv+'-bank');
+  /* 產品資訊 */
+  el('pay-em').src=q.img;
+  el('pay-nm').textContent=q.item;
+  el('pay-pr').textContent='HK$'+q.price;
+  el('pay-pf').style.width=Math.round(payQ/PAY_QS.length*100)+'%';
+  el('pay-total').textContent='HK$0';
+
+  /* 重設找續選擇 */
+  el('cbtn-no').className='cbtn';
+  el('cbtn-yes').className='cbtn';
+  el('pay-chg-inp').className='chg-inp';
+  const ci=el('pay-chi');if(ci){ci.value='';ci.className='chi';}
+  payChgV='';
+
+  /* 顯示/隱藏找續區 - 前5題完全不顯示找續選項但仍有此區 */
+  /* 所有題都顯示找續區，讓學生選擇 */
+  const cbox=el('pay-change-box');
+  if(cbox)cbox.style.display='';
+
+  /* 建立紙幣庫 */
+  const bank=el('pay-bank');
   if(!bank)return;
   bank.innerHTML='';
   [10,20,50,100,500,1000].forEach(v=>{
     const chip=document.createElement('div');
     chip.className='nchip';
-
     const img=document.createElement('img');
     img.src=IMGS[v];img.alt='HK$'+v;
-
     const cv=document.createElement('div');
-    cv.className='cv';cv.textContent='HK$'+v;
-
+    cv.className='cv';cv.textContent='$'+v;
     chip.appendChild(img);chip.appendChild(cv);
-
-    /* touch drag */
-    chip.addEventListener('touchstart',e=>{e.preventDefault();tsStart(v,lv,e);},{passive:false});
-    chip.addEventListener('touchmove',e=>{e.preventDefault();tsMove(e);},{passive:false});
-    chip.addEventListener('touchend',e=>{e.preventDefault();tsEnd(lv,e);},{passive:false});
-
-    /* click / tap fallback */
-    chip.addEventListener('click',()=>dropNote(v,lv));
-
+    chip.addEventListener('click',()=>addNote(v));
+    chip.addEventListener('touchend',e=>{e.preventDefault();addNote(v);},{passive:false});
     bank.appendChild(chip);
   });
 
-  /* — reset drop zone — */
-  const dz=el('pay'+lv+'-dz');
+  /* 重設drop zone */
+  const dz=el('pay-dz');
   if(dz){
-    dz.innerHTML='<div class="dz-ph">🖐 拖曳紙幣到此處</div>';
+    dz.innerHTML='<div class="dz-ph">👆 點擊上方紙幣加入</div>';
     dz.classList.remove('over');
   }
 }
 
-/* touch drag */
-function tsStart(v,lv,e){
-  dragV=v;dragLv=lv;dragOn=true;
-  e.currentTarget.classList.add('dragging');
-  const gh=el('ghost');
-  gh.src=IMGS[v];gh.style.display='block';
-  const t=e.touches[0];
-  gh.style.left=(t.clientX-50)+'px';
-  gh.style.top= (t.clientY-30)+'px';
-}
-function tsMove(e){
-  if(!dragOn)return;
-  const t=e.touches[0];
-  const gh=el('ghost');
-  gh.style.left=(t.clientX-50)+'px';
-  gh.style.top= (t.clientY-30)+'px';
-  /* highlight drop zone */
-  const dz=el('pay'+dragLv+'-dz');
-  if(dz){
-    const r=dz.getBoundingClientRect();
-    dz.classList.toggle('over',
-      t.clientX>=r.left&&t.clientX<=r.right&&
-      t.clientY>=r.top &&t.clientY<=r.bottom);
-  }
-}
-function tsEnd(lv,e){
-  const gh=el('ghost');
-  if(gh)gh.style.display='none';
-  document.querySelectorAll('.nchip').forEach(c=>c.classList.remove('dragging'));
-  if(!dragOn){dragOn=false;return;}
-  const dz=el('pay'+lv+'-dz');
-  if(dz){
-    dz.classList.remove('over');
-    const t=e.changedTouches[0];
-    const r=dz.getBoundingClientRect();
-    if(t.clientX>=r.left&&t.clientX<=r.right&&
-       t.clientY>=r.top &&t.clientY<=r.bottom){
-      dropNote(dragV,lv);
-    }
-  }
-  dragV=0;dragLv=0;dragOn=false;
-}
-
-function dropNote(v,lv){
-  PS[lv].sel.push(v);
-  updTotal(lv);
-  const dz=el('pay'+lv+'-dz');
+function addNote(v){
+  paySel.push(v);
+  updPayTotal();
+  const dz=el('pay-dz');
   if(!dz)return;
-  /* remove placeholder text */
   const ph=dz.querySelector('.dz-ph');if(ph)ph.remove();
-  /* add dropped chip */
   const dc=document.createElement('div');dc.className='dc';
   const img=document.createElement('img');img.src=IMGS[v];img.alt='HK$'+v;
   const rm=document.createElement('div');rm.className='rm';rm.textContent='✕';
   dc.appendChild(img);dc.appendChild(rm);
-  dc.addEventListener('click',e=>{e.stopPropagation();removeNote(dc,v,lv);});
-  dc.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();removeNote(dc,v,lv);},{passive:false});
+  dc.addEventListener('click',e=>{e.stopPropagation();removePayNote(dc,v);});
+  dc.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();removePayNote(dc,v);},{passive:false});
   dz.appendChild(dc);
 }
 
-function removeNote(dc,v,lv){
-  const idx=PS[lv].sel.indexOf(v);
-  if(idx>-1)PS[lv].sel.splice(idx,1);
+function removePayNote(dc,v){
+  const idx=paySel.indexOf(v);
+  if(idx>-1)paySel.splice(idx,1);
   dc.remove();
-  updTotal(lv);
-  const dz=el('pay'+lv+'-dz');
+  updPayTotal();
+  const dz=el('pay-dz');
   if(dz&&!dz.querySelector('.dc')){
-    dz.innerHTML='<div class="dz-ph">🖐 拖曳紙幣到此處</div>';
+    dz.innerHTML='<div class="dz-ph">👆 點擊上方紙幣加入</div>';
   }
 }
-function updTotal(lv){
-  const t=PS[lv].sel.reduce((a,b)=>a+b,0);
-  const e=el('pay'+lv+'-total');if(e)e.textContent='HK$'+t;
+
+function updPayTotal(){
+  const t=paySel.reduce((a,b)=>a+b,0);
+  el('pay-total').textContent='HK$'+t;
 }
-function resetPay(lv){
-  PS[lv].sel=[];updTotal(lv);
-  const dz=el('pay'+lv+'-dz');
-  if(dz){dz.innerHTML='<div class="dz-ph">🖐 拖曳紙幣到此處</div>';dz.classList.remove('over');}
-  if(lv===2){p2chV='';const ci=el('pay2-chi');if(ci){ci.value='';ci.className='chi';}}
+
+function resetPayGame(){
+  paySel=[];payChgV='';payChgChoice=null;
+  updPayTotal();
+  const dz=el('pay-dz');
+  if(dz){dz.innerHTML='<div class="dz-ph">👆 點擊上方紙幣加入</div>';dz.classList.remove('over');}
+  el('cbtn-no').className='cbtn';
+  el('cbtn-yes').className='cbtn';
+  el('pay-chg-inp').className='chg-inp';
+  const ci=el('pay-chi');if(ci){ci.value='';ci.className='chi';}
 }
-function submitPay(lv){
-  const qs=lv===1?PAY1_QS:PAY2_QS;
-  const sc=qs[PS[lv].q];
-  const total=PS[lv].sel.reduce((a,b)=>a+b,0);
-  if(!PS[lv].sel.length){toast('請先拖入紙幣！','bad');return;}
-  if(total<sc.price){toast('✗ 唔夠錢！仲差 HK$'+(sc.price-total),'bad');return;}
-  if(total!==sc.price){toast('✗ 程度一需要剛好 HK$'+sc.price+'（毋需找續）','bad');return;}
-  PS[lv].sc+=20;el('pay'+lv+'-sc').textContent=PS[lv].sc+' 分';
-  toast('✓ 付款正確！+20分','ok');
-  PS[lv].q++;setTimeout(()=>loadPay(lv),1600);
+
+function selectChange(needChange){
+  payChgChoice=needChange;
+  el('cbtn-no').className=needChange?'cbtn':'cbtn sel-no';
+  el('cbtn-yes').className=needChange?'cbtn sel-yes':'cbtn';
+  const inp=el('pay-chg-inp');
+  if(inp)inp.className=needChange?'chg-inp show':'chg-inp';
+  if(!needChange){
+    payChgV='';
+    const ci=el('pay-chi');if(ci){ci.value='';ci.className='chi';}
+  } else {
+    /* 自動彈出數字鍵盤 */
+    openModal();
+  }
 }
-function submitPay2(){
-  const sc=PAY2_QS[PS[2].q];
-  const total=PS[2].sel.reduce((a,b)=>a+b,0);
-  if(!PS[2].sel.length){toast('請先拖入紙幣！','bad');return;}
-  if(total<sc.price){toast('✗ 唔夠錢！仲差 HK$'+(sc.price-total),'bad');return;}
-  const correct=total-sc.price;
-  const entered=parseInt(p2chV)||0;
-  const ci=el('pay2-chi');
-  if(entered!==correct){
+
+function submitPay(){
+  const q=PAY_QS[payQ];
+  const total=paySel.reduce((a,b)=>a+b,0);
+  if(!paySel.length){toast('請先選擇紙幣！','bad');return;}
+  if(total<q.price){toast('✗ 唔夠錢！仲差 HK$'+(q.price-total),'bad');return;}
+
+  /* 前5題：整數，必須用多張，學生要選「不找續」且total==price */
+  if(!q.needChange){
+    if(paySel.length<2){toast('✗ 呢題要用多過一張紙幣！','bad');return;}
+    if(payChgChoice===null){toast('請選擇係咪需要找續','bad');return;}
+    if(payChgChoice===true){toast('✗ 錢啱啱好，唔需要找續！','bad');return;}
+    if(total!==q.price){toast('✗ 要剛好 HK$'+q.price+'（唔需要找續）','bad');return;}
+    paySc+=20;el('pay-sc').textContent=paySc+' 分';
+    toast('✓ 啱晒！+20分','ok');
+    payQ++;setTimeout(()=>loadPayQ(),1600);
+    return;
+  }
+
+  /* 後10題：需找續 */
+  const change=total-q.price;
+  if(payChgChoice===null){toast('請選擇係咪需要找續','bad');return;}
+  if(change===0){
+    /* 啱啱好，應選不找續 */
+    if(payChgChoice===true){toast('✗ 錢啱啱好，唔需要找續！','bad');return;}
+    paySc+=20;el('pay-sc').textContent=paySc+' 分';
+    toast('✓ 啱晒！剛好 HK$'+q.price+' +20分','ok');
+    payQ++;setTimeout(()=>loadPayQ(),1600);
+    return;
+  }
+  /* 有找續 */
+  if(payChgChoice===false){toast('✗ 有剩低 HK$'+change+'，要填找續數！','bad');return;}
+  const entered=parseInt(payChgV)||0;
+  const ci=el('pay-chi');
+  if(entered!==change){
     if(ci)ci.className='chi err';
-    toast('✗ 找續唔啱！正確係 HK$'+correct,'bad');
-    PS[2].q++;setTimeout(()=>{if(ci)ci.className='chi';loadPay(2);},1800);
+    toast('✗ 找續唔啱！正確係 HK$'+change,'bad');
+    payQ++;setTimeout(()=>{if(ci)ci.className='chi';loadPayQ();},1800);
     return;
   }
   if(ci)ci.className='chi ok';
-  PS[2].sc+=20;el('pay2-sc').textContent=PS[2].sc+' 分';
-  toast('✓ 啱晒！找續 HK$'+correct+' +20分','ok');
-  PS[2].q++;setTimeout(()=>loadPay(2),1800);
+  paySc+=20;el('pay-sc').textContent=paySc+' 分';
+  toast('✓ 啱晒！找續 HK$'+change+' +20分','ok');
+  payQ++;setTimeout(()=>loadPayQ(),1800);
 }
 
 /* RESULT */
 function showResult(sc){
-  const max=120,pct=sc/max;
+  const max=300,pct=sc/max;
   const[em,t,m]=pct>=.8
     ?['🏆','出色！','你對香港紙幣嘅認識非常好！繼續加油！']
     :pct>=.5?['😊','不錯！','做得幾好！再練習一下！']
