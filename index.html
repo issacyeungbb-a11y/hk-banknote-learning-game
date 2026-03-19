@@ -20,7 +20,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 /* header */
 .hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--card)}
 .htit{flex:1;text-align:center;font-size:14px;font-weight:600;color:var(--gold)}
-.hsc{background:rgba(200,168,75,.12);border:1px solid var(--bd);border-radius:14px;padding:3px 9px;font-size:12px;color:var(--gold);white-space:nowrap}
 .bk{background:none;border:1px solid var(--bd);border-radius:7px;color:var(--mu);padding:4px 8px;cursor:pointer;font-size:12px}
 .lvbdg{font-size:10px;background:rgba(200,168,75,.15);border:1px solid var(--bd);border-radius:10px;padding:2px 6px;color:var(--gold);margin-left:4px}
 
@@ -289,7 +288,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .total-sc-bar .lbl{font-size:12px;color:var(--mu)}
 .total-sc-bar .val{font-size:16px;font-weight:700;color:var(--gold)}
 
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(12,20,40,.96);border:1px solid var(--bd);border-radius:18px;padding:8px 18px;font-size:13px;font-weight:600;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;z-index:9999}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(12,20,40,.96);border:1px solid var(--bd);border-radius:18px;padding:10px 28px;font-size:18px;font-weight:700;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;z-index:9999}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{color:var(--ok);border-color:rgba(74,222,128,.4)}
 .toast.bad{color:var(--err);border-color:rgba(248,113,113,.35)}
@@ -383,7 +382,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <div style="width:52px"></div>
     <div class="htit">辨識紙幣</div>
-    <div class="hsc" id="id-sc">0 分</div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="id-pf" style="width:0%"></div></div></div>
   <div class="body">
@@ -399,7 +397,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">計算面值</div>
-    <div class="hsc" id="cnt-sc">0 分</div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="cnt-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:5px;padding:6px 14px">
@@ -423,7 +420,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">模擬付款</div>
-    <div class="hsc" id="pay-sc">0 分</div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="pay-pf" style="width:0%"></div></div></div>
   <div class="body">
@@ -483,7 +479,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">貨幣兌換</div>
-    <div class="hsc" id="ex-sc">0 分</div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="ex-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:8px;padding:8px 14px">
@@ -547,7 +542,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <div class="resem" id="res-em">🎉</div>
     <div class="rest" id="res-t">完成！</div>
     <div class="ress" id="res-s">0</div>
-    <div class="reslb">總分</div>
+    <div class="reslb">累積總分</div>
     <div class="resmsg" id="res-msg"></div>
   </div>
   <div class="ftr">
@@ -716,7 +711,6 @@ let idQ=0,idSc=0,idLock=false;
 function initId(){
   curGame='identify';
   idQ=0;idSc=0;idLock=false;
-  el('id-sc').textContent='0 分';
   loadId();
 }
 function loadId(){
@@ -738,14 +732,13 @@ function checkId(btn,chosen,correct){
   if(chosen===correct){
     idLock=true;
     btn.classList.add('ok');idSc+=20;
-    el('id-sc').textContent=idSc+' 分';
     updTotalSc(20);
-    toast('✓ 答啱！+20分','ok');
+    toast('✓ +20分','ok');
     idQ++;setTimeout(loadId,1400);
   }else{
     btn.classList.add('err');
     updTotalSc(-5);
-    toast('✗ 唔係，再試過！-5分','bad');
+    toast('✗ −5分','bad');
   }
 }
 
@@ -766,7 +759,6 @@ let cntQ=0,cntSc=0,cntV='';
 function initCnt(){
   curGame='count';
   cntQ=0;cntSc=0;cntV='';
-  el('cnt-sc').textContent='0 分';
   buildNP('np-cnt','cnt');
   loadCnt();
 }
@@ -832,14 +824,13 @@ function submitCnt(){
   const inp=el('cnt-inp');
   if(ent===q.ans){
     if(inp)inp.className='ni ok';
-    cntSc+=20;el('cnt-sc').textContent=cntSc+' 分';
     updTotalSc(20);
-    toast('✓ 計算正確！+20分','ok');
+    toast('✓ +20分','ok');
     cntQ++;setTimeout(()=>{if(inp)inp.className='ni';loadCnt();},1400);
   }else{
     if(inp)inp.className='ni err';
     updTotalSc(-5);
-    toast('✗ 唔啱，再試過！-5分','bad');
+    toast('✗ −5分','bad');
   }
 }
 
@@ -925,7 +916,6 @@ function modalConfirm(){
 function initPay(){
   curGame='pay';
   payQ=0;paySc=0;paySel=[];payChgV='';payChgChoice=null;
-  el('pay-sc').textContent='0 分';
   loadPayQ();
 }
 
@@ -1043,17 +1033,16 @@ function submitPay(){
   const q=PAY_QS[payQ];
   const total=paySel.reduce((a,b)=>a+b.v,0);
   if(!paySel.length){toast('請先選擇紙幣！','bad');return;}
-  if(total<q.price){updTotalSc(-5);toast('✗ 唔夠錢！-5分','bad');return;}
+  if(total<q.price){updTotalSc(-5);toast('✗ −5分','bad');return;}
 
   /* 前5題：整數，必須用多張，學生要選「不找續」且total==price */
   if(!q.needChange){
-    if(paySel.length<2){updTotalSc(-5);toast('✗ 呢題要用多過一張紙幣！-5分','bad');return;}
+    if(paySel.length<2){updTotalSc(-5);toast('✗ −5分','bad');return;}
     if(payChgChoice===null){toast('請選擇係咪需要找續','bad');return;}
-    if(payChgChoice===true){updTotalSc(-5);toast('✗ 錢啱啱好，唔需要找續！-5分','bad');return;}
-    if(total!==q.price){updTotalSc(-5);toast('✗ 要剛好 HK$'+q.price+' -5分','bad');return;}
-    paySc+=20;el('pay-sc').textContent=paySc+' 分';
+    if(payChgChoice===true){updTotalSc(-5);toast('✗ −5分','bad');return;}
+    if(total!==q.price){updTotalSc(-5);toast('✗ −5分','bad');return;}
     updTotalSc(20);
-    toast('✓ 啱晒！+20分','ok');
+    toast('✓ +20分','ok');
     payQ++;setTimeout(()=>loadPayQ(),1400);
     return;
   }
@@ -1062,83 +1051,104 @@ function submitPay(){
   const change=total-q.price;
   if(payChgChoice===null){toast('請選擇係咪需要找續','bad');return;}
   if(change===0){
-    if(payChgChoice===true){updTotalSc(-5);toast('✗ 錢啱啱好，唔需要找續！-5分','bad');return;}
-    paySc+=20;el('pay-sc').textContent=paySc+' 分';
+    if(payChgChoice===true){updTotalSc(-5);toast('✗ −5分','bad');return;}
     updTotalSc(20);
-    toast('✓ 啱晒！剛好 HK$'+q.price+' +20分','ok');
+    toast('✓ +20分','ok');
     payQ++;setTimeout(()=>loadPayQ(),1400);
     return;
   }
   /* 有找續 */
-  if(payChgChoice===false){updTotalSc(-5);toast('✗ 有剩低 HK$'+change+'，要填找續數！-5分','bad');return;}
+  if(payChgChoice===false){updTotalSc(-5);toast('✗ −5分','bad');return;}
   const entered=parseInt(payChgV)||0;
   const ci=el('pay-chi');
   if(entered!==change){
     if(ci)ci.className='chi err';
     updTotalSc(-5);
-    toast('✗ 找續唔啱！再試過！-5分','bad');
+    toast('✗ −5分','bad');
     return;
   }
   if(ci)ci.className='chi ok';
-  paySc+=20;el('pay-sc').textContent=paySc+' 分';
   updTotalSc(20);
-  toast('✓ 啱晒！找續 HK$'+change+' +20分','ok');
+  toast('✓ +20分','ok');
   payQ++;setTimeout(()=>loadPayQ(),1400);
 }
 
 /* ════ EXCHANGE ════ */
 const EX_QS=[
-  /* 可以換 */
+  /* ── 難度 1：淺 ── 整除，銀包剛好係正確紙幣 */
   {
-    amt:100, targetVal:20, req:'全部 HK$20',
-    wallet:[20,20,20,20,20], ans:true,
-    hint:'5 張 $20 = $100，可以換 ✓'
+    level:1,
+    amt:20, targetVal:10, req:'全部 HK$10',
+    wallet:[10,10,10],
+    ans:true,
+    hint:'2 張 $10 = $20，可以換 ✓'
   },
   {
+    level:1,
     amt:50, targetVal:10, req:'全部 HK$10',
-    wallet:[10,10,10,10,10,20], ans:true,
-    hint:'5 張 $10 = $50，可以換 ✓'
+    wallet:[20,20,10],
+    ans:false,
+    hint:'銀包只有 2張$20 + 1張$10 = $50，但 $20 唔係 $10，換唔到全部 $10 ✗'
   },
+  /* ── 難度 2：中淺 ── 整除，銀包有干擾紙幣 */
   {
+    level:2,
     amt:100, targetVal:50, req:'全部 HK$50',
-    wallet:[50,50,20,10], ans:true,
-    hint:'2 張 $50 = $100，可以換 ✓'
+    wallet:[50,50,20,10],
+    ans:true,
+    hint:'銀包有 2 張 $50 = $100，可以換（$20、$10 係多餘）✓'
   },
   {
-    amt:200, targetVal:100, req:'全部 HK$100',
-    wallet:[100,100,50,20], ans:true,
-    hint:'2 張 $100 = $200，可以換 ✓'
-  },
-  {
-    amt:500, targetVal:100, req:'全部 HK$100',
-    wallet:[100,100,100,100,100,50], ans:true,
-    hint:'5 張 $100 = $500，可以換 ✓'
-  },
-  /* 不可以換 */
-  {
+    level:2,
     amt:100, targetVal:20, req:'全部 HK$20',
-    wallet:[20,20,20,50,10], ans:false,
-    hint:'只有 3 張 $20 = $60，唔夠 $100 ✗'
+    wallet:[20,20,20,50,10],
+    ans:false,
+    hint:'銀包只有 3 張 $20 = $60，唔夠 $100 ✗'
   },
+  /* ── 難度 3：中 ── 需要算清楚張數 */
   {
+    level:3,
     amt:50, targetVal:20, req:'全部 HK$20',
-    wallet:[20,20,20,10], ans:false,
-    hint:'$50 ÷ $20 = 2.5，唔係整數 ✗'
+    wallet:[20,20,20,10,10],
+    ans:false,
+    hint:'$50 ÷ $20 = 2.5，唔係整數，換唔到全部 $20 ✗'
   },
   {
-    amt:100, targetVal:50, req:'全部 HK$50',
-    wallet:[50,20,20,10], ans:false,
-    hint:'只有 1 張 $50，剩 $50 換唔到 ✗'
+    level:3,
+    amt:100, targetVal:20, req:'全部 HK$20',
+    wallet:[20,20,20,20,20,50],
+    ans:true,
+    hint:'銀包有 5 張 $20 = $100，可以換（$50 係多餘）✓'
   },
+  /* ── 難度 4：中深 ── 大面值，張數多 */
   {
-    amt:200, targetVal:50, req:'全部 HK$50',
-    wallet:[50,50,50,20,20], ans:false,
-    hint:'只有 3 張 $50 = $150，唔夠 $200 ✗'
-  },
-  {
+    level:4,
     amt:500, targetVal:100, req:'全部 HK$100',
-    wallet:[100,100,100,50,50], ans:false,
-    hint:'3 張 $100 + 2 張 $50 = $400，唔夠 $500 ✗'
+    wallet:[100,100,100,100,100,50],
+    ans:true,
+    hint:'銀包有 5 張 $100 = $500，可以換（$50 係多餘）✓'
+  },
+  {
+    level:4,
+    amt:500, targetVal:100, req:'全部 HK$100',
+    wallet:[100,100,100,50,50],
+    ans:false,
+    hint:'銀包只有 3 張 $100 = $300，唔夠 $500 ✗'
+  },
+  /* ── 難度 5：深 ── 面值組合容易混淆 */
+  {
+    level:5,
+    amt:200, targetVal:50, req:'全部 HK$50',
+    wallet:[50,50,50,50,100],
+    ans:true,
+    hint:'銀包有 4 張 $50 = $200，可以換（$100 係多餘）✓'
+  },
+  {
+    level:5,
+    amt:1000, targetVal:500, req:'全部 HK$500',
+    wallet:[500,500,100,100],
+    ans:true,
+    hint:'銀包有 2 張 $500 = $1000，可以換（兩張 $100 係多餘）✓'
   },
 ];
 
@@ -1149,9 +1159,14 @@ let exOrder=[]; /* 打亂後的題目順序 */
 function initExchange(){
   curGame='exchange';
   exQ=0;exSc=0;exChoice=null;exLock=false;
-  /* 打亂題目順序 */
-  exOrder=[...Array(EX_QS.length).keys()].sort(()=>Math.random()-.5);
-  el('ex-sc').textContent='0 分';
+  /* 按難度分組，每組內打亂，再串連 → 難度漸進 + 可換/不可換亂序 */
+  const levels=[1,2,3,4,5];
+  exOrder=[];
+  levels.forEach(lv=>{
+    const idxs=EX_QS.map((q,i)=>q.level===lv?i:-1).filter(i=>i>=0);
+    idxs.sort(()=>Math.random()-.5);
+    exOrder.push(...idxs);
+  });
   loadExchange();
 }
 
@@ -1163,6 +1178,10 @@ function loadExchange(){
   el('ex-pf').style.width=Math.round(exQ/exOrder.length*100)+'%';
   el('ex-amt').textContent='HK$'+q.amt;
   el('ex-req-highlight').textContent=q.req;
+
+  /* 難度星號 */
+  const stars='⭐'.repeat(q.level);
+  el('ex-ql').textContent='第 '+(exQ+1)+' 題 / 共 '+exOrder.length+' 題　'+stars;
 
   /* 紙幣圖片打直顯示 */
   const wrap=el('ex-bill-wrap');
@@ -1211,18 +1230,21 @@ function submitExchange(){
     openExModal(q);
     return;
   }
-  exLock=true;
   const correct=(exChoice===q.ans);
   if(correct){
-    exSc+=20;el('ex-sc').textContent=exSc+' 分';
+    exLock=true;
     updTotalSc(20);
-    toast('✓ 答啱！'+q.hint+' +20分','ok');
+    toast('✓ +20分','ok');
+    /* 答啱先自動跳下一題 */
+    setTimeout(()=>{ exQ++; loadExchange(); }, 1500);
   }else{
     updTotalSc(-5);
-    toast('✗ 答錯！'+q.hint+' -5分','bad');
+    toast('✗ −5分','bad');
+    /* 答錯：重置選擇，讓學生再答 */
+    exChoice=null;
+    el('ex-btn-yes').classList.remove('sel');
+    el('ex-btn-no').classList.remove('sel');
   }
-  /* 自動跳下一題 */
-  setTimeout(()=>{ exQ++; loadExchange(); }, 1500);
 }
 
 /* ── Exchange Modal ── */
@@ -1288,9 +1310,8 @@ function submitExModal(){
   }
   el('ex-modal').classList.remove('show');
   exLock=true;
-  exSc+=20;el('ex-sc').textContent=exSc+' 分';
   updTotalSc(20);
-  toast('✓ 兌換成功！'+q.hint+' +20分','ok');
+  toast('✓ +20分','ok');
   /* 自動跳下一題 */
   setTimeout(()=>{ exQ++; loadExchange(); }, 1500);
 }
@@ -1312,8 +1333,8 @@ function showResult(sc){
     :['💪','繼續努力！','唔緊要，多練習就會進步！'];
   el('res-em').textContent=em;
   el('res-t').textContent=t;
-  el('res-s').textContent=sc;
-  el('res-msg').textContent=m;
+  el('res-s').textContent=totalSc;          /* 顯示累積總分 */
+  el('res-msg').textContent=m+'（本關：'+sc+' 分）';
   go('result');
 }
 </script>
