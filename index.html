@@ -299,6 +299,37 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .confirm-cancel:active{border-color:var(--gold);color:var(--gold)}
 .confirm-ok{flex:1;padding:11px 0;border-radius:10px;background:linear-gradient(135deg,#b91c1c,#ef4444);border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .confirm-ok:active{opacity:.82}
+
+/* === HINT SYSTEM === */
+.hint-btn{background:rgba(200,168,75,.15);border:1px solid var(--bd);border-radius:7px;color:var(--gold);padding:4px 10px;cursor:pointer;font-size:16px;flex-shrink:0}
+.hint-btn:active{background:rgba(200,168,75,.35);transform:scale(.93)}
+.hint-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8800;display:none;align-items:flex-end;justify-content:center}
+.hint-overlay.show{display:flex}
+.hint-box{background:var(--card);border:1px solid var(--bd);border-radius:18px 18px 0 0;width:100%;max-width:480px;padding:16px 16px 28px;display:flex;flex-direction:column;gap:10px}
+.hint-title{font-size:13px;font-weight:700;color:var(--gold);text-align:center;letter-spacing:.5px}
+.hint-dots{display:flex;gap:6px;justify-content:center}
+.hint-dot{width:8px;height:8px;border-radius:50%;background:var(--bd);transition:background .2s}
+.hint-dot.active{background:var(--gold)}
+.hint-content{min-height:180px;display:flex;align-items:center;justify-content:center}
+.hint-nav{display:flex;gap:8px}
+.hint-prev{flex:0 0 auto;padding:12px 16px;border-radius:10px;background:none;border:1.5px solid var(--bd);color:var(--mu);font-size:14px;cursor:pointer;font-family:inherit}
+.hint-next{flex:1;padding:12px;border-radius:10px;background:linear-gradient(135deg,#C8A84B,#E8C860);border:none;color:#1a1000;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* === CALCULATOR === */
+.calc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8800;display:none;align-items:flex-end;justify-content:center}
+.calc-overlay.show{display:flex}
+.calc-box{background:var(--card);border:1px solid var(--bd);border-radius:18px 18px 0 0;width:100%;max-width:480px;padding:14px 14px 28px;display:flex;flex-direction:column;gap:8px}
+.calc-title{font-size:13px;font-weight:700;color:var(--gold);text-align:center}
+.calc-display{background:rgba(0,0,0,.35);border-radius:12px;padding:10px 14px;text-align:right}
+.calc-expr{font-size:12px;color:var(--mu);min-height:18px}
+.calc-val{font-size:36px;font-weight:700;color:var(--gold);line-height:1.2}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.calc-key{padding:15px 4px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);font-size:20px;font-weight:600;color:var(--tx);cursor:pointer;text-align:center;font-family:inherit;transition:background .1s}
+.calc-key:active{background:rgba(200,168,75,.2);transform:scale(.92)}
+.calc-key.op{color:var(--gold);font-size:22px}
+.calc-key.eq{background:linear-gradient(135deg,#C8A84B,#E8C860);color:#1a1000;border:none}
+.calc-key.cl{color:var(--err)}
+.calc-close{width:100%;padding:12px;border-radius:10px;background:none;border:1.5px solid var(--bd);color:var(--mu);font-size:13px;cursor:pointer;font-family:inherit;margin-top:2px}
 </style>
 </head>
 <body>
@@ -370,11 +401,11 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">計算面值</div>
+    <button class="hint-btn" onclick="openHint()">💡</button>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="cnt-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:5px;padding:6px 14px">
     <div class="qlbl" id="cnt-ql">第 1 題 / 共 6 題</div>
-    <div class="qtxt" style="font-size:13px">以下紙幣加埋係幾多錢？</div>
     <div id="cnt-notes" class="cnt-notes-row"></div>
     <div class="inpbox">
       <div class="inplbl">輸入你嘅答案</div>
@@ -384,7 +415,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
   <div class="ftr" style="padding:6px 14px 46px">
     <button class="btn" onclick="submitCnt()">確認答案</button>
-    <button class="btn2" onclick="clearCnt()">清除</button>
+    <div style="display:flex;gap:6px">
+      <button class="btn2" style="flex:1" onclick="openCalc()">🧮 計算機</button>
+      <button class="btn2" style="flex:1" onclick="clearCnt()">清除答案</button>
+    </div>
   </div>
 </div>
 
@@ -393,6 +427,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">模擬付款</div>
+    <button class="hint-btn" onclick="openHint()">💡</button>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="pay-pf" style="width:0%"></div></div></div>
   <div class="body">
@@ -452,6 +487,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">貨幣兌換</div>
+    <button class="hint-btn" onclick="openHint()">💡</button>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="ex-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:8px;padding:8px 14px">
@@ -521,6 +557,47 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="ftr">
     <button class="btn" onclick="go('home');updateHomeLocks()">返回主頁</button>
     <button class="btn2" id="retry-btn" onclick="retry()">再玩一次</button>
+  </div>
+</div>
+
+<!-- ══ HINT MODAL ══ -->
+<div class="hint-overlay" id="hint-overlay" onclick="hintBgClick(event)">
+  <div class="hint-box" onclick="event.stopPropagation()">
+    <div class="hint-title">💡 提示</div>
+    <div class="hint-dots" id="hint-dots"></div>
+    <div class="hint-content" id="hint-content"></div>
+    <div class="hint-nav">
+      <button class="hint-prev" id="hint-prev" onclick="prevHint()">← 返回</button>
+      <button class="hint-next" id="hint-next" onclick="nextHint()">下一步 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CALCULATOR MODAL ══ -->
+<div class="calc-overlay" id="calc-overlay" onclick="calcBgClick(event)">
+  <div class="calc-box" onclick="event.stopPropagation()">
+    <div class="calc-title">🧮 計算機</div>
+    <div class="calc-display">
+      <div class="calc-expr" id="calc-expr"></div>
+      <div class="calc-val" id="calc-val">0</div>
+    </div>
+    <div class="calc-grid">
+      <div class="calc-key cl" onclick="calcHit('C')">C</div>
+      <div class="calc-key op" onclick="calcHit('⌫')">⌫</div>
+      <div class="calc-key op" onclick="calcHit('+')">＋</div>
+      <div class="calc-key eq" onclick="calcHit('=')">=</div>
+      <div class="calc-key" onclick="calcHit('7')">7</div>
+      <div class="calc-key" onclick="calcHit('8')">8</div>
+      <div class="calc-key" onclick="calcHit('9')">9</div>
+      <div class="calc-key" onclick="calcHit('0')">0</div>
+      <div class="calc-key" onclick="calcHit('4')">4</div>
+      <div class="calc-key" onclick="calcHit('5')">5</div>
+      <div class="calc-key" onclick="calcHit('6')">6</div>
+      <div class="calc-key" onclick="calcHit('1')">1</div>
+      <div class="calc-key" onclick="calcHit('2')">2</div>
+      <div class="calc-key" onclick="calcHit('3')">3</div>
+    </div>
+    <button class="calc-close" onclick="closeCalc()">關閉</button>
   </div>
 </div>
 
@@ -1243,6 +1320,153 @@ function exModalBgClick(e){
   if(e.target===el('ex-modal'))el('ex-modal').classList.remove('show');
 }
 
+
+/* ════ HINT SYSTEM ════ */
+let hintSteps=[], hintStep=0;
+
+function _hintNoteHTML(v, size=120){
+  const h=Math.round(size*0.58);
+  return `<div style="width:${h}px;height:${size}px;position:relative;overflow:hidden;border-radius:8px;border:1.5px solid rgba(200,168,75,.35);margin:0 auto;background:rgba(0,0,0,.2)"><img src="${IMGS[v]}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);height:${h}px;width:auto;max-height:none"></div>`;
+}
+
+function buildHintSteps_count(q){
+  const steps=[];
+  q.bills.forEach((v,i)=>{
+    const dots=q.bills.map((_,j)=>
+      `<div style="width:9px;height:9px;border-radius:50%;background:${j===i?'var(--gold)':'rgba(255,255,255,.15)'};display:inline-block;margin:0 2px"></div>`
+    ).join('');
+    steps.push(`<div style="text-align:center;padding:8px 0">
+      <div style="margin-bottom:8px">${dots}</div>
+      ${_hintNoteHTML(v,110)}
+      <div style="font-size:44px;font-weight:700;color:var(--gold);margin-top:10px;letter-spacing:1px">HK$${v}</div>
+    </div>`);
+  });
+  steps.push(`<div style="text-align:center;padding:20px 0">
+    <div style="font-size:90px;line-height:1">🧮</div>
+  </div>`);
+  return steps;
+}
+
+function buildHintSteps_pay(q){
+  const steps=[];
+  steps.push(`<div style="text-align:center;padding:16px 0">
+    <div style="font-size:36px">🛒</div>
+    <div style="font-size:52px;font-weight:700;color:var(--gold);margin-top:6px;line-height:1">HK$${q.price}</div>
+  </div>`);
+  const chips=q.wallet.map(v=>`<div style="text-align:center;flex:0 0 auto">
+    ${_hintNoteHTML(v,64)}
+    <div style="font-size:13px;font-weight:700;color:var(--gold);margin-top:4px">$${v}</div>
+  </div>`).join('');
+  steps.push(`<div style="padding:8px 4px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">${chips}</div>
+  </div>`);
+  const needed=q.needChange
+    ? `<div style="font-size:36px;margin-top:12px">🔄 💵</div>`
+    : `<div style="font-size:36px;margin-top:12px">✅</div>`;
+  steps.push(`<div style="text-align:center;padding:12px 0">
+    <div style="font-size:52px;font-weight:700;color:var(--gold)">HK$${q.price}</div>
+    <div style="font-size:32px;margin:8px 0">👛 ➕ 👛</div>
+    <div style="font-size:48px;font-weight:700;color:var(--gold)">= ❓</div>
+    ${needed}
+  </div>`);
+  return steps;
+}
+
+function buildHintSteps_exchange(q){
+  const steps=[];
+  steps.push(`<div style="text-align:center;padding:8px 0">
+    ${_hintNoteHTML(q.amt,110)}
+    <div style="font-size:44px;font-weight:700;color:var(--gold);margin-top:10px">HK$${q.amt}</div>
+  </div>`);
+  steps.push(`<div style="text-align:center;padding:8px 0">
+    <div style="font-size:36px;margin-bottom:8px">➡️</div>
+    ${_hintNoteHTML(q.targetVal,100)}
+    <div style="font-size:36px;font-weight:700;color:#86efac;margin-top:8px">HK$${q.targetVal} × ❓</div>
+  </div>`);
+  const chips=q.wallet.map(v=>`<div style="text-align:center;flex:0 0 auto">
+    ${_hintNoteHTML(v,56)}
+    <div style="font-size:11px;font-weight:700;color:var(--gold);margin-top:3px">$${v}</div>
+  </div>`).join('');
+  steps.push(`<div style="padding:8px 4px">
+    <div style="font-size:11px;color:var(--gold);text-align:center;margin-bottom:8px;letter-spacing:.6px">💼</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">${chips}</div>
+  </div>`);
+  return steps;
+}
+
+function openHint(){
+  let q;
+  if(curGame==='count') q=CNT_QS[cntQ];
+  else if(curGame==='pay') q=PAY_QS[payQ];
+  else if(curGame==='exchange') q=EX_QS[exOrder[exQ]];
+  if(!q)return;
+  hintStep=0;
+  if(curGame==='count') hintSteps=buildHintSteps_count(q);
+  else if(curGame==='pay') hintSteps=buildHintSteps_pay(q);
+  else hintSteps=buildHintSteps_exchange(q);
+  renderHint();
+  el('hint-overlay').classList.add('show');
+}
+function renderHint(){
+  el('hint-content').innerHTML=hintSteps[hintStep]||'';
+  const dots=el('hint-dots');dots.innerHTML='';
+  hintSteps.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='hint-dot'+(i===hintStep?' active':'');
+    dots.appendChild(d);
+  });
+  const isLast=hintStep>=hintSteps.length-1;
+  el('hint-prev').style.visibility=hintStep>0?'visible':'hidden';
+  const nxt=el('hint-next');
+  nxt.textContent=isLast?'✕ 關閉':'下一步 →';
+  nxt.onclick=isLast?closeHint:nextHint;
+}
+function nextHint(){if(hintStep<hintSteps.length-1){hintStep++;renderHint();}}
+function prevHint(){if(hintStep>0){hintStep--;renderHint();}}
+function closeHint(){el('hint-overlay').classList.remove('show');}
+function hintBgClick(e){if(e.target===el('hint-overlay'))closeHint();}
+
+/* ════ CALCULATOR ════ */
+let calcExpr='', calcVal='0', calcPrevOp='', calcPrevVal='';
+function openCalc(){
+  calcExpr='';calcVal='0';calcPrevOp='';calcPrevVal='';
+  renderCalc();
+  el('calc-overlay').classList.add('show');
+}
+function closeCalc(){el('calc-overlay').classList.remove('show');}
+function calcBgClick(e){if(e.target===el('calc-overlay'))closeCalc();}
+function calcHit(k){
+  if(k>='0'&&k<='9'){
+    if(calcVal==='0')calcVal=k;
+    else if(calcVal.length<8)calcVal+=k;
+  }else if(k==='+'){
+    if(calcPrevOp==='+'){
+      const r=parseInt(calcPrevVal)+(parseInt(calcVal)||0);
+      calcExpr=calcPrevVal+' + '+calcVal+' + ';
+      calcPrevVal=String(r);
+    }else{
+      calcExpr=calcVal+' + ';
+      calcPrevVal=calcVal;
+    }
+    calcPrevOp='+';calcVal='0';
+  }else if(k==='='){
+    if(calcPrevOp==='+'){
+      const r=parseInt(calcPrevVal)+(parseInt(calcVal)||0);
+      calcExpr=calcPrevVal+' + '+calcVal+' =';
+      calcVal=String(r);
+      calcPrevOp='';calcPrevVal='';
+    }
+  }else if(k==='C'){
+    calcExpr='';calcVal='0';calcPrevOp='';calcPrevVal='';
+  }else if(k==='⌫'){
+    calcVal=calcVal.length>1?calcVal.slice(0,-1):'0';
+  }
+  renderCalc();
+}
+function renderCalc(){
+  el('calc-expr').textContent=calcExpr;
+  el('calc-val').textContent=calcVal;
+}
 
 /* ════ RESULT ════ */
 function showResult(sc){
