@@ -63,16 +63,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .bnew{background:rgba(26,122,63,.3);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
 .bhot{background:rgba(192,57,43,.3);color:#f87171;border:1px solid rgba(248,113,113,.3)}
 
-/* === IDENTIFY === */
+/* === COUNT / PAY / EXCHANGE === */
 .qlbl{font-size:11px;color:var(--mu);text-align:center}
 .qtxt{font-size:14px;font-weight:600;text-align:center}
-.nimg-id{width:100%;max-height:130px;object-fit:contain;border-radius:8px;display:block;box-shadow:0 4px 14px rgba(0,0,0,.55);border:1px solid rgba(200,168,75,.25)}
-.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ans{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:11px 8px;cursor:pointer;font-size:17px;font-weight:700;text-align:center}
-.ans:active{transform:scale(.96)}
-.ans .sub{font-size:11px;font-weight:400;color:var(--mu);margin-top:1px}
-.ans.ok{border-color:var(--ok);background:rgba(74,222,128,.12);color:var(--ok)}
-.ans.err{border-color:var(--err);background:rgba(248,113,113,.08);color:var(--err)}
 
 /* === COUNT === */
 .cnt-notes-row{
@@ -354,41 +347,21 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <img class="hero" id="hero" src="" alt="HK$100">
   </div>
   <div class="lvs">
-    <div class="lv" data-game="identify" onclick="go('identify');initId()">
-      <div class="lvic" style="background:rgba(26,72,152,.25)">🔍</div>
-      <div class="lvinfo"><div class="lvt">辨識紙幣</div><div class="lvd">睇住真實鈔票，選出正確面值</div></div>
-      <span class="bdg bnew">新手</span><div class="lva">›</div>
-    </div>
     <div class="lv" data-game="count" onclick="go('count');initCnt()">
       <div class="lvic" style="background:rgba(26,96,53,.25)">🔢</div>
-      <div class="lvinfo"><div class="lvt">計算面值</div><div class="lvd">睇住真實鈔票，輸入正確總額</div></div>
-      <span class="bdg bhot">熱門</span><div class="lva">›</div>
+      <div class="lvinfo"><div class="lvt">計算面值 <span class="lvbdg">Level 1</span></div><div class="lvd">睇住真實鈔票，輸入正確總額</div></div>
+      <div class="lva">›</div>
     </div>
     <div class="lv" data-game="pay" onclick="go('pay');initPay()">
       <div class="lvic" style="background:rgba(122,37,37,.25)">🛒</div>
-      <div class="lvinfo"><div class="lvt">模擬付款</div><div class="lvd">15題：選擇紙幣付款，判斷是否需要找續</div></div>
-      <span class="bdg bhot">熱門</span><div class="lva">›</div>
+      <div class="lvinfo"><div class="lvt">模擬付款 <span class="lvbdg">Level 2</span></div><div class="lvd">15題：選擇紙幣付款，判斷是否需要找續</div></div>
+      <div class="lva">›</div>
     </div>
     <div class="lv" data-game="exchange" onclick="go('exchange');initExchange()">
       <div class="lvic" style="background:rgba(58,72,13,.25)">💱</div>
-      <div class="lvinfo"><div class="lvt">貨幣兌換</div><div class="lvd">判斷銀包內的紙幣能否換開指定面額</div></div>
-      <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span><div class="lva">›</div>
+      <div class="lvinfo"><div class="lvt">貨幣兌換 <span class="lvbdg">Level 3</span></div><div class="lvd">判斷銀包內的紙幣能否換開指定面額</div></div>
+      <div class="lva">›</div>
     </div>
-  </div>
-</div>
-
-<!-- ══ IDENTIFY ══ -->
-<div class="pg" id="pg-identify">
-  <div class="hdr">
-    <div style="width:52px"></div>
-    <div class="htit">辨識紙幣</div>
-  </div>
-  <div class="pbrow"><div class="pb"><div class="pf" id="id-pf" style="width:0%"></div></div></div>
-  <div class="body">
-    <div class="qlbl" id="id-ql">第 1 題 / 共 6 題</div>
-    <div class="qtxt">呢張係咩面值嘅紙幣？</div>
-    <img class="nimg-id" id="id-img" src="" alt="紙幣">
-    <div class="ans-grid" id="id-ans"></div>
   </div>
 </div>
 
@@ -591,7 +564,7 @@ const STUDENTS=[
   '曾梓軒','黃苡澧','鄭景元'
 ];
 
-/* 已完成記錄：{學生名: {identify:true/false, count:true/false, pay:true/false}} */
+/* 已完成記錄：{學生名: {count:true/false, pay:true/false, exchange:true/false}} */
 let doneMap={};
 let currentPlayer='';
 
@@ -610,7 +583,7 @@ function buildLoginPage(){
 
 function enterGame(name){
   currentPlayer=name;
-  if(!doneMap[name])doneMap[name]={identify:false,count:false,pay:false,exchange:false};
+  if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false};
   el('home-player-name').textContent='👤 '+name;
   const n=el('total-sc-name');if(n)n.textContent=name;
   updateHomeLocks();
@@ -635,12 +608,6 @@ function doLogout(){
 
 function updateHomeLocks(){
   const d=doneMap[currentPlayer]||{};
-  /* identify */
-  const lvId=document.querySelector('#pg-home .lv[data-game="identify"]');
-  if(lvId){
-    if(d.identify){lvId.classList.add('off');lvId.querySelector('.lva').textContent='✓';}
-    else{lvId.classList.remove('off');lvId.querySelector('.lva').textContent='›';}
-  }
   /* count */
   const lvCnt=document.querySelector('#pg-home .lv[data-game="count"]');
   if(lvCnt){
@@ -682,9 +649,9 @@ function go(name){
   if(pg)pg.classList.add('on');
 }
 function retry(){
-  if(curGame==='identify')initId();
-  else if(curGame==='count')initCnt();
+  if(curGame==='count')initCnt();
   else if(curGame==='pay')initPay();
+  else if(curGame==='exchange')initExchange();
 }
 
 /* 頁面載入：建立選名頁 */
@@ -696,50 +663,6 @@ function toast(msg,type='ok'){
   const e=el('toast');clearTimeout(_tt);
   e.textContent=msg;e.className='toast on '+type;
   _tt=setTimeout(()=>e.className='toast',2500);
-}
-
-/* ════ IDENTIFY ════ */
-const ID_QS=[
-  {val:100,opts:[20,50,100,500]},
-  {val:20, opts:[10,20,50,100]},
-  {val:1000,opts:[500,1000,100,50]},
-  {val:50, opts:[20,50,100,500]},
-  {val:500,opts:[100,500,1000,50]},
-  {val:10, opts:[10,20,50,100]},
-];
-let idQ=0,idSc=0,idLock=false;
-function initId(){
-  curGame='identify';
-  idQ=0;idSc=0;idLock=false;
-  loadId();
-}
-function loadId(){
-  if(idQ>=ID_QS.length){showResult(idSc);return;}
-  const q=ID_QS[idQ];idLock=false;
-  el('id-ql').textContent='第 '+(idQ+1)+' 題 / 共 '+ID_QS.length+' 題';
-  el('id-pf').style.width=Math.round(idQ/ID_QS.length*100)+'%';
-  el('id-img').src=IMGS[q.val];
-  const grid=el('id-ans');grid.innerHTML='';
-  q.opts.slice().sort(()=>Math.random()-.5).forEach(v=>{
-    const d=document.createElement('div');d.className='ans';
-    d.innerHTML='HK$'+v+'<div class="sub">'+LBLS[v]+'</div>';
-    d.onclick=()=>checkId(d,v,q.val);
-    grid.appendChild(d);
-  });
-}
-function checkId(btn,chosen,correct){
-  if(idLock)return;
-  if(chosen===correct){
-    idLock=true;
-    btn.classList.add('ok');idSc+=20;
-    updTotalSc(20);
-    toast('✓ +20分','ok');
-    idQ++;setTimeout(loadId,1400);
-  }else{
-    btn.classList.add('err');
-    updTotalSc(-5);
-    toast('✗ −5分','bad');
-  }
 }
 
 /* ════ COUNT ════ */
@@ -1325,7 +1248,7 @@ function exModalBgClick(e){
 function showResult(sc){
   /* 記錄呢關已完成 */
   markDone(curGame);
-  const max=curGame==='count'?200:curGame==='pay'?300:curGame==='exchange'?200:120;
+  const max=curGame==='count'?200:curGame==='pay'?300:200;
   const pct=sc/max;
   const[em,t,m]=pct>=.8
     ?['🏆','出色！','你對香港紙幣嘅認識非常好！繼續加油！']
