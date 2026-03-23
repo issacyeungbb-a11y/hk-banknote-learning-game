@@ -316,7 +316,14 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .hint-next{flex:1;padding:12px;border-radius:10px;background:linear-gradient(135deg,#C8A84B,#E8C860);border:none;color:#1a1000;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 
 /* === CALCULATOR === */
-.calc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8800;display:none;align-items:flex-end;justify-content:center}
+.hint-txt{font-size:14px;color:var(--tx);text-align:center;margin-top:8px;line-height:1.5}
+.hint-calc-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 24px;border-radius:12px;background:linear-gradient(135deg,#C8A84B,#E8C860);border:none;color:#1a1000;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:10px}
+.hint-calc-btn:active{transform:scale(.94);opacity:.85}
+.hint-split{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;margin:6px 0}
+.hint-split-item{text-align:center;flex:0 0 auto}
+.hint-plus{font-size:24px;font-weight:700;color:var(--gold);margin:0 2px}
+.hint-eq{font-size:28px;font-weight:700;color:var(--gold);margin:0 4px}
+.calc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8900;display:none;align-items:flex-end;justify-content:center}
 .calc-overlay.show{display:flex}
 .calc-box{background:var(--card);border:1px solid var(--bd);border-radius:18px 18px 0 0;width:100%;max-width:480px;padding:14px 14px 28px;display:flex;flex-direction:column;gap:8px}
 .calc-title{font-size:13px;font-weight:700;color:var(--gold);text-align:center}
@@ -1331,65 +1338,115 @@ function _hintNoteHTML(v, size=120){
 
 function buildHintSteps_count(q){
   const steps=[];
-  q.bills.forEach((v,i)=>{
-    const dots=q.bills.map((_,j)=>
-      `<div style="width:9px;height:9px;border-radius:50%;background:${j===i?'var(--gold)':'rgba(255,255,255,.15)'};display:inline-block;margin:0 2px"></div>`
-    ).join('');
-    steps.push(`<div style="text-align:center;padding:8px 0">
-      <div style="margin-bottom:8px">${dots}</div>
-      ${_hintNoteHTML(v,110)}
-      <div style="font-size:44px;font-weight:700;color:var(--gold);margin-top:10px;letter-spacing:1px">HK$${v}</div>
-    </div>`);
-  });
-  steps.push(`<div style="text-align:center;padding:20px 0">
-    <div style="font-size:90px;line-height:1">🧮</div>
+  /* Step 1：展示所有紙幣 + 加號，視覺化加法算式 */
+  const billsRow=q.bills.map((v,i)=>{
+    const plus=i<q.bills.length-1?'<span class="hint-plus">＋</span>':'';
+    return `<div class="hint-split-item">
+      ${_hintNoteHTML(v,72)}
+      <div style="font-size:18px;font-weight:700;color:var(--gold);margin-top:4px">$${v}</div>
+    </div>${plus}`;
+  }).join('');
+  steps.push(`<div style="padding:6px 0;text-align:center">
+    <div class="hint-split">${billsRow}<span class="hint-eq">= ❓</span></div>
+    <div class="hint-txt">將佢哋加埋</div>
+  </div>`);
+
+  /* Step 2：引導用計算機，顯示算式 + 計算機按鈕 */
+  const expr=q.bills.join(' ＋ ')+' =';
+  steps.push(`<div style="text-align:center;padding:10px 0">
+    <div style="font-size:18px;color:var(--tx);font-weight:600;letter-spacing:1px;margin-bottom:6px">${expr}</div>
+    <div style="font-size:14px;color:var(--mu);margin-bottom:12px">逐個撳入計算機加落去</div>
+    <button class="hint-calc-btn" onclick="openCalc()">🧮 打開計算機</button>
   </div>`);
   return steps;
 }
 
 function buildHintSteps_pay(q){
   const steps=[];
-  steps.push(`<div style="text-align:center;padding:16px 0">
-    <div style="font-size:36px">🛒</div>
-    <div style="font-size:52px;font-weight:700;color:var(--gold);margin-top:6px;line-height:1">HK$${q.price}</div>
+  /* Step 1：展示貨品 + 價錢 */
+  steps.push(`<div style="text-align:center;padding:12px 0">
+    <div style="font-size:40px;margin-bottom:4px">🛒</div>
+    <div style="font-size:16px;color:var(--tx);font-weight:600;margin-bottom:6px">${q.item}</div>
+    <div style="font-size:52px;font-weight:700;color:var(--gold);line-height:1">HK$${q.price}</div>
+    <div class="hint-txt">你要買呢樣嘢</div>
   </div>`);
-  const chips=q.wallet.map(v=>`<div style="text-align:center;flex:0 0 auto">
-    ${_hintNoteHTML(v,64)}
-    <div style="font-size:13px;font-weight:700;color:var(--gold);margin-top:4px">$${v}</div>
+
+  /* Step 2：展示銀包紙幣 */
+  const chips=q.wallet.map(v=>`<div class="hint-split-item">
+    ${_hintNoteHTML(v,60)}
+    <div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:3px">$${v}</div>
   </div>`).join('');
-  steps.push(`<div style="padding:8px 4px">
+  steps.push(`<div style="padding:6px 0;text-align:center">
+    <div style="font-size:16px;margin-bottom:8px">👛 你嘅銀包</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">${chips}</div>
   </div>`);
-  const needed=q.needChange
-    ? `<div style="font-size:36px;margin-top:12px">🔄 💵</div>`
-    : `<div style="font-size:36px;margin-top:12px">✅</div>`;
-  steps.push(`<div style="text-align:center;padding:12px 0">
-    <div style="font-size:52px;font-weight:700;color:var(--gold)">HK$${q.price}</div>
-    <div style="font-size:32px;margin:8px 0">👛 ➕ 👛</div>
-    <div style="font-size:48px;font-weight:700;color:var(--gold)">= ❓</div>
-    ${needed}
-  </div>`);
+
+  /* Step 3：引導 — 根據是否找續給不同提示 */
+  if(!q.needChange){
+    steps.push(`<div style="text-align:center;padding:10px 0">
+      <div style="font-size:18px;color:var(--tx);margin-bottom:8px">邊幾張紙幣加埋</div>
+      <div style="font-size:18px;color:var(--tx);margin-bottom:8px">啱啱好等於</div>
+      <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">HK$${q.price}</div>
+      <div style="font-size:13px;color:#86efac;margin-top:10px">❌ 唔使找續</div>
+    </div>`);
+  }else{
+    steps.push(`<div style="text-align:center;padding:10px 0">
+      <div style="font-size:18px;color:var(--tx);margin-bottom:6px">揀紙幣俾錢</div>
+      <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">HK$${q.price}</div>
+      <div style="font-size:13px;color:var(--mu);margin-top:10px">如果俾多咗，就需要找續 🔄</div>
+      <div style="font-size:13px;color:var(--mu)">多咗幾多錢 = 找續金額 💵</div>
+    </div>`);
+  }
   return steps;
 }
 
 function buildHintSteps_exchange(q){
   const steps=[];
-  steps.push(`<div style="text-align:center;padding:8px 0">
-    ${_hintNoteHTML(q.amt,110)}
-    <div style="font-size:44px;font-weight:700;color:var(--gold);margin-top:10px">HK$${q.amt}</div>
-  </div>`);
-  steps.push(`<div style="text-align:center;padding:8px 0">
-    <div style="font-size:36px;margin-bottom:8px">➡️</div>
-    ${_hintNoteHTML(q.targetVal,100)}
-    <div style="font-size:36px;font-weight:700;color:#86efac;margin-top:8px">HK$${q.targetVal} × ❓</div>
-  </div>`);
-  const chips=q.wallet.map(v=>`<div style="text-align:center;flex:0 0 auto">
-    ${_hintNoteHTML(v,56)}
-    <div style="font-size:11px;font-weight:700;color:var(--gold);margin-top:3px">$${v}</div>
-  </div>`).join('');
-  steps.push(`<div style="padding:8px 4px">
-    <div style="font-size:11px;color:var(--gold);text-align:center;margin-bottom:8px;letter-spacing:.6px">💼</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">${chips}</div>
+  const needed=q.amt/q.targetVal;
+  const isWhole=Number.isInteger(needed);
+
+  /* Step 1：視覺分拆圖 — 1張大 = N張細 */
+  if(isWhole && needed<=10){
+    const smallNotes=Array(needed).fill(0).map(()=>
+      `<div class="hint-split-item">${_hintNoteHTML(q.targetVal,48)}</div>`
+    ).join('');
+    steps.push(`<div style="text-align:center;padding:6px 0">
+      <div style="margin-bottom:6px">${_hintNoteHTML(q.amt,90)}</div>
+      <div style="font-size:28px;font-weight:700;color:var(--gold);margin:2px 0">HK$${q.amt}</div>
+      <div style="font-size:24px;margin:4px 0">⬇️</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin:4px 0">${smallNotes}</div>
+      <div style="font-size:20px;font-weight:700;color:#86efac;margin-top:4px">HK$${q.targetVal} × ${needed}</div>
+    </div>`);
+  }else{
+    /* 唔係整數 → 顯示除法概念 */
+    steps.push(`<div style="text-align:center;padding:8px 0">
+      <div style="margin-bottom:6px">${_hintNoteHTML(q.amt,90)}</div>
+      <div style="font-size:28px;font-weight:700;color:var(--gold)">HK$${q.amt}</div>
+      <div style="font-size:24px;margin:6px 0">⬇️</div>
+      ${_hintNoteHTML(q.targetVal,70)}
+      <div style="font-size:20px;font-weight:700;color:#f87171;margin-top:6px">HK$${q.amt} ÷ HK$${q.targetVal} = ${needed.toFixed(1)} ⚠️</div>
+    </div>`);
+  }
+
+  /* Step 2：銀包檢查 — 數一數有冇夠 */
+  const targetCount=q.wallet.filter(v=>v===q.targetVal).length;
+  const chips=q.wallet.map(v=>{
+    const isTarget=v===q.targetVal;
+    const border=isTarget?'2px solid #86efac':'1.5px solid rgba(200,168,75,.35)';
+    return `<div class="hint-split-item">
+      <div style="width:${Math.round(52*0.58)}px;height:52px;position:relative;overflow:hidden;border-radius:6px;border:${border};margin:0 auto;background:rgba(0,0,0,.2)"><img src="${IMGS[v]}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);height:${Math.round(52*0.58)}px;width:auto;max-height:none"></div>
+      <div style="font-size:11px;font-weight:700;color:${isTarget?'#86efac':'var(--gold)'};margin-top:3px">$${v}</div>
+    </div>`;
+  }).join('');
+  const enoughText=isWhole
+    ? `<div style="font-size:15px;color:var(--tx);margin-top:10px">銀包有冇 <span style="color:#86efac;font-weight:700">${needed} 張</span> HK$${q.targetVal}？</div>
+       <div style="font-size:13px;color:var(--mu);margin-top:4px">數一數綠色框嘅紙幣 👀</div>`
+    : `<div style="font-size:15px;color:var(--tx);margin-top:10px">HK$${q.amt} 除唔盡 HK$${q.targetVal}</div>
+       <div style="font-size:13px;color:#f87171;margin-top:4px">換唔到全部 HK$${q.targetVal} ⚠️</div>`;
+  steps.push(`<div style="padding:4px 0;text-align:center">
+    <div style="font-size:14px;margin-bottom:8px">💼 你嘅銀包</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center">${chips}</div>
+    ${enoughText}
   </div>`);
   return steps;
 }
