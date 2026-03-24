@@ -1421,17 +1421,47 @@ function buildHintSteps_pay(q){
         <div style="font-size:13px;font-weight:700;color:#86efac;margin-top:3px">$${v}</div>
       </div>`).join('');
       steps.push(`<div style="text-align:center;padding:8px 0">
-        <div style="font-size:14px;color:var(--tx);margin-bottom:8px">請選擇以下紙幣付款</div>
+        <div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:8px">💵 揀選以下紙幣付款</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">${correctChips}</div>
-        <div style="font-size:13px;color:#86efac;margin-top:2px">✅ 不需要找續</div>
+        <div style="font-size:18px;font-weight:700;color:var(--gold);margin-top:6px">共付出：HK$${q.price}</div>
+        <div style="font-size:13px;color:#86efac;margin-top:6px">✅ 啱啱好，唔使找續</div>
       </div>`);
     }
   }else{
+    const paid=q.price+q.change;
+    const payBills=findExactBills(q.wallet,paid);
+    const payChips=(payBills||[]).map(v=>`<div class="hint-split-item">
+      <div style="width:${Math.round(60*0.58)}px;height:60px;position:relative;overflow:hidden;border-radius:7px;border:2px solid #86efac;margin:0 auto;background:rgba(0,0,0,.2)"><img src="${IMGS[v]}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);height:${Math.round(60*0.58)}px;width:auto;max-height:none"></div>
+      <div style="font-size:13px;font-weight:700;color:#86efac;margin-top:3px">$${v}</div>
+    </div>`).join('');
+
+    /* Step 3：俾咩紙幣 */
+    steps.push(`<div style="text-align:center;padding:8px 0">
+      <div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:8px">💵 第一步：揀選以下紙幣俾畀收銀員</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">${payChips}</div>
+      <div style="font-size:18px;font-weight:700;color:var(--gold);margin-top:6px">共付出：HK$${paid}</div>
+    </div>`);
+
+    /* Step 4：找幾多錢 */
     steps.push(`<div style="text-align:center;padding:10px 0">
-      <div style="font-size:18px;color:var(--tx);margin-bottom:6px">請選擇紙幣付款</div>
-      <div style="font-size:48px;font-weight:700;color:var(--gold);line-height:1">HK$${q.price}</div>
-      <div style="font-size:13px;color:var(--mu);margin-top:10px">若付款金額多於售價，則需要找續 🔄</div>
-      <div style="font-size:13px;color:var(--mu);margin-top:4px">多付金額 = 找續金額 💵</div>
+      <div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:14px">🔄 第二步：收幾多找續？</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="font-size:12px;color:var(--mu);margin-bottom:2px">你俾咗</div>
+          <div style="font-size:28px;font-weight:700;color:var(--gold)">HK$${paid}</div>
+        </div>
+        <div style="font-size:24px;color:var(--mu);font-weight:700">－</div>
+        <div style="text-align:center">
+          <div style="font-size:12px;color:var(--mu);margin-bottom:2px">售價</div>
+          <div style="font-size:28px;font-weight:700;color:var(--gold)">HK$${q.price}</div>
+        </div>
+        <div style="font-size:24px;color:var(--mu);font-weight:700">=</div>
+        <div style="text-align:center">
+          <div style="font-size:12px;color:#86efac;margin-bottom:2px">找續</div>
+          <div style="font-size:36px;font-weight:700;color:#86efac">HK$${q.change}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--mu);margin-top:14px">請喺「需要找續？」揀「係」並輸入 ${q.change}</div>
     </div>`);
   }
   return steps;
