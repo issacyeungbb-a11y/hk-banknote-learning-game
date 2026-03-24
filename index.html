@@ -567,6 +567,19 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
 </div>
 
+<!-- ══ HINT CONFIRM ══ -->
+<div class="confirm-overlay" id="hint-confirm">
+  <div class="confirm-box">
+    <div class="confirm-icon">💡</div>
+    <div class="confirm-title">使用提示？</div>
+    <div class="confirm-msg">使用提示需要扣除 <strong>5 分</strong>。<br>確定使用嗎？</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeHintConfirm()">取消</button>
+      <button class="confirm-ok" style="background:linear-gradient(135deg,#92400e,#C8A84B)" onclick="confirmUseHint()">確定（−5分）</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ HINT MODAL ══ -->
 <div class="hint-overlay" id="hint-overlay" onclick="hintBgClick(event)">
   <div class="hint-box" onclick="event.stopPropagation()">
@@ -669,6 +682,8 @@ function buildLoginPage(){
 function enterGame(name){
   currentPlayer=name;
   if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false};
+  totalSc=10;
+  const v=el('total-sc-val');if(v)v.textContent='10 分';
   el('home-player-name').textContent='👤 '+name;
   const n=el('total-sc-name');if(n)n.textContent=name;
   updateHomeLocks();
@@ -683,9 +698,9 @@ function closeConfirmLogout(){
 }
 function doLogout(){
   el('confirm-logout').classList.remove('show');
-  /* 分數歸零 */
-  totalSc=0;
-  const v=el('total-sc-val');if(v)v.textContent='0 分';
+  /* 分數重置為起始分 */
+  totalSc=10;
+  const v=el('total-sc-val');if(v)v.textContent='10 分';
   const n=el('total-sc-name');if(n)n.textContent='';
   currentPlayer='';
   go('login');
@@ -719,7 +734,7 @@ function markDone(game){
 }
 
 /* ════ 全域總分 ════ */
-let totalSc=0;
+let totalSc=10;
 function updTotalSc(delta){
   totalSc+=delta;
   if(totalSc<0)totalSc=0;
@@ -1472,6 +1487,18 @@ function buildHintSteps_exchange(q){
 }
 
 function openHint(){
+  /* 先顯示確認扣分對話框 */
+  el('hint-confirm').classList.add('show');
+}
+function closeHintConfirm(){
+  el('hint-confirm').classList.remove('show');
+}
+function confirmUseHint(){
+  closeHintConfirm();
+  /* 扣 5 分（最低 0）*/
+  updTotalSc(-5);
+  toast('💡 −5分','bad');
+  /* 開啟提示 */
   let q;
   if(curGame==='count') q=CNT_QS[cntQ];
   else if(curGame==='pay') q=PAY_QS[payQ];
