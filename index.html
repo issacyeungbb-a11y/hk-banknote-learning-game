@@ -584,6 +584,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 <div class="calc-overlay" id="calc-overlay" onclick="calcBgClick(event)">
   <div class="calc-box" onclick="event.stopPropagation()">
     <div class="calc-title">🧮 計算機</div>
+    <div id="calc-notes-row" style="display:none;gap:6px;flex-wrap:wrap;justify-content:center;padding:4px 0 2px"></div>
     <div class="calc-display">
       <div class="calc-expr" id="calc-expr"></div>
       <div class="calc-val" id="calc-val">0</div>
@@ -1507,6 +1508,18 @@ let calcExpr='', calcVal='0', calcPrevOp='', calcPrevVal='';
 function openCalc(){
   calcExpr='';calcVal='0';calcPrevOp='';calcPrevVal='';
   renderCalc();
+  /* 若係 COUNT 關卡，顯示目前題目紙幣 */
+  const row=el('calc-notes-row');
+  if(curGame==='count' && CNT_QS[cntQ]){
+    const q=CNT_QS[cntQ];
+    row.innerHTML=q.bills.map(v=>`<div style="text-align:center;flex:0 0 auto">
+      <div style="width:${Math.round(52*0.58)}px;height:52px;position:relative;overflow:hidden;border-radius:6px;border:1.5px solid rgba(200,168,75,.4);background:rgba(0,0,0,.2)"><img src="${IMGS[v]}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);height:${Math.round(52*0.58)}px;width:auto;max-height:none"></div>
+      <div style="font-size:13px;font-weight:700;color:var(--gold);margin-top:3px">$${v}</div>
+    </div>`).join('');
+    row.style.display='flex';
+  }else{
+    row.innerHTML='';row.style.display='none';
+  }
   el('calc-overlay').classList.add('show');
 }
 function closeCalc(){el('calc-overlay').classList.remove('show');}
