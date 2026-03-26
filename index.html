@@ -338,29 +338,29 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .calc-key.cl{color:var(--err)}
 .calc-close{width:100%;padding:12px;border-radius:10px;background:none;border:1.5px solid var(--bd);color:var(--mu);font-size:13px;cursor:pointer;font-family:inherit;margin-top:2px}
 /* === BUDGET === */
-.bud-scene{background:linear-gradient(135deg,#1a2a3a,#1e2d42);border:1.5px solid rgba(200,168,75,.4);border-radius:12px;padding:7px 11px;flex-shrink:0}
-.bud-scene-txt{font-size:11px;color:var(--tx);line-height:1.45;margin-bottom:5px}
-.bud-venue{font-size:11px;font-weight:600;color:var(--gold);background:rgba(200,168,75,.1);border-radius:6px;padding:3px 8px;text-align:center}
-.bud-wallet-area,.bud-items-area{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:6px 10px;flex-shrink:0}
+.bud-scene{background:linear-gradient(135deg,#1a2a3a,#1e2d42);border:1.5px solid rgba(200,168,75,.4);border-radius:12px;padding:8px 12px;flex-shrink:0}
+.bud-scene-txt{font-size:13px;color:var(--tx);line-height:1.55;margin-bottom:6px}
+.bud-venue{font-size:12px;font-weight:600;color:var(--gold);background:rgba(200,168,75,.1);border-radius:6px;padding:4px 8px;text-align:center}
+.bud-wallet-area,.bud-items-area{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:7px 11px;flex-shrink:0}
 .bud-wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:4px}
-.bud-wcard{background:rgba(255,255,255,.04);border:1.5px solid rgba(200,168,75,.25);border-radius:8px;padding:5px 4px;text-align:center}
-.bud-wcard-icon{font-size:18px;line-height:1;margin-bottom:1px}
-.bud-wcard-name{font-size:9px;color:var(--mu);margin-bottom:1px}
-.bud-wcard-bal{font-size:11px;font-weight:700}
-.bud-items-list{display:flex;flex-direction:column;gap:2px;margin-top:3px}
-.bud-item-row{display:flex;justify-content:space-between;align-items:center;padding:2px 2px}
-.bud-item-name{font-size:11px;color:var(--tx)}
-.bud-item-price{font-size:12px;font-weight:700}
-.bud-item-total{border-top:1px solid var(--bd);margin-top:2px;padding-top:4px}
-.bud-part{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 11px;flex-shrink:0;transition:opacity .3s}
-.bud-part-hdr{font-size:10px;color:var(--mu);text-align:center;margin-bottom:5px;letter-spacing:.5px}
-.bud-part-q{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;line-height:1.45}
+.bud-wcard{background:rgba(255,255,255,.04);border:1.5px solid rgba(200,168,75,.25);border-radius:8px;padding:6px 4px;text-align:center}
+.bud-wcard-icon{font-size:20px;line-height:1;margin-bottom:2px}
+.bud-wcard-name{font-size:10px;color:var(--mu);margin-bottom:2px}
+.bud-wcard-bal{font-size:12px;font-weight:700}
+.bud-items-list{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.bud-item-row{display:flex;justify-content:space-between;align-items:center;padding:3px 2px}
+.bud-item-name{font-size:13px;color:var(--tx)}
+.bud-item-price{font-size:13px;font-weight:700}
+.bud-item-total{border-top:1px solid var(--bd);margin-top:3px;padding-top:5px}
+.bud-part{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;flex-shrink:0;transition:opacity .3s}
+.bud-part-hdr{font-size:11px;color:var(--mu);text-align:center;margin-bottom:6px;letter-spacing:.5px}
+.bud-part-q{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:10px;line-height:1.5}
 .bud-pay-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.bud-pbtn{background:rgba(255,255,255,.05);border:1.5px solid var(--bd);border-radius:10px;padding:9px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s;min-height:60px;justify-content:center}
+.bud-pbtn{background:rgba(255,255,255,.05);border:1.5px solid var(--bd);border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s;min-height:64px;justify-content:center}
 .bud-pbtn:active{transform:scale(.95)}
 .bud-pbtn.bud-pbtn-ok{background:rgba(134,239,172,.15);border-color:#86efac}
 .bud-pbtn.bud-pbtn-err{background:rgba(248,113,113,.12);border-color:#f87171}
-.bud-calc-hint{font-size:12px;color:var(--mu);text-align:center;margin-bottom:7px;font-style:italic}
+.bud-calc-hint{font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;font-style:italic}
 </style>
 </head>
 <body>
@@ -602,7 +602,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     </div>
     <!-- 購買清單 -->
     <div class="bud-items-area">
-      <div class="wallet-lbl">🛍️ 購買</div>
+      <div class="wallet-lbl">🛍️ 購買項目</div>
       <div class="bud-items-list" id="bud-items-list"></div>
     </div>
     <!-- Part 1 -->
@@ -1706,95 +1706,95 @@ function renderCalc(){
 /* ════ BUDGET ════ */
 const BUDGET_QS=[
   {
-    scene:'今日放學，你要搭巴士回家。',
-    venue:'🚌 巴士只接受八達通',
+    scene:'今天放學後，你需要乘坐巴士回家。',
+    venue:'🚌 巴士只接受八達通付款',
     wallet:{cash:30,octopus:25,alipay:20,credit:false},
     items:[{name:'車費',price:6.5}],
     accept:['octopus'],
-    part1:{question:'你應該用哪種方式付車費？',answer:'octopus',hint:'巴士唔收現金同Alipay'},
-    part2:{question:'八達通付款後，剩低幾多錢？',expression:'25 - 6.5',answer:18.5,hint:'$25 − $6.50'}
+    part1:{question:'你應選用哪種方式支付車費？',answer:'octopus',hint:'巴士不接受現金及Alipay'},
+    part2:{question:'以八達通付款後，餘額為多少？',expression:'25 - 6.5',answer:18.5,hint:'$25 − $6.50'}
   },
   {
-    scene:'媽媽叫你去街市買菜。街市個檔口冇八達通機，冇Alipay，只收現金。',
-    venue:'🥬 街市只收現金',
+    scene:'媽媽囑咐你前往街市購買蔬菜。街市檔口沒有八達通機，亦不接受Alipay，只收現金。',
+    venue:'🥬 街市只接受現金付款',
     wallet:{cash:100,octopus:50,alipay:80,credit:false},
     items:[{name:'蔬菜',price:13},{name:'豆腐',price:9}],
     accept:['cash'],
-    part1:{question:'你應該用哪種方式付款？',answer:'cash',hint:'街市唔裝電子支付機器'},
-    part2:{question:'買完之後，現金找續幾多？',expression:'100 - (13 + 9)',answer:78,hint:'先計總價，再計找續'}
+    part1:{question:'你應選用哪種方式付款？',answer:'cash',hint:'街市沒有安裝電子支付機器'},
+    part2:{question:'購買後，可獲找續現金多少？',expression:'100 - (13 + 9)',answer:78,hint:'先計算總價，再計算找續'}
   },
   {
-    scene:'你肚餓，去便利店買早餐。便利店接受現金、八達通同Alipay。',
-    venue:'🥐 便利店：現金、八達通、Alipay都可以',
+    scene:'你感到飢餓，前往便利店購買早餐。便利店接受現金、八達通及Alipay。',
+    venue:'🥐 便利店：接受現金、八達通及Alipay',
     wallet:{cash:20,octopus:8,alipay:35,credit:false},
     items:[{name:'咖啡',price:22},{name:'麵包',price:12}],
     accept:['cash','octopus','alipay'],
-    part1:{question:'哪種方式夠錢付？',answer:'alipay',hint:'現金$20、八達通$8都唔夠$34'},
-    part2:{question:'Alipay付款後剩低幾多？',expression:'35 - (22 + 12)',answer:1,hint:'先計總價$34，再計餘額'}
+    part1:{question:'哪種付款方式的金額足夠？',answer:'alipay',hint:'現金$20、八達通$8均不足$34'},
+    part2:{question:'以Alipay付款後，餘額為多少？',expression:'35 - (22 + 12)',answer:1,hint:'先計算總價$34，再計算餘額'}
   },
   {
-    scene:'你想去書店買一本故事書。書店只接受現金同八達通，唔收Alipay。',
-    venue:'📚 書店：現金或八達通',
+    scene:'你打算前往書店購買一本故事書。書店只接受現金及八達通，不收Alipay。',
+    venue:'📚 書店：接受現金或八達通',
     wallet:{cash:30,octopus:45,alipay:60,credit:false},
     items:[{name:'故事書',price:38}],
     accept:['cash','octopus'],
-    part1:{question:'你可以用哪種方式付款？',answer:'octopus',hint:'現金$30唔夠$38，Alipay唔接受'},
-    part2:{question:'八達通付款後剩低幾多？',expression:'45 - 38',answer:7,hint:'$45 − $38'}
+    part1:{question:'你可以選用哪種方式付款？',answer:'octopus',hint:'現金$30不足$38，Alipay不被接受'},
+    part2:{question:'以八達通付款後，餘額為多少？',expression:'45 - 38',answer:7,hint:'$45 − $38'}
   },
   {
-    scene:'你唔舒服，要去私家診所睇醫生。診所只收現金，唔裝電子支付機器。',
-    venue:'🏥 診所只收現金',
+    scene:'你身體不適，需要前往私家診所就診。診所只收現金，沒有安裝電子支付機器。',
+    venue:'🏥 診所只接受現金付款',
     wallet:{cash:150,octopus:80,alipay:200,credit:false},
     items:[{name:'診金',price:120}],
     accept:['cash'],
-    part1:{question:'你應該用哪種方式付款？',answer:'cash',hint:'診所只收現金'},
-    part2:{question:'付完診金後，現金剩低幾多？',expression:'150 - 120',answer:30,hint:'$150 − $120'}
+    part1:{question:'你應選用哪種方式付款？',answer:'cash',hint:'診所只接受現金'},
+    part2:{question:'支付診金後，現金餘額為多少？',expression:'150 - 120',answer:30,hint:'$150 − $120'}
   },
   {
-    scene:'你去超市買日用品。超市接受所有付款方式。',
-    venue:'🛒 超市：所有方式都接受',
+    scene:'你前往超市購買日用品。超市接受所有付款方式。',
+    venue:'🛒 超市：接受所有付款方式',
     wallet:{cash:50,octopus:30,alipay:100,credit:true},
     items:[{name:'洗髮水',price:45},{name:'牙膏',price:18}],
     accept:['cash','octopus','alipay','credit'],
-    part1:{question:'哪種方式夠錢付？（揀最好用嗰個）',answer:'alipay',hint:'現金$50、八達通$30都唔夠$63'},
-    part2:{question:'Alipay付款後剩低幾多？',expression:'100 - (45 + 18)',answer:37,hint:'先計總價$63，再計餘額'}
+    part1:{question:'哪種付款方式的金額足夠？（選最合適的一種）',answer:'alipay',hint:'現金$50、八達通$30均不足$63'},
+    part2:{question:'以Alipay付款後，餘額為多少？',expression:'100 - (45 + 18)',answer:37,hint:'先計算總價$63，再計算餘額'}
   },
   {
-    scene:'你同朋友去餐廳食飯，大家AA制。餐廳接受所有付款方式。',
-    venue:'🍽️ 餐廳：所有方式都接受',
+    scene:'你與朋友前往餐廳用餐，各自平攤費用。餐廳接受所有付款方式。',
+    venue:'🍽️ 餐廳：接受所有付款方式',
     wallet:{cash:40,octopus:20,alipay:60,credit:true},
     items:[{name:'套餐',price:55},{name:'飲品',price:12}],
     accept:['cash','octopus','alipay','credit'],
-    part1:{question:'哪種方式夠錢付？',answer:'credit',hint:'現金$40、八達通$20、Alipay$60都唔夠$67'},
-    part2:{question:'今次食飯，你一共要俾幾多錢？',expression:'55 + 12',answer:67,hint:'$55 + $12'}
+    part1:{question:'哪種付款方式的金額足夠？',answer:'credit',hint:'現金$40、八達通$20、Alipay$60均不足$67'},
+    part2:{question:'今次用餐，你共需支付多少金額？',expression:'55 + 12',answer:67,hint:'$55 + $12'}
   },
   {
-    scene:'你去電器店買耳機。電器店只接受現金或信用卡，唔收八達通同Alipay。耳機有學生優惠。',
-    venue:'🎧 電器店：現金或信用卡',
+    scene:'你前往電器店購買耳機。電器店只接受現金或信用卡，不收八達通及Alipay。耳機設有學生優惠。',
+    venue:'🎧 電器店：接受現金或信用卡',
     wallet:{cash:200,octopus:0,alipay:0,credit:true},
     items:[{name:'耳機原價',price:320},{name:'學生優惠',price:-50}],
     accept:['cash','credit'],
-    part1:{question:'實際價錢係幾多？用哪種方式付款？',answer:'credit',hint:'原價$320減$50優惠=$270，現金$200唔夠'},
-    part2:{question:'用優惠後，耳機實際係幾多錢？',expression:'320 - 50',answer:270,hint:'$320 − $50'}
+    part1:{question:'實際價格為多少？應選用哪種方式付款？',answer:'credit',hint:'原價$320減$50優惠=$270，現金$200不足'},
+    part2:{question:'享用優惠後，耳機實際售價為多少？',expression:'320 - 50',answer:270,hint:'$320 − $50'}
   },
   {
-    scene:'你準備搭地鐵，但發現八達通餘額唔夠。你可以用Alipay幫八達通增值。',
-    venue:'🚇 八達通唔夠，要先增值',
+    scene:'你準備乘坐地鐵，但發現八達通餘額不足。你可以使用Alipay為八達通增值。',
+    venue:'🚇 八達通餘額不足，需先增值',
     wallet:{cash:0,octopus:3,alipay:80,credit:false},
     items:[{name:'地鐵車費',price:8.5}],
     accept:['octopus'],
     topupOptions:[50,100,200],
-    part1:{question:'要用Alipay增值幾多，先可以搭車？',answer:50,hint:'增值$50後八達通有$53，夠付$8.50'},
-    part2:{question:'增值並搭完車後，八達通剩幾多？',expression:'3 + 50 - 8.5',answer:44.5,hint:'$3 + $50 − $8.50'}
+    part1:{question:'需使用Alipay增值多少，方可乘車？',answer:50,hint:'增值$50後八達通餘額為$53，足夠支付$8.50'},
+    part2:{question:'增值後乘車，八達通餘額剩多少？',expression:'3 + 50 - 8.5',answer:44.5,hint:'$3 + $50 − $8.50'}
   },
   {
-    scene:'月尾，你去超市買三樣日用品。你今個月已經用咗好多信用卡，想盡量唔用。超市接受所有方式。',
-    venue:'🧴 超市：所有方式都接受，但盡量唔用信用卡',
+    scene:'月底，你前往超市購買三件日用品。本月已多次使用信用卡，希望盡量避免再用。超市接受所有付款方式。',
+    venue:'🧴 超市：接受所有付款方式，但盡量避免使用信用卡',
     wallet:{cash:80,octopus:15,alipay:40,credit:true},
     items:[{name:'洗衣液',price:32},{name:'廁紙',price:25},{name:'梘液',price:18}],
     accept:['cash','octopus','alipay','credit'],
-    part1:{question:'唔用信用卡，哪種方式夠錢？',answer:'cash',hint:'總價$75；Alipay$40、八達通$15都唔夠；現金$80夠'},
-    part2:{question:'用現金付款，找續幾多？',expression:'80 - (32 + 25 + 18)',answer:5,hint:'先計總價$75，再計找續'}
+    part1:{question:'不使用信用卡，哪種方式的金額足夠？',answer:'cash',hint:'總價$75；Alipay$40、八達通$15均不足；現金$80足夠'},
+    part2:{question:'以現金付款，可獲找續多少？',expression:'80 - (32 + 25 + 18)',answer:5,hint:'先計算總價$75，再計算找續'}
   }
 ];
 
@@ -1878,7 +1878,7 @@ function buildBudPayBtns(q){
     q.topupOptions.forEach(opt=>{
       const btn=document.createElement('button');
       btn.className='bud-pbtn';btn.dataset.val=opt;
-      btn.innerHTML=`<span style="font-size:17px;font-weight:700;color:var(--gold)">+HK$${opt}</span><span style="font-size:10px;color:var(--mu)">增值</span>`;
+      btn.innerHTML=`<span style="font-size:17px;font-weight:700;color:var(--gold)">+HK$${opt}</span><span style="font-size:11px;color:var(--mu)">增值</span>`;
       btn.onclick=()=>selectBudP1(opt,q);
       area.appendChild(btn);
     });
@@ -1889,7 +1889,7 @@ function buildBudPayBtns(q){
       if(val===undefined)return;
       const btn=document.createElement('button');
       btn.className='bud-pbtn';btn.dataset.method=m.key;
-      btn.innerHTML=`<span style="font-size:22px">${m.icon}</span><span style="font-size:12px;font-weight:600;color:var(--tx)">${m.name}</span>`;
+      btn.innerHTML=`<span style="font-size:24px">${m.icon}</span><span style="font-size:13px;font-weight:600;color:var(--tx)">${m.name}</span>`;
       btn.onclick=()=>selectBudP1(m.key,q);
       area.appendChild(btn);
     });
