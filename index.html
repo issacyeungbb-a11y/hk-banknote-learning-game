@@ -337,6 +337,30 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .calc-key.eq{background:linear-gradient(135deg,#C8A84B,#E8C860);color:#1a1000;border:none}
 .calc-key.cl{color:var(--err)}
 .calc-close{width:100%;padding:12px;border-radius:10px;background:none;border:1.5px solid var(--bd);color:var(--mu);font-size:13px;cursor:pointer;font-family:inherit;margin-top:2px}
+/* === BUDGET === */
+.bud-scene{background:linear-gradient(135deg,#1a2a3a,#1e2d42);border:1.5px solid rgba(200,168,75,.4);border-radius:12px;padding:10px 13px;flex-shrink:0}
+.bud-scene-txt{font-size:12px;color:var(--tx);line-height:1.5;margin-bottom:6px}
+.bud-venue{font-size:12px;font-weight:600;color:var(--gold);background:rgba(200,168,75,.1);border-radius:7px;padding:4px 8px;text-align:center}
+.bud-wallet-area,.bud-items-area{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:8px 11px;flex-shrink:0}
+.bud-wallet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:4px}
+.bud-wcard{background:rgba(255,255,255,.04);border:1.5px solid rgba(200,168,75,.25);border-radius:9px;padding:7px 8px;text-align:center}
+.bud-wcard-icon{font-size:22px;line-height:1;margin-bottom:2px}
+.bud-wcard-name{font-size:11px;color:var(--mu);margin-bottom:2px}
+.bud-wcard-bal{font-size:13px;font-weight:700}
+.bud-items-list{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+.bud-item-row{display:flex;justify-content:space-between;align-items:center;padding:3px 2px}
+.bud-item-name{font-size:12px;color:var(--tx)}
+.bud-item-price{font-size:13px;font-weight:700}
+.bud-item-total{border-top:1px solid var(--bd);margin-top:3px;padding-top:5px}
+.bud-part{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:10px 12px;flex-shrink:0;transition:opacity .3s}
+.bud-part-hdr{font-size:11px;color:var(--mu);text-align:center;margin-bottom:6px;letter-spacing:.5px}
+.bud-part-q{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:10px;line-height:1.5}
+.bud-pay-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.bud-pbtn{background:rgba(255,255,255,.05);border:1.5px solid var(--bd);border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
+.bud-pbtn:active{transform:scale(.95)}
+.bud-pbtn.bud-pbtn-ok{background:rgba(134,239,172,.15);border-color:#86efac}
+.bud-pbtn.bud-pbtn-err{background:rgba(248,113,113,.12);border-color:#f87171}
+.bud-calc-hint{font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;font-style:italic}
 </style>
 </head>
 <body>
@@ -398,6 +422,15 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <div class="lv" data-game="exchange" onclick="go('exchange');initExchange()">
       <div class="lvic" style="background:rgba(58,72,13,.25)">💱</div>
       <div class="lvinfo"><div class="lvt">貨幣兌換 <span class="lvbdg">Level 3</span></div><div class="lvd">判斷銀包內的紙幣能否換開指定面額</div></div>
+      <div class="lva">›</div>
+    </div>
+    <div class="lv" data-game="budget" onclick="go('budget');initBudget()">
+      <div class="lvic" style="background:rgba(16,68,120,.25)">💳</div>
+      <div class="lvinfo">
+        <div class="lvt">精明消費</div>
+        <div class="lvd">選擇最合適的付款方式</div>
+      </div>
+      <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span>
       <div class="lva">›</div>
     </div>
   </div>
@@ -547,6 +580,52 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
 </div>
 
+<!-- ══ BUDGET ══ -->
+<div class="pg" id="pg-budget">
+  <div class="hdr">
+    <button class="bk" onclick="go('home')">← 返回</button>
+    <div class="htit">精明消費</div>
+    <button class="hint-btn" onclick="openHint()">💡</button>
+  </div>
+  <div class="pbrow"><div class="pb"><div class="pf" id="bud-pf" style="width:0%"></div></div></div>
+  <div class="body" style="gap:8px;padding:8px 14px">
+    <div class="qlbl" id="bud-ql">第 1 題 / 共 10 題</div>
+    <!-- 場景 -->
+    <div class="bud-scene">
+      <div class="bud-scene-txt" id="bud-scene-txt"></div>
+      <div class="bud-venue" id="bud-venue"></div>
+    </div>
+    <!-- 錢包 -->
+    <div class="bud-wallet-area">
+      <div class="wallet-lbl">💼 你的錢包</div>
+      <div class="bud-wallet-grid" id="bud-wallet-grid"></div>
+    </div>
+    <!-- 購買清單 -->
+    <div class="bud-items-area">
+      <div class="wallet-lbl">🛍️ 購買</div>
+      <div class="bud-items-list" id="bud-items-list"></div>
+    </div>
+    <!-- Part 1 -->
+    <div class="bud-part" id="bud-part1">
+      <div class="bud-part-hdr">── Part 1 ──</div>
+      <div class="bud-part-q" id="bud-p1-q"></div>
+      <div class="bud-pay-btns" id="bud-pay-btns"></div>
+    </div>
+    <!-- Part 2 -->
+    <div class="bud-part" id="bud-part2" style="opacity:.4;pointer-events:none">
+      <div class="bud-part-hdr">── Part 2 ──</div>
+      <div class="bud-part-q" id="bud-p2-q"></div>
+      <div class="bud-calc-hint" id="bud-calc-hint"></div>
+      <div class="inprow" style="margin-bottom:8px"><span class="pre">HK$</span><input class="ni" id="bud-inp" type="text" placeholder="0" readonly></div>
+      <div class="numpad" id="bud-np"></div>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button class="btn" onclick="submitBudgetP2()" style="flex:1">確認答案</button>
+        <button class="btn2" onclick="clearBudgetInp()">清除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ RESULT ══ -->
 <div class="pg" id="pg-result">
   <div class="hdr">
@@ -681,7 +760,7 @@ function buildLoginPage(){
 
 function enterGame(name){
   currentPlayer=name;
-  if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false};
+  if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false,budget:false};
   totalSc=10;
   const v=el('total-sc-val');if(v)v.textContent='10 分';
   el('home-player-name').textContent='👤 '+name;
@@ -726,6 +805,12 @@ function updateHomeLocks(){
     if(d.exchange){lvEx.classList.add('off');lvEx.querySelector('.lva').textContent='✓';}
     else{lvEx.classList.remove('off');lvEx.querySelector('.lva').textContent='›';}
   }
+  /* budget */
+  const lvBudget=document.querySelector('#pg-home .lv[data-game="budget"]');
+  if(lvBudget){
+    if(d.budget){lvBudget.classList.add('off');lvBudget.querySelector('.lva').textContent='✓';}
+    else{lvBudget.classList.remove('off');lvBudget.querySelector('.lva').textContent='›';}
+  }
 }
 
 function markDone(game){
@@ -752,6 +837,7 @@ function retry(){
   if(curGame==='count')initCnt();
   else if(curGame==='pay')initPay();
   else if(curGame==='exchange')initExchange();
+  else if(curGame==='budget')initBudget();
 }
 
 /* 頁面載入：建立選名頁 */
@@ -1533,10 +1619,12 @@ function confirmUseHint(){
   if(curGame==='count') q=CNT_QS[cntQ];
   else if(curGame==='pay') q=PAY_QS[payQ];
   else if(curGame==='exchange') q=EX_QS[exOrder[exQ]];
+  else if(curGame==='budget') q=BUDGET_QS[budQ];
   if(!q)return;
   hintStep=0;
   if(curGame==='count') hintSteps=buildHintSteps_count(q);
   else if(curGame==='pay') hintSteps=buildHintSteps_pay(q);
+  else if(curGame==='budget') hintSteps=buildHintSteps_budget(q);
   else hintSteps=buildHintSteps_exchange(q);
   renderHint();
   el('hint-overlay').classList.add('show');
@@ -1615,10 +1703,291 @@ function renderCalc(){
 }
 
 /* ════ RESULT ════ */
+/* ════ BUDGET ════ */
+const BUDGET_QS=[
+  {
+    scene:'今日放學，你要搭巴士回家。',
+    venue:'🚌 巴士只接受八達通',
+    wallet:{cash:30,octopus:25,alipay:20,credit:false},
+    items:[{name:'車費',price:6.5}],
+    accept:['octopus'],
+    part1:{question:'你應該用哪種方式付車費？',answer:'octopus',hint:'巴士唔收現金同Alipay'},
+    part2:{question:'八達通付款後，剩低幾多錢？',expression:'25 - 6.5',answer:18.5,hint:'$25 − $6.50'}
+  },
+  {
+    scene:'媽媽叫你去街市買菜。街市個檔口冇八達通機，冇Alipay，只收現金。',
+    venue:'🥬 街市只收現金',
+    wallet:{cash:100,octopus:50,alipay:80,credit:false},
+    items:[{name:'蔬菜',price:13},{name:'豆腐',price:9}],
+    accept:['cash'],
+    part1:{question:'你應該用哪種方式付款？',answer:'cash',hint:'街市唔裝電子支付機器'},
+    part2:{question:'買完之後，現金找續幾多？',expression:'100 - (13 + 9)',answer:78,hint:'先計總價，再計找續'}
+  },
+  {
+    scene:'你肚餓，去便利店買早餐。便利店接受現金、八達通同Alipay。',
+    venue:'🥐 便利店：現金、八達通、Alipay都可以',
+    wallet:{cash:20,octopus:8,alipay:35,credit:false},
+    items:[{name:'咖啡',price:22},{name:'麵包',price:12}],
+    accept:['cash','octopus','alipay'],
+    part1:{question:'哪種方式夠錢付？',answer:'alipay',hint:'現金$20、八達通$8都唔夠$34'},
+    part2:{question:'Alipay付款後剩低幾多？',expression:'35 - (22 + 12)',answer:1,hint:'先計總價$34，再計餘額'}
+  },
+  {
+    scene:'你想去書店買一本故事書。書店只接受現金同八達通，唔收Alipay。',
+    venue:'📚 書店：現金或八達通',
+    wallet:{cash:30,octopus:45,alipay:60,credit:false},
+    items:[{name:'故事書',price:38}],
+    accept:['cash','octopus'],
+    part1:{question:'你可以用哪種方式付款？',answer:'octopus',hint:'現金$30唔夠$38，Alipay唔接受'},
+    part2:{question:'八達通付款後剩低幾多？',expression:'45 - 38',answer:7,hint:'$45 − $38'}
+  },
+  {
+    scene:'你唔舒服，要去私家診所睇醫生。診所只收現金，唔裝電子支付機器。',
+    venue:'🏥 診所只收現金',
+    wallet:{cash:150,octopus:80,alipay:200,credit:false},
+    items:[{name:'診金',price:120}],
+    accept:['cash'],
+    part1:{question:'你應該用哪種方式付款？',answer:'cash',hint:'診所只收現金'},
+    part2:{question:'付完診金後，現金剩低幾多？',expression:'150 - 120',answer:30,hint:'$150 − $120'}
+  },
+  {
+    scene:'你去超市買日用品。超市接受所有付款方式。',
+    venue:'🛒 超市：所有方式都接受',
+    wallet:{cash:50,octopus:30,alipay:100,credit:true},
+    items:[{name:'洗髮水',price:45},{name:'牙膏',price:18}],
+    accept:['cash','octopus','alipay','credit'],
+    part1:{question:'哪種方式夠錢付？（揀最好用嗰個）',answer:'alipay',hint:'現金$50、八達通$30都唔夠$63'},
+    part2:{question:'Alipay付款後剩低幾多？',expression:'100 - (45 + 18)',answer:37,hint:'先計總價$63，再計餘額'}
+  },
+  {
+    scene:'你同朋友去餐廳食飯，大家AA制。餐廳接受所有付款方式。',
+    venue:'🍽️ 餐廳：所有方式都接受',
+    wallet:{cash:40,octopus:20,alipay:60,credit:true},
+    items:[{name:'套餐',price:55},{name:'飲品',price:12}],
+    accept:['cash','octopus','alipay','credit'],
+    part1:{question:'哪種方式夠錢付？',answer:'credit',hint:'現金$40、八達通$20、Alipay$60都唔夠$67'},
+    part2:{question:'今次食飯，你一共要俾幾多錢？',expression:'55 + 12',answer:67,hint:'$55 + $12'}
+  },
+  {
+    scene:'你去電器店買耳機。電器店只接受現金或信用卡，唔收八達通同Alipay。耳機有學生優惠。',
+    venue:'🎧 電器店：現金或信用卡',
+    wallet:{cash:200,octopus:0,alipay:0,credit:true},
+    items:[{name:'耳機原價',price:320},{name:'學生優惠',price:-50}],
+    accept:['cash','credit'],
+    part1:{question:'實際價錢係幾多？用哪種方式付款？',answer:'credit',hint:'原價$320減$50優惠=$270，現金$200唔夠'},
+    part2:{question:'用優惠後，耳機實際係幾多錢？',expression:'320 - 50',answer:270,hint:'$320 − $50'}
+  },
+  {
+    scene:'你準備搭地鐵，但發現八達通餘額唔夠。你可以用Alipay幫八達通增值。',
+    venue:'🚇 八達通唔夠，要先增值',
+    wallet:{cash:0,octopus:3,alipay:80,credit:false},
+    items:[{name:'地鐵車費',price:8.5}],
+    accept:['octopus'],
+    topupOptions:[50,100,200],
+    part1:{question:'要用Alipay增值幾多，先可以搭車？',answer:50,hint:'增值$50後八達通有$53，夠付$8.50'},
+    part2:{question:'增值並搭完車後，八達通剩幾多？',expression:'3 + 50 - 8.5',answer:44.5,hint:'$3 + $50 − $8.50'}
+  },
+  {
+    scene:'月尾，你去超市買三樣日用品。你今個月已經用咗好多信用卡，想盡量唔用。超市接受所有方式。',
+    venue:'🧴 超市：所有方式都接受，但盡量唔用信用卡',
+    wallet:{cash:80,octopus:15,alipay:40,credit:true},
+    items:[{name:'洗衣液',price:32},{name:'廁紙',price:25},{name:'梘液',price:18}],
+    accept:['cash','octopus','alipay','credit'],
+    part1:{question:'唔用信用卡，哪種方式夠錢？',answer:'cash',hint:'總價$75；Alipay$40、八達通$15都唔夠；現金$80夠'},
+    part2:{question:'用現金付款，找續幾多？',expression:'80 - (32 + 25 + 18)',answer:5,hint:'先計總價$75，再計找續'}
+  }
+];
+
+const BUD_METHODS=[
+  {key:'cash',   icon:'💰',name:'現金'},
+  {key:'octopus',icon:'🟡',name:'八達通'},
+  {key:'alipay', icon:'📱',name:'Alipay'},
+  {key:'credit', icon:'💳',name:'信用卡'},
+];
+
+let budQ=0,budSc=0,budP1Locked=false,budP2Inp='';
+
+function initBudget(){
+  curGame='budget';
+  budQ=0;budSc=0;
+  loadBudgetQ();
+}
+
+function loadBudgetQ(){
+  if(budQ>=BUDGET_QS.length){showResult(budSc);return;}
+  const q=BUDGET_QS[budQ];
+  budP1Locked=false;budP2Inp='';
+  el('bud-pf').style.width=Math.round(budQ/BUDGET_QS.length*100)+'%';
+  el('bud-ql').textContent='第 '+(budQ+1)+' 題 / 共 '+BUDGET_QS.length+' 題';
+  el('bud-scene-txt').textContent=q.scene;
+  el('bud-venue').textContent=q.venue;
+  buildBudWallet(q);
+  buildBudItems(q);
+  el('bud-p1-q').textContent=q.part1.question;
+  buildBudPayBtns(q);
+  /* Part 2 鎖定 */
+  const p2=el('bud-part2');
+  p2.style.opacity='0.4';p2.style.pointerEvents='none';
+  el('bud-p2-q').textContent=q.part2.question;
+  el('bud-calc-hint').textContent=q.part2.hint+' = ?';
+  el('bud-inp').value='';el('bud-inp').className='ni';
+  buildBudNumpad();
+}
+
+function buildBudWallet(q){
+  const netTotal=q.items.reduce((s,i)=>s+i.price,0);
+  const grid=el('bud-wallet-grid');grid.innerHTML='';
+  BUD_METHODS.forEach(m=>{
+    const val=q.wallet[m.key];
+    if(val===undefined)return;
+    const accepted=q.accept.includes(m.key);
+    const enough=(val===true)||(typeof val==='number'&&val>=netTotal);
+    const div=document.createElement('div');
+    div.className='bud-wcard';
+    div.style.borderColor=accepted?(enough?'rgba(134,239,172,.4)':'rgba(248,113,113,.35)'):'rgba(120,120,120,.25)';
+    if(!accepted)div.style.opacity='0.4';
+    const balTxt=val===true?'可用':(val===false||val===0?'✗':'HK$'+val);
+    const balCol=!accepted?'#666':(enough?'#86efac':'#f87171');
+    div.innerHTML=`<div class="bud-wcard-icon">${m.icon}</div><div class="bud-wcard-name">${m.name}</div><div class="bud-wcard-bal" style="color:${balCol}">${balTxt}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function buildBudItems(q){
+  const list=el('bud-items-list');list.innerHTML='';
+  let net=0;
+  q.items.forEach(item=>{
+    net+=item.price;
+    const div=document.createElement('div');div.className='bud-item-row';
+    const priceStr=item.price<0?'− HK$'+Math.abs(item.price):'HK$'+item.price;
+    const col=item.price<0?'#86efac':'var(--gold)';
+    div.innerHTML=`<span class="bud-item-name">${item.name}</span><span class="bud-item-price" style="color:${col}">${priceStr}</span>`;
+    list.appendChild(div);
+  });
+  if(q.items.length>1){
+    const tot=document.createElement('div');
+    tot.className='bud-item-row bud-item-total';
+    tot.innerHTML=`<span class="bud-item-name" style="font-weight:700">總計</span><span class="bud-item-price" style="color:var(--gold);font-weight:700">HK$${net}</span>`;
+    list.appendChild(tot);
+  }
+}
+
+function buildBudPayBtns(q){
+  const area=el('bud-pay-btns');area.innerHTML='';
+  if(q.topupOptions){
+    area.style.gridTemplateColumns='repeat(3,1fr)';
+    q.topupOptions.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.className='bud-pbtn';btn.dataset.val=opt;
+      btn.innerHTML=`<span style="font-size:17px;font-weight:700;color:var(--gold)">+HK$${opt}</span><span style="font-size:10px;color:var(--mu)">增值</span>`;
+      btn.onclick=()=>selectBudP1(opt,q);
+      area.appendChild(btn);
+    });
+  }else{
+    area.style.gridTemplateColumns='repeat(2,1fr)';
+    BUD_METHODS.forEach(m=>{
+      const val=q.wallet[m.key];
+      if(val===undefined)return;
+      const btn=document.createElement('button');
+      btn.className='bud-pbtn';btn.dataset.method=m.key;
+      btn.innerHTML=`<span style="font-size:22px">${m.icon}</span><span style="font-size:12px;font-weight:600;color:var(--tx)">${m.name}</span>`;
+      if(!q.accept.includes(m.key)){btn.style.opacity='0.35';btn.style.pointerEvents='none';}
+      btn.onclick=()=>selectBudP1(m.key,q);
+      area.appendChild(btn);
+    });
+  }
+}
+
+function selectBudP1(choice,q){
+  if(budP1Locked)return;
+  const correct=q.part1.answer;
+  el('bud-pay-btns').querySelectorAll('.bud-pbtn').forEach(b=>{
+    const match=q.topupOptions?(parseInt(b.dataset.val)===choice):(b.dataset.method===choice);
+    if(match)b.className='bud-pbtn '+(choice===correct?'bud-pbtn-ok':'bud-pbtn-err');
+  });
+  if(choice===correct){
+    budP1Locked=true;
+    toast('✓ 啱！繼續 Part 2','ok');
+    setTimeout(()=>{
+      const p2=el('bud-part2');
+      p2.style.opacity='1';p2.style.pointerEvents='';
+    },1500);
+  }else{
+    updTotalSc(-5);
+    toast('✗ −5分，再試','bad');
+  }
+}
+
+function buildBudNumpad(){
+  const np=el('bud-np');np.innerHTML='';
+  [1,2,3,4,5,6,7,8,9,'.',0,'刪除'].forEach(k=>{
+    const b=document.createElement('div');
+    b.className='npb'+(k==='刪除'?' fn':'');
+    b.textContent=k;
+    b.addEventListener('pointerdown',e=>{e.preventDefault();budNpHit(k);});
+    np.appendChild(b);
+  });
+}
+
+function budNpHit(k){
+  if(k==='刪除')budP2Inp=budP2Inp.slice(0,-1);
+  else if(k==='.')  {if(!budP2Inp.includes('.'))budP2Inp+=k;}
+  else if(budP2Inp.length<8)budP2Inp+=String(k);
+  el('bud-inp').value=budP2Inp||'';
+}
+
+function clearBudgetInp(){
+  budP2Inp='';
+  el('bud-inp').value='';
+  el('bud-inp').className='ni';
+}
+
+function submitBudgetP2(){
+  const q=BUDGET_QS[budQ];
+  const val=parseFloat(budP2Inp);
+  if(isNaN(val)||budP2Inp===''){toast('請輸入答案','bad');return;}
+  if(Math.abs(val-q.part2.answer)<0.01){
+    el('bud-inp').className='ni ok';
+    updTotalSc(20);budSc+=20;
+    toast('✓ +20分！','ok');
+    setTimeout(()=>{budQ++;loadBudgetQ();},1500);
+  }else{
+    el('bud-inp').className='ni err';
+    updTotalSc(-5);
+    toast('✗ −5分，再試','bad');
+  }
+}
+
+function buildHintSteps_budget(q){
+  const steps=[];
+  const net=q.items.reduce((s,i)=>s+i.price,0);
+  /* Step 1：場景 + 購買清單 */
+  const itemsHTML=q.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px"><span style="color:var(--tx)">${i.name}</span><span style="color:${i.price<0?'#86efac':'var(--gold)'}; font-weight:700">${i.price<0?'− HK$'+Math.abs(i.price):'HK$'+i.price}</span></div>`).join('');
+  steps.push(`<div style="padding:6px 0">
+    <div style="font-size:13px;color:var(--tx);line-height:1.5;margin-bottom:8px">${q.scene}</div>
+    <div style="background:rgba(200,168,75,.1);border-radius:8px;padding:8px 10px;margin-bottom:8px">${itemsHTML}${q.items.length>1?`<div style="display:flex;justify-content:space-between;padding:4px 0 0;font-size:14px;font-weight:700;border-top:1px solid var(--bd);margin-top:4px"><span>總計</span><span style="color:var(--gold)">HK$${net}</span></div>`:''}</div>
+    <div style="font-size:12px;font-weight:600;color:var(--gold);background:rgba(200,168,75,.08);border-radius:7px;padding:5px 8px;text-align:center">${q.venue}</div>
+  </div>`);
+  /* Step 2：付款方式提示 */
+  steps.push(`<div style="text-align:center;padding:8px 0">
+    <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:10px">💡 Part 1 提示</div>
+    <div style="font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:12px">${q.part1.hint}</div>
+    <div style="font-size:15px;font-weight:700;color:#86efac">✓ 正確答案：${q.topupOptions?'+HK$'+q.part1.answer:BUD_METHODS.find(m=>m.key===q.part1.answer)?.icon+' '+BUD_METHODS.find(m=>m.key===q.part1.answer)?.name}</div>
+  </div>`);
+  /* Step 3：計算提示 */
+  steps.push(`<div style="text-align:center;padding:8px 0">
+    <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:10px">🔢 Part 2 提示</div>
+    <div style="font-size:13px;color:var(--mu);margin-bottom:10px">${q.part2.hint}</div>
+    <div style="font-size:24px;font-weight:700;color:var(--gold);margin-bottom:4px">${q.part2.hint} = ?</div>
+    <div style="font-size:36px;font-weight:700;color:#86efac">HK$${q.part2.answer}</div>
+  </div>`);
+  return steps;
+}
+
 function showResult(sc){
   /* 記錄呢關已完成 */
   markDone(curGame);
-  const max=curGame==='count'?200:curGame==='pay'?300:200;
+  const max=curGame==='count'?200:curGame==='pay'?300:curGame==='budget'?200:200;
   const pct=sc/max;
   const[em,t,m]=pct>=.8
     ?['🏆','出色！','你對香港紙幣嘅認識非常好！繼續加油！']
