@@ -610,6 +610,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <div class="bud-part-hdr">── Part 1 ──</div>
       <div class="bud-part-q" id="bud-p1-q"></div>
       <div class="bud-pay-btns" id="bud-pay-btns"></div>
+      <button class="btn" id="bud-next-btn" onclick="unlockBudP2()" style="display:none;margin-top:10px">下一步：Part 2 →</button>
     </div>
     <!-- Part 2 -->
     <div class="bud-part" id="bud-part2" style="opacity:.4;pointer-events:none">
@@ -1825,6 +1826,7 @@ function loadBudgetQ(){
   buildBudItems(q);
   el('bud-p1-q').textContent=q.part1.question;
   buildBudPayBtns(q);
+  el('bud-next-btn').style.display='none';
   /* Part 2 鎖定 */
   const p2=el('bud-part2');
   p2.style.opacity='0.4';p2.style.pointerEvents='none';
@@ -1907,15 +1909,19 @@ function selectBudP1(choice,q){
   });
   if(choice===correct){
     budP1Locked=true;
-    toast('✓ 啱！繼續 Part 2','ok');
-    setTimeout(()=>{
-      const p2=el('bud-part2');
-      p2.style.opacity='1';p2.style.pointerEvents='';
-    },1500);
+    toast('✓ 啱！','ok');
+    el('bud-next-btn').style.display='';
   }else{
     updTotalSc(-5);
     toast('✗ −5分，再試','bad');
   }
+}
+
+function unlockBudP2(){
+  el('bud-next-btn').style.display='none';
+  const p2=el('bud-part2');
+  p2.style.opacity='1';p2.style.pointerEvents='';
+  p2.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function buildBudNumpad(){
