@@ -338,29 +338,29 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .calc-key.cl{color:var(--err)}
 .calc-close{width:100%;padding:12px;border-radius:10px;background:none;border:1.5px solid var(--bd);color:var(--mu);font-size:13px;cursor:pointer;font-family:inherit;margin-top:2px}
 /* === BUDGET === */
-.bud-scene{background:linear-gradient(135deg,#1a2a3a,#1e2d42);border:1.5px solid rgba(200,168,75,.4);border-radius:12px;padding:10px 13px;flex-shrink:0}
-.bud-scene-txt{font-size:12px;color:var(--tx);line-height:1.5;margin-bottom:6px}
-.bud-venue{font-size:12px;font-weight:600;color:var(--gold);background:rgba(200,168,75,.1);border-radius:7px;padding:4px 8px;text-align:center}
-.bud-wallet-area,.bud-items-area{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:8px 11px;flex-shrink:0}
-.bud-wallet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:4px}
-.bud-wcard{background:rgba(255,255,255,.04);border:1.5px solid rgba(200,168,75,.25);border-radius:9px;padding:7px 8px;text-align:center}
-.bud-wcard-icon{font-size:22px;line-height:1;margin-bottom:2px}
-.bud-wcard-name{font-size:11px;color:var(--mu);margin-bottom:2px}
-.bud-wcard-bal{font-size:13px;font-weight:700}
-.bud-items-list{display:flex;flex-direction:column;gap:3px;margin-top:4px}
-.bud-item-row{display:flex;justify-content:space-between;align-items:center;padding:3px 2px}
-.bud-item-name{font-size:12px;color:var(--tx)}
-.bud-item-price{font-size:13px;font-weight:700}
-.bud-item-total{border-top:1px solid var(--bd);margin-top:3px;padding-top:5px}
-.bud-part{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:10px 12px;flex-shrink:0;transition:opacity .3s}
-.bud-part-hdr{font-size:11px;color:var(--mu);text-align:center;margin-bottom:6px;letter-spacing:.5px}
-.bud-part-q{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:10px;line-height:1.5}
-.bud-pay-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.bud-pbtn{background:rgba(255,255,255,.05);border:1.5px solid var(--bd);border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
+.bud-scene{background:linear-gradient(135deg,#1a2a3a,#1e2d42);border:1.5px solid rgba(200,168,75,.4);border-radius:12px;padding:7px 11px;flex-shrink:0}
+.bud-scene-txt{font-size:11px;color:var(--tx);line-height:1.45;margin-bottom:5px}
+.bud-venue{font-size:11px;font-weight:600;color:var(--gold);background:rgba(200,168,75,.1);border-radius:6px;padding:3px 8px;text-align:center}
+.bud-wallet-area,.bud-items-area{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:6px 10px;flex-shrink:0}
+.bud-wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:4px}
+.bud-wcard{background:rgba(255,255,255,.04);border:1.5px solid rgba(200,168,75,.25);border-radius:8px;padding:5px 4px;text-align:center}
+.bud-wcard-icon{font-size:18px;line-height:1;margin-bottom:1px}
+.bud-wcard-name{font-size:9px;color:var(--mu);margin-bottom:1px}
+.bud-wcard-bal{font-size:11px;font-weight:700}
+.bud-items-list{display:flex;flex-direction:column;gap:2px;margin-top:3px}
+.bud-item-row{display:flex;justify-content:space-between;align-items:center;padding:2px 2px}
+.bud-item-name{font-size:11px;color:var(--tx)}
+.bud-item-price{font-size:12px;font-weight:700}
+.bud-item-total{border-top:1px solid var(--bd);margin-top:2px;padding-top:4px}
+.bud-part{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 11px;flex-shrink:0;transition:opacity .3s}
+.bud-part-hdr{font-size:10px;color:var(--mu);text-align:center;margin-bottom:5px;letter-spacing:.5px}
+.bud-part-q{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;line-height:1.45}
+.bud-pay-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.bud-pbtn{background:rgba(255,255,255,.05);border:1.5px solid var(--bd);border-radius:10px;padding:9px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s;min-height:60px;justify-content:center}
 .bud-pbtn:active{transform:scale(.95)}
 .bud-pbtn.bud-pbtn-ok{background:rgba(134,239,172,.15);border-color:#86efac}
 .bud-pbtn.bud-pbtn-err{background:rgba(248,113,113,.12);border-color:#f87171}
-.bud-calc-hint{font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;font-style:italic}
+.bud-calc-hint{font-size:12px;color:var(--mu);text-align:center;margin-bottom:7px;font-style:italic}
 </style>
 </head>
 <body>
@@ -588,7 +588,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <button class="hint-btn" onclick="openHint()">💡</button>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="bud-pf" style="width:0%"></div></div></div>
-  <div class="body" style="gap:8px;padding:8px 14px">
+  <div class="body" style="gap:6px;padding:6px 14px;overflow-y:auto">
     <div class="qlbl" id="bud-ql">第 1 題 / 共 10 題</div>
     <!-- 場景 -->
     <div class="bud-scene">
@@ -610,10 +610,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <div class="bud-part-hdr">── Part 1 ──</div>
       <div class="bud-part-q" id="bud-p1-q"></div>
       <div class="bud-pay-btns" id="bud-pay-btns"></div>
-      <button class="btn" id="bud-next-btn" onclick="unlockBudP2()" style="display:none;margin-top:10px">下一步：Part 2 →</button>
     </div>
     <!-- Part 2 -->
-    <div class="bud-part" id="bud-part2" style="opacity:.4;pointer-events:none">
+    <div class="bud-part" id="bud-part2" style="display:none">
       <div class="bud-part-hdr">── Part 2 ──</div>
       <div class="bud-part-q" id="bud-p2-q"></div>
       <div class="bud-calc-hint" id="bud-calc-hint"></div>
@@ -1826,10 +1825,8 @@ function loadBudgetQ(){
   buildBudItems(q);
   el('bud-p1-q').textContent=q.part1.question;
   buildBudPayBtns(q);
-  el('bud-next-btn').style.display='none';
-  /* Part 2 鎖定 */
-  const p2=el('bud-part2');
-  p2.style.opacity='0.4';p2.style.pointerEvents='none';
+  /* Part 2 隱藏 */
+  el('bud-part2').style.display='none';
   el('bud-p2-q').textContent=q.part2.question;
   el('bud-calc-hint').textContent=q.part2.hint+' = ?';
   el('bud-inp').value='';el('bud-inp').className='ni';
@@ -1893,7 +1890,6 @@ function buildBudPayBtns(q){
       const btn=document.createElement('button');
       btn.className='bud-pbtn';btn.dataset.method=m.key;
       btn.innerHTML=`<span style="font-size:22px">${m.icon}</span><span style="font-size:12px;font-weight:600;color:var(--tx)">${m.name}</span>`;
-      if(!q.accept.includes(m.key)){btn.style.opacity='0.35';btn.style.pointerEvents='none';}
       btn.onclick=()=>selectBudP1(m.key,q);
       area.appendChild(btn);
     });
@@ -1903,25 +1899,24 @@ function buildBudPayBtns(q){
 function selectBudP1(choice,q){
   if(budP1Locked)return;
   const correct=q.part1.answer;
-  el('bud-pay-btns').querySelectorAll('.bud-pbtn').forEach(b=>{
+  const btns=el('bud-pay-btns').querySelectorAll('.bud-pbtn');
+  btns.forEach(b=>{
     const match=q.topupOptions?(parseInt(b.dataset.val)===choice):(b.dataset.method===choice);
     if(match)b.className='bud-pbtn '+(choice===correct?'bud-pbtn-ok':'bud-pbtn-err');
   });
   if(choice===correct){
     budP1Locked=true;
+    /* 關掉所有選擇題按鈕 */
+    btns.forEach(b=>b.style.pointerEvents='none');
     toast('✓ 啱！','ok');
-    el('bud-next-btn').style.display='';
+    /* 顯示 Part 2 並滾動過去 */
+    const p2=el('bud-part2');
+    p2.style.display='';
+    setTimeout(()=>p2.scrollIntoView({behavior:'smooth',block:'start'}),200);
   }else{
     updTotalSc(-5);
     toast('✗ −5分，再試','bad');
   }
-}
-
-function unlockBudP2(){
-  el('bud-next-btn').style.display='none';
-  const p2=el('bud-part2');
-  p2.style.opacity='1';p2.style.pointerEvents='';
-  p2.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function buildBudNumpad(){
@@ -1956,7 +1951,7 @@ function submitBudgetP2(){
     el('bud-inp').className='ni ok';
     updTotalSc(20);budSc+=20;
     toast('✓ +20分！','ok');
-    setTimeout(()=>{budQ++;loadBudgetQ();},1500);
+    setTimeout(()=>{budQ++;loadBudgetQ();const b=el('pg-budget').querySelector('.body');if(b)b.scrollTop=0;},1500);
   }else{
     el('bud-inp').className='ni err';
     updTotalSc(-5);
