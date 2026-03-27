@@ -427,7 +427,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <div class="lv" data-game="budget" onclick="go('budget');initBudget()">
       <div class="lvic" style="background:rgba(16,68,120,.25)">💳</div>
       <div class="lvinfo">
-        <div class="lvt">精明消費</div>
+        <div class="lvt">精明消費 <span class="lvbdg">Level 4</span></div>
         <div class="lvd">選擇最合適的付款方式</div>
       </div>
       <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span>
@@ -761,8 +761,8 @@ function buildLoginPage(){
 function enterGame(name){
   currentPlayer=name;
   if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false,budget:false};
-  totalSc=10;
-  const v=el('total-sc-val');if(v)v.textContent='10 分';
+  totalSc=20;
+  const v=el('total-sc-val');if(v)v.textContent='20 分';
   el('home-player-name').textContent='👤 '+name;
   const n=el('total-sc-name');if(n)n.textContent=name;
   updateHomeLocks();
@@ -778,8 +778,8 @@ function closeConfirmLogout(){
 function doLogout(){
   el('confirm-logout').classList.remove('show');
   /* 分數重置為起始分 */
-  totalSc=10;
-  const v=el('total-sc-val');if(v)v.textContent='10 分';
+  totalSc=20;
+  const v=el('total-sc-val');if(v)v.textContent='20 分';
   const n=el('total-sc-name');if(n)n.textContent='';
   currentPlayer='';
   go('login');
@@ -819,7 +819,7 @@ function markDone(game){
 }
 
 /* ════ 全域總分 ════ */
-let totalSc=10;
+let totalSc=20; /* 起始分數 */
 function updTotalSc(delta){
   totalSc+=delta;
   if(totalSc<0)totalSc=0;
