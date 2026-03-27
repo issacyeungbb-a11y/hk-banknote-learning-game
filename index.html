@@ -1209,10 +1209,10 @@ const EX_QS=[
   },
   {
     level:2,
-    amt:100, targetVal:20, req:'全部 HK$20',
-    wallet:[20,20,20,50,10],
-    ans:false,
-    hint:'銀包只有 3 張 $20 = $60，唔夠 $100 ✗'
+    amt:100, targetVal:100, req:'全部 HK$100',
+    wallet:[100,20,50,10],
+    ans:true,
+    hint:'銀包有 1 張 $100 = $100，可以換（$20、$50、$10 係多餘）✓'
   },
   /* ── 難度 3：中 ── 需要算清楚張數 */
   {
@@ -1709,10 +1709,10 @@ const BUDGET_QS=[
     scene:'今天放學後，你需要乘坐巴士回家。',
     venue:'🚌 巴士只接受八達通付款',
     wallet:{cash:30,octopus:25,alipay:20,credit:false},
-    items:[{name:'車費',price:6.5}],
+    items:[{name:'車費',price:6}],
     accept:['octopus'],
     part1:{question:'你應選用哪種方式支付車費？',answer:'octopus',hint:'巴士不接受現金及Alipay'},
-    part2:{question:'以八達通付款後，餘額為多少？',expression:'25 - 6.5',answer:18.5,hint:'$25 − $6.50'}
+    part2:{question:'以八達通付款後，餘額為多少？',expression:'25 - 6',answer:19,hint:'$25 − $6'}
   },
   {
     scene:'媽媽囑咐你前往街市購買蔬菜。街市檔口沒有八達通機，亦不接受Alipay，只收現金。',
@@ -1781,11 +1781,11 @@ const BUDGET_QS=[
     scene:'你準備乘坐地鐵，但發現八達通餘額不足。你可以使用Alipay為八達通增值。',
     venue:'🚇 八達通餘額不足，需先增值',
     wallet:{cash:0,octopus:3,alipay:80,credit:false},
-    items:[{name:'地鐵車費',price:8.5}],
+    items:[{name:'地鐵車費',price:9}],
     accept:['octopus'],
     topupOptions:[50,100,200],
-    part1:{question:'需使用Alipay增值多少，方可乘車？',answer:50,hint:'增值$50後八達通餘額為$53，足夠支付$8.50'},
-    part2:{question:'增值後乘車，八達通餘額剩多少？',expression:'3 + 50 - 8.5',answer:44.5,hint:'$3 + $50 − $8.50'}
+    part1:{question:'需使用Alipay增值多少，方可乘車？',answer:50,hint:'增值$50後八達通餘額為$53，足夠支付$9'},
+    part2:{question:'增值後乘車，八達通餘額剩多少？',expression:'3 + 50 - 9',answer:44,hint:'$3 + $50 − $9'}
   },
   {
     scene:'月底，你前往超市購買三件日用品。本月已多次使用信用卡，希望盡量避免再用。超市接受所有付款方式。',
