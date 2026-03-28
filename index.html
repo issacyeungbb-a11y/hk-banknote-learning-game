@@ -432,7 +432,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     </div>
     <div class="lv" data-game="pay" onclick="go('pay');initPay()">
       <div class="lvic" style="background:rgba(122,37,37,.25)">🛒</div>
-      <div class="lvinfo"><div class="lvt">模擬付款 <span class="lvbdg">Level 2</span></div><div class="lvd">15題：選擇紙幣付款，判斷是否需要找續</div></div>
+      <div class="lvinfo"><div class="lvt">模擬付款 <span class="lvbdg">Level 2</span></div><div class="lvd">選擇紙幣付款，判斷是否需要找續</div></div>
       <div class="lva">›</div>
     </div>
     <div class="lv" data-game="exchange" onclick="go('exchange');initExchange()">
@@ -449,6 +449,11 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span>
       <div class="lva">›</div>
     </div>
+  </div>
+  <div style="padding:10px 14px 16px">
+    <button onclick="gameSubmit()" style="width:100%;background:linear-gradient(135deg,#1e3a5f,#2563eb);border:none;border-radius:12px;color:white;font-size:14px;font-weight:600;padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+      <span style="font-size:18px">📤</span> 提交成績
+    </button>
   </div>
 </div>
 
@@ -898,6 +903,7 @@ let cntQ=0,cntSc=0,cntV='';
 function initCnt(){
   curGame='count';
   cntQ=0;cntSc=0;cntV='';
+  for(let i=CNT_QS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[CNT_QS[i],CNT_QS[j]]=[CNT_QS[j],CNT_QS[i]];}
   buildNP('np-cnt','cnt');
   loadCnt();
 }
@@ -1004,16 +1010,8 @@ const PAY_QS=[
    wallet:[100,100,100,50]},
 
   /* ── 題12-15：較難，大面值，多選擇，找贖複雜 ── */
-  {item:'茶餐廳早餐',  price:52,  needChange:true,  change:48,
-   wallet:[100,50,20,10,20,50]},
-  {item:'樽裝飲品',    price:18,  needChange:true,  change:32,
-   wallet:[50,20,20,10,10,100]},
-  {item:'地鐵車費',    price:56,  needChange:true,  change:44,
-   wallet:[100,50,20,10,500,20]},
-  {item:'機場快線',    price:115, needChange:true,  change:85,
-   wallet:[200,100,50,20,500,100]},
 ];
-  
+
 
 /* 題目索引、分數、已選紙幣 */
 let payQ=0,paySc=0,paySel=[],payChgV='',payChgChoice=null;
@@ -1055,6 +1053,7 @@ function modalConfirm(){
 function initPay(){
   curGame='pay';
   payQ=0;paySc=0;paySel=[];payChgV='';payChgChoice=null;
+  for(let i=PAY_QS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[PAY_QS[i],PAY_QS[j]]=[PAY_QS[j],PAY_QS[i]];}
   loadPayQ();
 }
 
