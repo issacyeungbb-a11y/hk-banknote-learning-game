@@ -415,7 +415,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
       <button class="bk" onclick="confirmLogout()" style="font-size:11px">← 換人</button>
       <div style="flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--gold)" id="home-player-name"></div>
-      <div style="width:44px"></div>
+      <button class="bk" onclick="openTeacherLogin()" style="font-size:11px">👩‍🏫</button>
     </div>
     <div class="htitle">💰 香港貨幣自學系統</div>
     <div class="hsub">互動遊戲 · 認識香港流通紙幣</div>
@@ -446,9 +446,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span>
       <div class="lva">›</div>
     </div>
-  </div>
-  <div style="text-align:center;padding:8px 0 12px">
-    <button onclick="openTeacherLogin()" style="background:none;border:none;color:rgba(232,223,200,0.22);font-size:11px;cursor:pointer;padding:4px 12px;letter-spacing:.5px">👩‍🏫 老師控制台</button>
   </div>
 </div>
 
@@ -655,13 +652,12 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <div class="ress" id="res-s">0</div>
     <div class="reslb">累積總分</div>
     <div class="resmsg" id="res-msg"></div>
+    <button id="submit-btn" onclick="quickSubmit()" style="margin-top:14px;background:linear-gradient(135deg,#1e3a5f,#2563eb);border:none;border-radius:10px;color:white;font-size:13px;font-weight:600;padding:8px 20px;cursor:pointer">📤 提交成績</button>
+    <div id="submit-done-msg" style="font-size:12px;color:#86efac;margin-top:6px;min-height:16px"></div>
   </div>
   <div class="ftr">
     <button class="btn" onclick="go('home');updateHomeLocks()">返回主頁</button>
-    <div style="display:flex;gap:6px">
-      <button class="btn2" style="flex:1" id="retry-btn" onclick="retry()">再玩一次</button>
-      <button class="btn2" style="flex:1;color:#60a5fa;border-color:rgba(96,165,250,.4)" onclick="openSubmitModal()">📤 提交成績</button>
-    </div>
+    <button class="btn2" id="retry-btn" onclick="retry()">再玩一次</button>
   </div>
 </div>
 
@@ -2008,7 +2004,10 @@ function buildHintSteps_budget(q){
   return steps;
 }
 
-function showResult(sc){lastGameScore=sc;
+function showResult(sc){
+  lastGameScore=sc;
+  const btn=el('submit-btn');if(btn){btn.disabled=false;btn.style.display='';}
+  const msg=el('submit-done-msg');if(msg)msg.textContent='';
   /* 記錄呢關已完成 */
   markDone(curGame);
   const max=curGame==='count'?200:curGame==='pay'?300:curGame==='budget'?200:200;
@@ -2108,39 +2107,28 @@ function _initFB(){
 }
 
 /* ── Submit ── */
-function openSubmitModal(){
+function quickSubmit(){
   if(!_initFB()){toast('Firebase 未設定','bad');return;}
-  el('submit-info').textContent=(GAME_NAMES[curGame]||curGame)+' · 本關 '+lastGameScore+' 分';
-  el('submit-name').value='';
-  el('submit-class').value='';
-  el('submit-msg').textContent='';
-  el('submit-ok-btn').disabled=false;
-  el('submit-modal').classList.add('show');
-  setTimeout(()=>el('submit-name').focus(),250);
-}
-function closeSubmitModal(){el('submit-modal').classList.remove('show');}
-
-function doSubmitScore(){
-  const name=el('submit-name').value.trim();
-  const cls=el('submit-class').value.trim();
-  if(!name){el('submit-msg').textContent='請輸入姓名';return;}
-  if(!cls){el('submit-msg').textContent='請輸入班別';return;}
-  el('submit-ok-btn').disabled=true;
-  el('submit-msg').textContent='';
+  const btn=el('submit-btn');
+  if(btn)btn.disabled=true;
   _db.ref('submissions').push({
-    name,cls,
+    name:currentPlayer||'未知',
+    cls:'',
     game:curGame,
     gameName:GAME_NAMES[curGame]||curGame,
     score:lastGameScore,
     ts:Date.now()
   }).then(()=>{
-    closeSubmitModal();
-    toast('✓ 成績已提交','ok');
+    if(btn)btn.style.display='none';
+    const msg=el('submit-done-msg');
+    if(msg)msg.textContent='✓ 成績已提交';
   }).catch(e=>{
-    el('submit-ok-btn').disabled=false;
-    el('submit-msg').textContent='失敗：'+e.message;
+    if(btn)btn.disabled=false;
+    toast('提交失敗：'+e.message,'bad');
   });
 }
+function openSubmitModal(){quickSubmit();}
+function closeSubmitModal(){}
 
 /* ── Teacher Login ── */
 function openTeacherLogin(){
