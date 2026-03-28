@@ -362,20 +362,24 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .bud-pbtn.bud-pbtn-err{background:rgba(248,113,113,.12);border-color:#f87171}
 .bud-calc-hint{font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;font-style:italic}
 
-/* ════ TEACHER CONSOLE & SUBMIT ════ */
-.tc-row{display:grid;grid-template-columns:1fr 72px 1fr 44px 28px;gap:6px;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);margin-bottom:5px;background:var(--card);font-size:12px}
-.tc-row-hdr{font-weight:700;color:var(--gold);background:rgba(200,168,75,.1);font-size:11px}
-.tc-card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
-.tc-card-main{flex:1;min-width:0}
-.tc-card-name{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px}
-.tc-card-meta{font-size:11px;color:var(--mu);margin-bottom:2px}
-.tc-card-level{font-size:12px;color:var(--gold);font-weight:600}
-.tc-card-score{font-size:22px;font-weight:700;color:var(--gold);white-space:nowrap;line-height:1}
-.tc-del{background:none;border:none;color:rgba(248,113,113,.6);cursor:pointer;font-size:15px;padding:2px;line-height:1}
-.tc-del:hover{color:#f87171}
-.tc-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:rgba(200,168,75,.15);color:var(--gold);border:1px solid var(--bd)}
-.tc-score{font-weight:700;color:var(--gold);font-size:15px}
-.tc-empty{text-align:center;color:var(--mu);font-size:13px;padding:40px 0}
+/* ════ TEACHER CONSOLE ════ */
+.tc-stat{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px 8px;text-align:center}
+.tc-stat-num{font-size:24px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px}
+.tc-stat-lbl{font-size:10px;color:var(--mu)}
+.tc-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.tc-card-name{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.tc-card-meta{font-size:11px;color:var(--mu);margin-top:4px}
+.tc-lv{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:5px;vertical-align:middle}
+.tc-lv-1{background:rgba(74,222,128,.18);color:#4ade80;border:1px solid rgba(74,222,128,.35)}
+.tc-lv-2{background:rgba(96,165,250,.18);color:#60a5fa;border:1px solid rgba(96,165,250,.35)}
+.tc-lv-3{background:rgba(251,191,36,.18);color:#fbbf24;border:1px solid rgba(251,191,36,.35)}
+.tc-lv-4{background:rgba(251,146,60,.18);color:#fb923c;border:1px solid rgba(251,146,60,.35)}
+.tc-score-num{font-size:30px;font-weight:700;line-height:1}
+.tc-del{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;cursor:pointer;font-size:11px;padding:4px 10px;margin-top:6px;white-space:nowrap}
+.tc-del:hover{background:rgba(248,113,113,.25)}
+.tc-fi{background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:7px 10px;font-size:12px;width:100%;outline:none}
+.tc-fi:focus{border-color:var(--gold)}
+.tc-empty{text-align:center;color:var(--mu);font-size:13px;padding:60px 0}
 .modal-input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font-size:14px;margin-bottom:9px;outline:none;-webkit-appearance:none}
 .modal-input:focus{border-color:var(--gold)}
 </style>
@@ -2109,28 +2113,49 @@ function showResult(sc){
 
 <!-- ══ TEACHER CONSOLE PAGE ══ -->
 <div class="pg" id="pg-teacher">
-  <div class="hdr">
-    <button class="bk" onclick="go('home');detachTeacherListener()">← 返回</button>
-    <div class="htit">👩‍🏫 老師控制台</div>
-    <button class="bk" onclick="confirmDeleteAll()" style="color:#f87171;border-color:rgba(248,113,113,.3)">清除</button>
+  <!-- 所有非清單內容放在 tc-top，用於計算剩餘高度 -->
+  <div id="tc-top">
+    <div class="hdr">
+      <button class="bk" onclick="go('home');detachTeacherListener()">← 返回</button>
+      <div class="htit">👩‍🏫 老師控制台</div>
+      <button class="bk" onclick="confirmDeleteAll()" style="color:#f87171;border-color:rgba(248,113,113,.3)">清除全部</button>
+    </div>
+    <!-- 統計欄 -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 14px;background:var(--card);border-bottom:1px solid var(--bd)">
+      <div class="tc-stat">
+        <div id="tc-stat-total" class="tc-stat-num">-</div>
+        <div class="tc-stat-lbl">📋 提交記錄</div>
+      </div>
+      <div class="tc-stat">
+        <div id="tc-stat-avg" class="tc-stat-num">-</div>
+        <div class="tc-stat-lbl">⭐ 平均分數</div>
+      </div>
+      <div class="tc-stat" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+        <div id="tc-status" style="font-size:11px;font-weight:600;color:var(--mu)">-</div>
+        <div class="tc-stat-lbl">🔌 連線狀態</div>
+      </div>
+    </div>
+    <!-- 篩選欄 -->
+    <div style="padding:8px 14px;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--card);border-bottom:1px solid var(--bd)">
+      <select id="tc-filter-game" onchange="filterScores()" class="tc-fi">
+        <option value="">📚 所有關卡</option>
+        <option value="count">Level 1 計算面值</option>
+        <option value="pay">Level 2 模擬付款</option>
+        <option value="exchange">Level 3 貨幣兌換</option>
+        <option value="budget">Level 4 精明消費</option>
+      </select>
+      <input id="tc-filter-name" oninput="filterScores()" placeholder="🔍 篩選學生" class="tc-fi">
+      <input id="tc-filter-class" oninput="filterScores()" placeholder="🏫 篩選班別" class="tc-fi">
+      <input type="date" id="tc-filter-date" oninput="filterScores()" class="tc-fi" style="color-scheme:dark">
+    </div>
+    <!-- 記錄數 + 清除篩選 -->
+    <div style="padding:5px 14px;font-size:11px;background:var(--card);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+      <span id="tc-count" style="color:var(--mu)">-</span>
+      <button onclick="el('tc-filter-game').value='';el('tc-filter-name').value='';el('tc-filter-class').value='';el('tc-filter-date').value='';filterScores()" style="background:none;border:none;color:var(--mu);cursor:pointer;font-size:11px;padding:2px 0">清除篩選 ×</button>
+    </div>
   </div>
-  <div style="padding:6px 14px;display:grid;grid-template-columns:1fr 1fr;gap:6px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--bd)">
-    <select id="tc-filter-game" onchange="filterScores()" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
-      <option value="">所有關卡</option>
-      <option value="count">計算面值</option>
-      <option value="pay">模擬付款</option>
-      <option value="exchange">貨幣兌換</option>
-      <option value="budget">精明消費</option>
-    </select>
-    <input id="tc-filter-name" oninput="filterScores()" placeholder="篩選學生" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
-    <input id="tc-filter-class" oninput="filterScores()" placeholder="篩選班別" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
-    <input type="date" id="tc-filter-date" oninput="filterScores()" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px;color-scheme:dark">
-  </div>
-  <div style="padding:3px 14px;font-size:11px;flex-shrink:0;background:var(--card);display:flex;justify-content:space-between">
-    <span id="tc-count" style="color:var(--mu)">-</span>
-    <span id="tc-status" style="color:var(--mu)">-</span>
-  </div>
-  <div style="flex:1;height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 14px 30px" id="tc-list">
+  <!-- 可捲動記錄清單（高度由 JS 動態設定） -->
+  <div id="tc-list" style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px 20px">
     <div class="tc-empty">載入中…</div>
   </div>
 </div>
@@ -2270,6 +2295,10 @@ function initTeacherConsole(){
   el('tc-filter-date').value='';
   el('tc-list').innerHTML='<div class="tc-empty">連線中…</div>';
   el('tc-count').textContent='連線中…';
+  el('tc-stat-total').textContent='-';
+  el('tc-stat-avg').textContent='-';
+  /* 初始化後立即計算列表高度 */
+  setTimeout(resizeTcList,0);
 
   /* 監聽連線狀態 */
   _db.ref('.info/connected').on('value',snap=>{
@@ -2298,6 +2327,15 @@ function detachTeacherListener(){
   if(_db)_db.ref('.info/connected').off();
 }
 
+/* 動態計算並設定 tc-list 高度（確保所有瀏覽器正確捲動） */
+function resizeTcList(){
+  const top=el('tc-top');
+  const list=el('tc-list');
+  if(!top||!list)return;
+  list.style.height=(window.innerHeight-top.offsetHeight)+'px';
+}
+window.addEventListener('resize',resizeTcList);
+
 function filterScores(){
   const gf=el('tc-filter-game').value;
   const cf=(el('tc-filter-class').value||'').trim().toLowerCase();
@@ -2314,30 +2352,44 @@ function filterScores(){
     }
     return true;
   });
+  /* 統計 */
   const total=allScores.length;
+  const avg=total?Math.round(allScores.reduce((s,r)=>s+(r.score||0),0)/total):0;
+  el('tc-stat-total').textContent=total||'-';
+  el('tc-stat-avg').textContent=total?(avg+'分'):'-';
   el('tc-count').textContent='共 '+total+' 筆記錄'+(list.length<total?' · 篩選後 '+list.length+' 筆':'');
-  if(!list.length){el('tc-list').innerHTML='<div class="tc-empty">暫無記錄</div>';return;}
+  /* 渲染卡片 */
+  if(!list.length){el('tc-list').innerHTML='<div class="tc-empty">'+(total?'未找到符合篩選條件的記錄':'暫無提交記錄')+'</div>';resizeTcList();return;}
+  const lvCls={1:'tc-lv-1',2:'tc-lv-2',3:'tc-lv-3',4:'tc-lv-4'};
   let h='';
   list.forEach(r=>{
     const d=new Date(r.ts);
-    const dateStr=(d.getMonth()+1)+'/'+(d.getDate());
+    const dateStr=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+(d.getDate());
     const timeStr=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
-    const lvLabel=r.level?'Level '+r.level+'　'+(r.gameName||r.game||''):(r.gameName||r.game||'未知關卡');
-    const prog=r.progress||'-';
+    const lvBadge=r.level?`<span class="tc-lv ${lvCls[r.level]||'tc-lv-1'}">L${r.level}</span>`:'';
+    const gameName=r.gameName||r.game||'未知關卡';
+    const sc=r.score||0;
+    const scColor=sc>=80?'#4ade80':sc>=40?'#fbbf24':'#f87171';
     h+=`<div class="tc-card">
-      <div class="tc-card-main">
-        <div class="tc-card-name">👤 ${r.name}</div>
-        <div class="tc-card-level">${lvLabel}</div>
-        <div class="tc-card-meta">📊 ${prog}</div>
-        <div class="tc-card-meta">🕐 ${dateStr} ${timeStr}</div>
+  <div style="display:flex;align-items:flex-start;gap:14px">
+    <div style="flex:1;min-width:0">
+      <div class="tc-card-name">👤 ${r.name}</div>
+      <div style="margin:5px 0">${lvBadge}<span style="font-size:12px;font-weight:600;color:var(--tx);vertical-align:middle">${gameName}</span></div>
+      <div class="tc-card-meta">📊 ${r.progress||'-'}</div>
+      <div class="tc-card-meta">🕐 ${dateStr} ${timeStr}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0">
+      <div style="text-align:center;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;min-width:56px">
+        <div class="tc-score-num" style="color:${scColor}">${sc}</div>
+        <div style="font-size:10px;color:var(--mu)">分</div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-        <div class="tc-card-score">${r.score}<span style="font-size:12px;font-weight:400;color:var(--mu)"> 分</span></div>
-        <button class="tc-del" onclick="deleteScore('${r.key}')" title="刪除">🗑</button>
-      </div>
-    </div>`;
+      <button class="tc-del" onclick="deleteScore('${r.key}')">🗑 刪除</button>
+    </div>
+  </div>
+</div>`;
   });
   el('tc-list').innerHTML=h;
+  resizeTcList();
 }
 
 function deleteScore(key){
