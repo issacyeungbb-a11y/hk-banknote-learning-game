@@ -365,6 +365,12 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 /* ════ TEACHER CONSOLE & SUBMIT ════ */
 .tc-row{display:grid;grid-template-columns:1fr 72px 1fr 44px 28px;gap:6px;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);margin-bottom:5px;background:var(--card);font-size:12px}
 .tc-row-hdr{font-weight:700;color:var(--gold);background:rgba(200,168,75,.1);font-size:11px}
+.tc-card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.tc-card-main{flex:1;min-width:0}
+.tc-card-name{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.tc-card-meta{font-size:11px;color:var(--mu);margin-bottom:2px}
+.tc-card-level{font-size:12px;color:var(--gold);font-weight:600}
+.tc-card-score{font-size:22px;font-weight:700;color:var(--gold);white-space:nowrap;line-height:1}
 .tc-del{background:none;border:none;color:rgba(248,113,113,.6);cursor:pointer;font-size:15px;padding:2px;line-height:1}
 .tc-del:hover{color:#f87171}
 .tc-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:rgba(200,168,75,.15);color:var(--gold);border:1px solid var(--bd)}
@@ -2295,21 +2301,26 @@ function filterScores(){
     return true;
   });
   const total=allScores.length;
-  el('tc-count').textContent='共 '+total+' 筆'+( list.length<total?' · 篩選後 '+list.length+' 筆':'');
+  el('tc-count').textContent='共 '+total+' 筆記錄'+(list.length<total?' · 篩選後 '+list.length+' 筆':'');
   if(!list.length){el('tc-list').innerHTML='<div class="tc-empty">暫無記錄</div>';return;}
-  let h='<div class="tc-row tc-row-hdr"><span>學生</span><span>日期/時間</span><span>Level · 進度</span><span style="text-align:right">分數</span><span></span></div>';
+  let h='';
   list.forEach(r=>{
     const d=new Date(r.ts);
     const dateStr=(d.getMonth()+1)+'/'+(d.getDate());
     const timeStr=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
-    const lvLabel=r.level?'Lv'+r.level+' '+(r.gameName||r.game||''):(r.gameName||r.game||'-');
+    const lvLabel=r.level?'Level '+r.level+'　'+(r.gameName||r.game||''):(r.gameName||r.game||'未知關卡');
     const prog=r.progress||'-';
-    h+=`<div class="tc-row">
-      <span style="font-weight:600;color:var(--tx)">${r.name}</span>
-      <span style="font-size:11px;color:var(--mu);line-height:1.4">${dateStr}<br>${timeStr}</span>
-      <span style="font-size:11px;line-height:1.4"><span style="color:var(--gold);font-weight:600">${lvLabel}</span><br><span style="color:var(--mu)">${prog}</span></span>
-      <span class="tc-score" style="text-align:right">${r.score}</span>
-      <button class="tc-del" onclick="deleteScore('${r.key}')">🗑</button>
+    h+=`<div class="tc-card">
+      <div class="tc-card-main">
+        <div class="tc-card-name">👤 ${r.name}</div>
+        <div class="tc-card-level">${lvLabel}</div>
+        <div class="tc-card-meta">📊 ${prog}</div>
+        <div class="tc-card-meta">🕐 ${dateStr} ${timeStr}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <div class="tc-card-score">${r.score}<span style="font-size:12px;font-weight:400;color:var(--mu)"> 分</span></div>
+        <button class="tc-del" onclick="deleteScore('${r.key}')" title="刪除">🗑</button>
+      </div>
     </div>`;
   });
   el('tc-list').innerHTML=h;
