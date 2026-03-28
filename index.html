@@ -1001,7 +1001,7 @@ const PAY_QS=[
   {item:'電影戲票',    price:120, needChange:true,  change:30,
    wallet:[100,50,20,100]},
   {item:'日用品',      price:280, needChange:true,  change:20,
-   wallet:[100,200,100,50]},
+   wallet:[100,100,100,50]},
 
   /* ── 題12-15：較難，大面值，多選擇，找贖複雜 ── */
   {item:'茶餐廳早餐',  price:52,  needChange:true,  change:48,
@@ -1239,18 +1239,18 @@ const EX_QS=[
   },
   {
     level:2,
-    amt:100, targetVal:100, req:'全部 HK$100',
+    amt:100, targetVal:50, req:'全部 HK$50',
     wallet:[100,20,50,10],
-    ans:true,
-    hint:'銀包有 1 張 $100 = $100，可以換（$20、$50、$10 係多餘）✓'
+    ans:false,
+    hint:'換 $100 需要 2 張 $50，但銀包只有 1 張 $50，唔夠換 ✗'
   },
   /* ── 難度 3：中 ── 需要算清楚張數 */
   {
     level:3,
-    amt:60, targetVal:20, req:'全部 HK$20',
+    amt:100, targetVal:20, req:'全部 HK$20',
     wallet:[20,20,10,10,10],
     ans:false,
-    hint:'銀包只有 2 張 $20 = $40，唔夠換 $60 ✗'
+    hint:'換 $100 需要 5 張 $20，但銀包只有 2 張 $20 = $40，唔夠換 ✗'
   },
   {
     level:3,
