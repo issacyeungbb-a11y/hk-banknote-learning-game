@@ -97,6 +97,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .ni{flex:1;background:rgba(200,168,75,.08);border:1.5px solid var(--bd);border-radius:8px;padding:5px;font-size:20px;font-weight:700;color:var(--tx);text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
 .ni.ok{border-color:var(--ok);color:var(--ok)}
 .ni.err{border-color:var(--err);color:var(--err)}
+.err-hint{display:none;background:rgba(251,146,60,.12);border-left:3px solid #fb923c;border-radius:0 8px 8px 0;padding:7px 12px;font-size:13px;color:#fb923c;margin-top:8px;line-height:1.6}
+.err-hint.show{display:block;animation:slideIn .25s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;flex-shrink:0}
 .npb{background:var(--card);border:1px solid var(--bd);border-radius:9px;padding:8px 4px;font-size:15px;font-weight:600;color:var(--tx);cursor:pointer;text-align:center;font-family:inherit}
 .npb:active{background:rgba(200,168,75,.15);transform:scale(.93)}
@@ -496,6 +499,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
   <div class="ftr" style="padding:6px 14px 46px">
     <button class="btn" onclick="submitCnt()">確認答案</button>
+    <div class="err-hint" id="cnt-hint"></div>
     <div style="display:flex;gap:6px">
       <button class="btn2" style="flex:1" onclick="openCalc()">🧮 計算機</button>
       <button class="btn2" style="flex:1" onclick="clearCnt()">清除答案</button>
@@ -549,6 +553,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
   <div class="ftr">
     <button class="btn" onclick="submitPay()">確認付款</button>
+    <div class="err-hint" id="pay-hint"></div>
     <button class="btn2" onclick="resetPayGame()">清除選擇</button>
   </div>
 </div>
@@ -606,6 +611,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
   <div class="ftr" style="padding:6px 14px 46px">
     <button class="btn" id="ex-submit" onclick="submitExchange()">確認答案</button>
+    <div class="err-hint" id="ex-hint"></div>
   </div>
 </div>
 
@@ -660,6 +666,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <div class="bud-part-hdr">── Part 1 ──</div>
       <div class="bud-part-q" id="bud-p1-q"></div>
       <div class="bud-pay-btns" id="bud-pay-btns"></div>
+      <div class="err-hint" id="bud-p1-hint"></div>
     </div>
     <!-- Part 2 -->
     <div class="bud-part" id="bud-part2" style="display:none">
@@ -672,6 +679,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
         <button class="btn" onclick="submitBudgetP2()" style="flex:1">確認答案</button>
         <button class="btn2" onclick="clearBudgetInp()">清除</button>
       </div>
+      <div class="err-hint" id="bud-p2-hint"></div>
     </div>
   </div>
 </div>
@@ -904,6 +912,8 @@ function toast(msg,type='ok'){
   e.textContent=msg;e.className='toast on '+type;
   _tt=setTimeout(()=>e.className='toast',2500);
 }
+function showHint(id,msg){const h=el(id);if(!h)return;h.innerHTML=msg;h.classList.remove('show');void h.offsetWidth;h.classList.add('show');}
+function hideHint(id){const h=el(id);if(h)h.classList.remove('show');}
 
 /* ════ COUNT ════ */
 const CNT_QS=[
@@ -957,6 +967,7 @@ function npHit(k,pfx){
 function clearCnt(){cntV='';const i=el('cnt-inp');if(i){i.value='';i.className='ni';}}
 function loadCnt(){
   if(cntQ>=CNT_QS.length){showResult(cntSc);return;}
+  hideHint('cnt-hint');
   const q=CNT_QS[cntQ];cntV='';
   el('cnt-ql').textContent='第 '+(cntQ+1)+' 題 / 共 '+CNT_QS.length+' 題';
   el('cnt-pf').style.width=Math.round(cntQ/CNT_QS.length*100)+'%';
@@ -988,6 +999,7 @@ function submitCnt(){
   const inp=el('cnt-inp');
   if(ent===q.ans){
     if(inp)inp.className='ni ok';
+    hideHint('cnt-hint');
     updTotalSc(20);
     toast('✓ +20分','ok');
     cntQ++;setTimeout(()=>{if(inp)inp.className='ni';loadCnt();},1400);
@@ -995,6 +1007,8 @@ function submitCnt(){
     if(inp)inp.className='ni err';
     updTotalSc(-5);
     toast('✗ −5分','bad');
+    if(ent<q.ans) showHint('cnt-hint','📈 再加多啲！答案比你入嘅數字大');
+    else showHint('cnt-hint','📉 細咗少少！答案比你入嘅數字小');
   }
 }
 
@@ -1078,6 +1092,7 @@ function initPay(){
 
 function loadPayQ(){
   if(payQ>=PAY_QS.length){showResult(paySc);return;}
+  hideHint('pay-hint');
   const q=PAY_QS[payQ];
   paySel=[];payChgV='';payChgChoice=null;
 
@@ -1190,14 +1205,15 @@ function submitPay(){
   const q=PAY_QS[payQ];
   const total=paySel.reduce((a,b)=>a+b.v,0);
   if(!paySel.length){toast('請先選擇紙幣！','bad');return;}
-  if(total<q.price){updTotalSc(-5);toast('✗ −5分','bad');return;}
+  if(total<q.price){updTotalSc(-5);toast('✗ −5分','bad');showHint('pay-hint','💸 錢唔夠喎！加多張紙幣先');return;}
 
   /* 前5題：整數，必須用多張，學生要選「不找續」且total==price */
   if(!q.needChange){
-    if(paySel.length<2){updTotalSc(-5);toast('✗ −5分','bad');return;}
+    if(paySel.length<2){updTotalSc(-5);toast('✗ −5分','bad');showHint('pay-hint','🪙 要用多張紙幣去湊啱金額');return;}
     if(payChgChoice===null){toast('請選擇係咪需要找續','bad');return;}
-    if(payChgChoice===true){updTotalSc(-5);toast('✗ −5分','bad');return;}
-    if(total!==q.price){updTotalSc(-5);toast('✗ −5分','bad');return;}
+    if(payChgChoice===true){updTotalSc(-5);toast('✗ −5分','bad');showHint('pay-hint','💰 金額啱啱好，唔需要找續㗎！');return;}
+    if(total!==q.price){updTotalSc(-5);toast('✗ −5分','bad');showHint('pay-hint','⚖️ 付款金額要同價錢一樣，唔多唔少');return;}
+    hideHint('pay-hint');
     updTotalSc(20);
     toast('✓ +20分','ok');
     payQ++;setTimeout(()=>loadPayQ(),1400);
@@ -1208,22 +1224,26 @@ function submitPay(){
   const change=total-q.price;
   if(payChgChoice===null){toast('請選擇係咪需要找續','bad');return;}
   if(change===0){
-    if(payChgChoice===true){updTotalSc(-5);toast('✗ −5分','bad');return;}
+    if(payChgChoice===true){updTotalSc(-5);toast('✗ −5分','bad');showHint('pay-hint','💰 金額啱啱好，唔需要找續㗎！');return;}
+    hideHint('pay-hint');
     updTotalSc(20);
     toast('✓ +20分','ok');
     payQ++;setTimeout(()=>loadPayQ(),1400);
     return;
   }
   /* 有找續 */
-  if(payChgChoice===false){updTotalSc(-5);toast('✗ −5分','bad');return;}
+  if(payChgChoice===false){updTotalSc(-5);toast('✗ −5分','bad');showHint('pay-hint','🔄 付款多過價錢，記得要攞找續！');return;}
   const entered=parseInt(payChgV)||0;
   const ci=el('pay-chi');
   if(entered!==change){
     if(ci)ci.className='chi err';
     updTotalSc(-5);
     toast('✗ −5分','bad');
+    if(entered<change) showHint('pay-hint','📈 找續再多啲！用付款金額減去價錢');
+    else showHint('pay-hint','📉 找續少咗！用付款金額減去價錢');
     return;
   }
+  hideHint('pay-hint');
   if(ci)ci.className='chi ok';
   updTotalSc(20);
   toast('✓ +20分','ok');
@@ -1329,6 +1349,7 @@ function initExchange(){
 
 function loadExchange(){
   if(exQ>=exOrder.length){showResult(exSc);return;}
+  hideHint('ex-hint');
   const q=EX_QS[exOrder[exQ]];
   exChoice=null;exLock=false;
   el('ex-ql').textContent='第 '+(exQ+1)+' 題 / 共 '+exOrder.length+' 題';
@@ -1398,6 +1419,11 @@ function submitExchange(){
     updTotalSc(-5);
     toast('✗ −5分','bad');
     /* 答錯：重置選擇，讓學生再答 */
+    if(exChoice===true){
+      showHint('ex-hint','🔍 銀包入面嘅紙幣夠唔夠？仔細數清楚');
+    } else {
+      showHint('ex-hint','💡 試下數數銀包，或者可以試下換！');
+    }
     exChoice=null;
     el('ex-btn-yes').classList.remove('sel');
     el('ex-btn-no').classList.remove('sel');
@@ -1867,6 +1893,7 @@ function initBudget(){
 
 function loadBudgetQ(){
   if(budQ>=BUDGET_QS.length){showResult(budSc);return;}
+  hideHint('bud-p1-hint');hideHint('bud-p2-hint');
   const q=BUDGET_QS[budQ];
   budP1Locked=false;budP2Inp='';
   el('bud-pf').style.width=Math.round(budQ/BUDGET_QS.length*100)+'%';
@@ -1958,6 +1985,7 @@ function selectBudP1(choice,q){
   });
   if(choice===correct){
     budP1Locked=true;
+    hideHint('bud-p1-hint');
     /* 關掉所有選擇題按鈕 */
     btns.forEach(b=>b.style.pointerEvents='none');
     toast('✓ 啱！','ok');
@@ -1968,6 +1996,7 @@ function selectBudP1(choice,q){
   }else{
     updTotalSc(-5);
     toast('✗ −5分，再試','bad');
+    showHint('bud-p1-hint','👀 比較一下每個選項嘅餘額，揀個最划算嘅方式');
   }
 }
 
@@ -2001,6 +2030,7 @@ function submitBudgetP2(){
   if(isNaN(val)||budP2Inp===''){toast('請輸入答案','bad');return;}
   if(Math.abs(val-q.part2.answer)<0.01){
     el('bud-inp').className='ni ok';
+    hideHint('bud-p2-hint');
     updTotalSc(20);budSc+=20;
     toast('✓ +20分！','ok');
     setTimeout(()=>{budQ++;loadBudgetQ();const b=el('pg-budget').querySelector('.body');if(b)b.scrollTop=0;},1500);
@@ -2008,6 +2038,8 @@ function submitBudgetP2(){
     el('bud-inp').className='ni err';
     updTotalSc(-5);
     toast('✗ −5分，再試','bad');
+    if(val<q.part2.answer) showHint('bud-p2-hint','📈 答案比你入嘅大，再計過！');
+    else showHint('bud-p2-hint','📉 答案比你入嘅小，再計過！');
   }
 }
 
