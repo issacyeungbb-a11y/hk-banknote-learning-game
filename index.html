@@ -363,7 +363,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .bud-calc-hint{font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;font-style:italic}
 
 /* ════ TEACHER CONSOLE & SUBMIT ════ */
-.tc-row{display:grid;grid-template-columns:1fr 1fr 1fr 52px 32px;gap:4px;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);margin-bottom:5px;background:var(--card);font-size:12px}
+.tc-row{display:grid;grid-template-columns:1fr 72px 1fr 44px 28px;gap:6px;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);margin-bottom:5px;background:var(--card);font-size:12px}
 .tc-row-hdr{font-weight:700;color:var(--gold);background:rgba(200,168,75,.1);font-size:11px}
 .tc-del{background:none;border:none;color:rgba(248,113,113,.6);cursor:pointer;font-size:15px;padding:2px;line-height:1}
 .tc-del:hover{color:#f87171}
@@ -402,6 +402,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 
 <!-- ══ LOGIN ══ -->
 <div class="pg on" id="pg-login">
+  <div style="display:flex;justify-content:flex-end;padding:8px 12px 0">
+    <button class="bk" onclick="openTeacherLogin()" style="font-size:11px">👩‍🏫 老師</button>
+  </div>
   <div class="login-top">
     <div class="login-title">💰 香港貨幣自學系統</div>
     <div class="login-sub">請選擇你的名字</div>
@@ -415,7 +418,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
       <button class="bk" onclick="confirmLogout()" style="font-size:11px">← 換人</button>
       <div style="flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--gold)" id="home-player-name"></div>
-      <button class="bk" onclick="openTeacherLogin()" style="font-size:11px">👩‍🏫</button>
+      <div style="width:44px"></div>
     </div>
     <div class="htitle">💰 香港貨幣自學系統</div>
     <div class="hsub">互動遊戲 · 認識香港流通紙幣</div>
@@ -454,7 +457,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">計算面值</div>
-    <button class="hint-btn" onclick="openHint()">💡</button>
+    <div style="display:flex;gap:4px">
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="openHint()">💡</button>
+    </div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="cnt-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:5px;padding:6px 14px">
@@ -480,7 +486,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">模擬付款</div>
-    <button class="hint-btn" onclick="openHint()">💡</button>
+    <div style="display:flex;gap:4px">
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="openHint()">💡</button>
+    </div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="pay-pf" style="width:0%"></div></div></div>
   <div class="body">
@@ -540,7 +549,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">貨幣兌換</div>
-    <button class="hint-btn" onclick="openHint()">💡</button>
+    <div style="display:flex;gap:4px">
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="openHint()">💡</button>
+    </div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="ex-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:8px;padding:8px 14px">
@@ -598,7 +610,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   <div class="hdr">
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">精明消費</div>
-    <button class="hint-btn" onclick="openHint()">💡</button>
+    <div style="display:flex;gap:4px">
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="openHint()">💡</button>
+    </div>
   </div>
   <div class="pbrow"><div class="pb"><div class="pf" id="bud-pf" style="width:0%"></div></div></div>
   <div class="body" style="gap:6px;padding:6px 14px;overflow-y:auto">
@@ -2106,27 +2121,58 @@ function _initFB(){
   }catch(e){console.error('Firebase:',e);return false;}
 }
 
-/* ── Submit ── */
-function quickSubmit(){
+/* ── Progress ── */
+const LEVEL_NUM={count:1,pay:2,exchange:3,budget:4};
+
+function getCurrentProgress(){
+  if(curGame==='count'){
+    const done=Math.min(cntQ,CNT_QS.length);
+    return done>=CNT_QS.length?'全部'+CNT_QS.length+'題完成':'已完成 '+done+' / '+CNT_QS.length+' 題';
+  }
+  if(curGame==='pay'){
+    const done=Math.min(payQ,PAY_QS.length);
+    return done>=PAY_QS.length?'全部'+PAY_QS.length+'題完成':'已完成 '+done+' / '+PAY_QS.length+' 題';
+  }
+  if(curGame==='exchange'){
+    const total=exOrder.length||10;
+    const done=Math.min(exQ,total);
+    return done>=total?'全部'+total+'題完成':'已完成 '+done+' / '+total+' 題';
+  }
+  if(curGame==='budget'){
+    const done=Math.min(budQ,BUDGET_QS.length);
+    return done>=BUDGET_QS.length?'全部'+BUDGET_QS.length+'題完成':'已完成 '+done+' / '+BUDGET_QS.length+' 題';
+  }
+  return '-';
+}
+
+function _doSubmit(fromResult){
   if(!_initFB()){toast('Firebase 未設定','bad');return;}
-  const btn=el('submit-btn');
-  if(btn)btn.disabled=true;
+  const progress=fromResult?'全部完成':getCurrentProgress();
   _db.ref('submissions').push({
     name:currentPlayer||'未知',
-    cls:'',
     game:curGame,
     gameName:GAME_NAMES[curGame]||curGame,
+    level:LEVEL_NUM[curGame]||0,
+    progress,
     score:lastGameScore,
     ts:Date.now()
   }).then(()=>{
-    if(btn)btn.style.display='none';
-    const msg=el('submit-done-msg');
-    if(msg)msg.textContent='✓ 成績已提交';
-  }).catch(e=>{
-    if(btn)btn.disabled=false;
-    toast('提交失敗：'+e.message,'bad');
-  });
+    if(fromResult){
+      const btn=el('submit-btn');if(btn)btn.style.display='none';
+      const msg=el('submit-done-msg');if(msg)msg.textContent='✓ 成績已提交';
+    }else{
+      toast('✓ 成績已提交','ok');
+    }
+  }).catch(e=>toast('提交失敗：'+e.message,'bad'));
 }
+
+/* 結果頁提交 */
+function quickSubmit(){
+  const btn=el('submit-btn');if(btn)btn.disabled=true;
+  _doSubmit(true);
+}
+/* 遊戲中提交 */
+function gameSubmit(){_doSubmit(false);}
 function openSubmitModal(){quickSubmit();}
 function closeSubmitModal(){}
 
@@ -2177,16 +2223,17 @@ function filterScores(){
   const total=allScores.length;
   el('tc-count').textContent='共 '+total+' 筆'+( list.length<total?' · 篩選後 '+list.length+' 筆':'');
   if(!list.length){el('tc-list').innerHTML='<div class="tc-empty">暫無記錄</div>';return;}
-  let h='<div class="tc-row tc-row-hdr"><span>姓名</span><span>班別</span><span>關卡</span><span style="text-align:right">分數</span><span></span></div>';
+  let h='<div class="tc-row tc-row-hdr"><span>學生</span><span>日期/時間</span><span>Level · 進度</span><span style="text-align:right">分數</span><span></span></div>';
   list.forEach(r=>{
     const d=new Date(r.ts);
-    const ts=(d.getMonth()+1)+'/'+(d.getDate())+' '
-      +d.getHours().toString().padStart(2,'0')+':'
-      +d.getMinutes().toString().padStart(2,'0');
+    const dateStr=(d.getMonth()+1)+'/'+(d.getDate());
+    const timeStr=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    const lvLabel=r.level?'Lv'+r.level+' '+(r.gameName||r.game||''):(r.gameName||r.game||'-');
+    const prog=r.progress||'-';
     h+=`<div class="tc-row">
-      <span style="font-weight:600">${r.name}<br><span style="font-size:10px;color:var(--mu)">${ts}</span></span>
-      <span><span class="tc-badge">${r.cls||'-'}</span></span>
-      <span style="color:var(--mu);font-size:11px">${r.gameName||r.game||'-'}</span>
+      <span style="font-weight:600;color:var(--tx)">${r.name}</span>
+      <span style="font-size:11px;color:var(--mu);line-height:1.4">${dateStr}<br>${timeStr}</span>
+      <span style="font-size:11px;line-height:1.4"><span style="color:var(--gold);font-weight:600">${lvLabel}</span><br><span style="color:var(--mu)">${prog}</span></span>
       <span class="tc-score" style="text-align:right">${r.score}</span>
       <button class="tc-del" onclick="deleteScore('${r.key}')">🗑</button>
     </div>`;
