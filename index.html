@@ -458,7 +458,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">計算面值</div>
     <div style="display:flex;gap:4px">
-      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:11px;padding:4px 7px">📤 提交成績</button>
       <button class="hint-btn" onclick="openHint()">💡</button>
     </div>
   </div>
@@ -487,7 +487,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">模擬付款</div>
     <div style="display:flex;gap:4px">
-      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:11px;padding:4px 7px">📤 提交成績</button>
       <button class="hint-btn" onclick="openHint()">💡</button>
     </div>
   </div>
@@ -550,7 +550,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">貨幣兌換</div>
     <div style="display:flex;gap:4px">
-      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:11px;padding:4px 7px">📤 提交成績</button>
       <button class="hint-btn" onclick="openHint()">💡</button>
     </div>
   </div>
@@ -611,7 +611,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
     <button class="bk" onclick="go('home')">← 返回</button>
     <div class="htit">精明消費</div>
     <div style="display:flex;gap:4px">
-      <button class="hint-btn" onclick="gameSubmit()" style="font-size:13px">📤</button>
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:11px;padding:4px 7px">📤 提交成績</button>
       <button class="hint-btn" onclick="openHint()">💡</button>
     </div>
   </div>
@@ -2055,6 +2055,36 @@ function showResult(sc){
   </div>
 </div>
 
+<!-- ══ SUBMIT CONFIRM MODAL ══ -->
+<div class="confirm-overlay" id="submit-confirm-modal" onclick="if(event.target===this)closeSubmitConfirm()">
+  <div class="confirm-box">
+    <div class="confirm-icon">📤</div>
+    <div class="confirm-title">提交成績</div>
+    <div style="background:rgba(200,168,75,.08);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:14px;text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--mu)">學生</span>
+        <span style="font-size:14px;font-weight:700;color:var(--tx)" id="sc-name"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--mu)">關卡</span>
+        <span style="font-size:13px;font-weight:600;color:var(--gold)" id="sc-level"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--mu)">進度</span>
+        <span style="font-size:13px;color:var(--tx)" id="sc-progress"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bd);padding-top:8px;margin-top:4px">
+        <span style="font-size:12px;color:var(--mu)">分數</span>
+        <span style="font-size:20px;font-weight:700;color:var(--gold)" id="sc-score"></span>
+      </div>
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeSubmitConfirm()">取消</button>
+      <button class="confirm-ok" id="sc-ok-btn" onclick="confirmSubmit()" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">確認提交</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ TEACHER LOGIN MODAL ══ -->
 <div class="confirm-overlay" id="teacher-login-modal" onclick="if(event.target===this)closeTeacherLogin()">
   <div class="confirm-box">
@@ -2145,9 +2175,25 @@ function getCurrentProgress(){
   return '-';
 }
 
-function _doSubmit(fromResult){
+let _submitFromResult=false;
+
+function _openSubmitConfirm(fromResult){
   if(!_initFB()){toast('Firebase 未設定','bad');return;}
+  _submitFromResult=fromResult;
   const progress=fromResult?'全部完成':getCurrentProgress();
+  const lv=LEVEL_NUM[curGame]||0;
+  el('sc-name').textContent=currentPlayer||'未知';
+  el('sc-level').textContent='Level '+lv+'　'+(GAME_NAMES[curGame]||curGame);
+  el('sc-progress').textContent=progress;
+  el('sc-score').textContent=lastGameScore+' 分';
+  el('sc-ok-btn').disabled=false;
+  el('submit-confirm-modal').classList.add('show');
+}
+function closeSubmitConfirm(){el('submit-confirm-modal').classList.remove('show');}
+
+function confirmSubmit(){
+  el('sc-ok-btn').disabled=true;
+  const progress=_submitFromResult?'全部完成':getCurrentProgress();
   _db.ref('submissions').push({
     name:currentPlayer||'未知',
     game:curGame,
@@ -2157,22 +2203,23 @@ function _doSubmit(fromResult){
     score:lastGameScore,
     ts:Date.now()
   }).then(()=>{
-    if(fromResult){
+    closeSubmitConfirm();
+    if(_submitFromResult){
       const btn=el('submit-btn');if(btn)btn.style.display='none';
       const msg=el('submit-done-msg');if(msg)msg.textContent='✓ 成績已提交';
     }else{
       toast('✓ 成績已提交','ok');
     }
-  }).catch(e=>toast('提交失敗：'+e.message,'bad'));
+  }).catch(e=>{
+    el('sc-ok-btn').disabled=false;
+    toast('提交失敗：'+e.message,'bad');
+  });
 }
 
 /* 結果頁提交 */
-function quickSubmit(){
-  const btn=el('submit-btn');if(btn)btn.disabled=true;
-  _doSubmit(true);
-}
+function quickSubmit(){_openSubmitConfirm(true);}
 /* 遊戲中提交 */
-function gameSubmit(){_doSubmit(false);}
+function gameSubmit(){_openSubmitConfirm(false);}
 function openSubmitModal(){quickSubmit();}
 function closeSubmitModal(){}
 
