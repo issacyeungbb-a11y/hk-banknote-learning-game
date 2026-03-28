@@ -2222,7 +2222,7 @@ function _openSubmitConfirm(fromResult){
   el('sc-name').textContent=currentPlayer||'未知';
   el('sc-level').textContent='Level '+lv+'　'+(GAME_NAMES[curGame]||curGame);
   el('sc-progress').textContent=progress;
-  el('sc-score').textContent=lastGameScore+' 分';
+  el('sc-score').textContent=totalSc+' 分';
   el('sc-ok-btn').disabled=false;
   el('submit-confirm-modal').classList.add('show');
 }
@@ -2237,7 +2237,7 @@ function confirmSubmit(){
     gameName:GAME_NAMES[curGame]||curGame,
     level:LEVEL_NUM[curGame]||0,
     progress,
-    score:lastGameScore,
+    score:totalSc,
     ts:Date.now()
   }).then(()=>{
     closeSubmitConfirm();
