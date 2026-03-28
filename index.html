@@ -361,7 +361,20 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .bud-pbtn.bud-pbtn-ok{background:rgba(134,239,172,.15);border-color:#86efac}
 .bud-pbtn.bud-pbtn-err{background:rgba(248,113,113,.12);border-color:#f87171}
 .bud-calc-hint{font-size:13px;color:var(--mu);text-align:center;margin-bottom:8px;font-style:italic}
+
+/* ════ TEACHER CONSOLE & SUBMIT ════ */
+.tc-row{display:grid;grid-template-columns:1fr 1fr 1fr 52px 32px;gap:4px;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid var(--bd);margin-bottom:5px;background:var(--card);font-size:12px}
+.tc-row-hdr{font-weight:700;color:var(--gold);background:rgba(200,168,75,.1);font-size:11px}
+.tc-del{background:none;border:none;color:rgba(248,113,113,.6);cursor:pointer;font-size:15px;padding:2px;line-height:1}
+.tc-del:hover{color:#f87171}
+.tc-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:rgba(200,168,75,.15);color:var(--gold);border:1px solid var(--bd)}
+.tc-score{font-weight:700;color:var(--gold);font-size:15px}
+.tc-empty{text-align:center;color:var(--mu);font-size:13px;padding:40px 0}
+.modal-input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font-size:14px;margin-bottom:9px;outline:none;-webkit-appearance:none}
+.modal-input:focus{border-color:var(--gold)}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -433,6 +446,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
       <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span>
       <div class="lva">›</div>
     </div>
+  </div>
+  <div style="text-align:center;padding:8px 0 12px">
+    <button onclick="openTeacherLogin()" style="background:none;border:none;color:rgba(232,223,200,0.22);font-size:11px;cursor:pointer;padding:4px 12px;letter-spacing:.5px">👩‍🏫 老師控制台</button>
   </div>
 </div>
 
@@ -642,7 +658,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
   <div class="ftr">
     <button class="btn" onclick="go('home');updateHomeLocks()">返回主頁</button>
-    <button class="btn2" id="retry-btn" onclick="retry()">再玩一次</button>
+    <div style="display:flex;gap:6px">
+      <button class="btn2" style="flex:1" id="retry-btn" onclick="retry()">再玩一次</button>
+      <button class="btn2" style="flex:1;color:#60a5fa;border-color:rgba(96,165,250,.4)" onclick="openSubmitModal()">📤 提交成績</button>
+    </div>
   </div>
 </div>
 
@@ -1989,7 +2008,7 @@ function buildHintSteps_budget(q){
   return steps;
 }
 
-function showResult(sc){
+function showResult(sc){lastGameScore=sc;
   /* 記錄呢關已完成 */
   markDone(curGame);
   const max=curGame==='count'?200:curGame==='pay'?300:curGame==='budget'?200:200;
@@ -2005,5 +2024,197 @@ function showResult(sc){
   go('result');
 }
 </script>
+
+<!-- ══ SUBMIT MODAL ══ -->
+<div class="confirm-overlay" id="submit-modal" onclick="if(event.target===this)closeSubmitModal()">
+  <div class="confirm-box">
+    <div class="confirm-icon">📤</div>
+    <div class="confirm-title">提交成績</div>
+    <div id="submit-info" style="font-size:12px;color:var(--mu);margin-bottom:14px;text-align:center"></div>
+    <input class="modal-input" id="submit-name" placeholder="你的姓名" maxlength="20" autocomplete="off">
+    <input class="modal-input" id="submit-class" placeholder="班別（如 2A）" maxlength="10" autocomplete="off">
+    <div id="submit-msg" style="font-size:12px;color:#f87171;min-height:16px;margin-bottom:4px;text-align:center"></div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeSubmitModal()">取消</button>
+      <button class="confirm-ok" id="submit-ok-btn" onclick="doSubmitScore()" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">提交</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TEACHER LOGIN MODAL ══ -->
+<div class="confirm-overlay" id="teacher-login-modal" onclick="if(event.target===this)closeTeacherLogin()">
+  <div class="confirm-box">
+    <div class="confirm-icon">🔐</div>
+    <div class="confirm-title">老師控制台</div>
+    <div style="font-size:12px;color:var(--mu);margin-bottom:14px;text-align:center">請輸入密碼</div>
+    <input class="modal-input" id="teacher-pwd-input" type="password" placeholder="密碼" onkeydown="if(event.key==='Enter')checkTeacherPwd()">
+    <div id="teacher-pwd-err" style="font-size:12px;color:#f87171;min-height:16px;margin-bottom:4px;text-align:center"></div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeTeacherLogin()">取消</button>
+      <button class="confirm-ok" onclick="checkTeacherPwd()" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">進入</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TEACHER CONSOLE PAGE ══ -->
+<div class="pg" id="pg-teacher">
+  <div class="hdr">
+    <button class="bk" onclick="go('home');detachTeacherListener()">← 返回</button>
+    <div class="htit">👩‍🏫 老師控制台</div>
+    <button class="bk" onclick="confirmDeleteAll()" style="color:#f87171;border-color:rgba(248,113,113,.3)">清除</button>
+  </div>
+  <div style="padding:6px 14px 6px;display:flex;gap:6px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--bd)">
+    <select id="tc-filter-game" onchange="filterScores()" style="flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
+      <option value="">所有關卡</option>
+      <option value="count">計算面值</option>
+      <option value="pay">模擬付款</option>
+      <option value="exchange">貨幣兌換</option>
+      <option value="budget">精明消費</option>
+    </select>
+    <input id="tc-filter-class" oninput="filterScores()" placeholder="班別篩選" style="flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
+  </div>
+  <div style="padding:4px 14px;font-size:11px;color:var(--mu);flex-shrink:0;background:var(--card)" id="tc-count">-</div>
+  <div style="flex:1;overflow-y:auto;padding:8px 14px 30px" id="tc-list">
+    <div class="tc-empty">載入中…</div>
+  </div>
+</div>
+
+<script>
+/* ════ FIREBASE CONFIG ════ */
+/* ⚠️ 請將以下替換成你的 Firebase 專案設定 */
+const FIREBASE_CONFIG={
+  apiKey:"AIzaSyCRybtiy-_A5O0kfno0ya1W-e2yXVVOSiA",
+  authDomain:"hk-banknote.firebaseapp.com",
+  databaseURL:"https://hk-banknote-default-rtdb.firebaseio.com",
+  projectId:"hk-banknote",
+  storageBucket:"hk-banknote.firebasestorage.app",
+  messagingSenderId:"348082212472",
+  appId:"1:348082212472:web:a0759a4b50c1fc61c0278d",
+  measurementId:"G-1Q75MT56QG"
+};
+
+const TEACHER_PWD='teacher2025';
+const GAME_NAMES={count:'計算面值',pay:'模擬付款',exchange:'貨幣兌換',budget:'精明消費'};
+
+let _fbApp=null,_db=null,_tcRef=null,allScores=[],lastGameScore=0;
+
+function _initFB(){
+  if(_fbApp)return true;
+  try{
+    _fbApp=firebase.initializeApp(FIREBASE_CONFIG);
+    _db=firebase.database();
+    return true;
+  }catch(e){console.error('Firebase:',e);return false;}
+}
+
+/* ── Submit ── */
+function openSubmitModal(){
+  if(!_initFB()){toast('Firebase 未設定','bad');return;}
+  el('submit-info').textContent=(GAME_NAMES[curGame]||curGame)+' · 本關 '+lastGameScore+' 分';
+  el('submit-name').value='';
+  el('submit-class').value='';
+  el('submit-msg').textContent='';
+  el('submit-ok-btn').disabled=false;
+  el('submit-modal').classList.add('show');
+  setTimeout(()=>el('submit-name').focus(),250);
+}
+function closeSubmitModal(){el('submit-modal').classList.remove('show');}
+
+function doSubmitScore(){
+  const name=el('submit-name').value.trim();
+  const cls=el('submit-class').value.trim();
+  if(!name){el('submit-msg').textContent='請輸入姓名';return;}
+  if(!cls){el('submit-msg').textContent='請輸入班別';return;}
+  el('submit-ok-btn').disabled=true;
+  el('submit-msg').textContent='';
+  _db.ref('submissions').push({
+    name,cls,
+    game:curGame,
+    gameName:GAME_NAMES[curGame]||curGame,
+    score:lastGameScore,
+    ts:Date.now()
+  }).then(()=>{
+    closeSubmitModal();
+    toast('✓ 成績已提交','ok');
+  }).catch(e=>{
+    el('submit-ok-btn').disabled=false;
+    el('submit-msg').textContent='失敗：'+e.message;
+  });
+}
+
+/* ── Teacher Login ── */
+function openTeacherLogin(){
+  el('teacher-pwd-input').value='';
+  el('teacher-pwd-err').textContent='';
+  el('teacher-login-modal').classList.add('show');
+  setTimeout(()=>el('teacher-pwd-input').focus(),250);
+}
+function closeTeacherLogin(){el('teacher-login-modal').classList.remove('show');}
+
+function checkTeacherPwd(){
+  if(el('teacher-pwd-input').value===TEACHER_PWD){
+    closeTeacherLogin();
+    go('teacher');
+    initTeacherConsole();
+  }else{
+    el('teacher-pwd-err').textContent='密碼錯誤，請再試';
+    el('teacher-pwd-input').value='';
+    el('teacher-pwd-input').focus();
+  }
+}
+
+/* ── Teacher Console ── */
+function initTeacherConsole(){
+  if(!_initFB()){el('tc-list').innerHTML='<div class="tc-empty">⚠️ Firebase 未設定</div>';return;}
+  detachTeacherListener();
+  el('tc-list').innerHTML='<div class="tc-empty">載入中…</div>';
+  _tcRef=_db.ref('submissions');
+  _tcRef.on('value',snap=>{
+    allScores=[];
+    snap.forEach(c=>allScores.push({key:c.key,...c.val()}));
+    allScores.sort((a,b)=>b.ts-a.ts);
+    filterScores();
+  });
+}
+function detachTeacherListener(){if(_tcRef){_tcRef.off();_tcRef=null;}}
+
+function filterScores(){
+  const gf=el('tc-filter-game').value;
+  const cf=(el('tc-filter-class').value||'').trim().toLowerCase();
+  const list=allScores.filter(r=>{
+    if(gf&&r.game!==gf)return false;
+    if(cf&&!(r.cls||'').toLowerCase().includes(cf))return false;
+    return true;
+  });
+  const total=allScores.length;
+  el('tc-count').textContent='共 '+total+' 筆'+( list.length<total?' · 篩選後 '+list.length+' 筆':'');
+  if(!list.length){el('tc-list').innerHTML='<div class="tc-empty">暫無記錄</div>';return;}
+  let h='<div class="tc-row tc-row-hdr"><span>姓名</span><span>班別</span><span>關卡</span><span style="text-align:right">分數</span><span></span></div>';
+  list.forEach(r=>{
+    const d=new Date(r.ts);
+    const ts=(d.getMonth()+1)+'/'+(d.getDate())+' '
+      +d.getHours().toString().padStart(2,'0')+':'
+      +d.getMinutes().toString().padStart(2,'0');
+    h+=`<div class="tc-row">
+      <span style="font-weight:600">${r.name}<br><span style="font-size:10px;color:var(--mu)">${ts}</span></span>
+      <span><span class="tc-badge">${r.cls||'-'}</span></span>
+      <span style="color:var(--mu);font-size:11px">${r.gameName||r.game||'-'}</span>
+      <span class="tc-score" style="text-align:right">${r.score}</span>
+      <button class="tc-del" onclick="deleteScore('${r.key}')">🗑</button>
+    </div>`;
+  });
+  el('tc-list').innerHTML=h;
+}
+
+function deleteScore(key){
+  if(!_db)return;
+  _db.ref('submissions/'+key).remove();
+}
+function confirmDeleteAll(){
+  if(!allScores.length){toast('暫無記錄','bad');return;}
+  if(confirm('確定清除全部 '+allScores.length+' 筆記錄？'))_db.ref('submissions').remove().then(()=>toast('已清除','ok'));
+}
+</script>
+
 </body>
 </html>
