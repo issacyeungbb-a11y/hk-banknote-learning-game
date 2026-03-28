@@ -383,6 +383,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .tc-td-sc{font-size:15px;font-weight:700;white-space:nowrap}
 .tc-del{background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);border-radius:6px;color:#f87171;cursor:pointer;width:30px;height:28px;font-size:13px;padding:0;display:flex;align-items:center;justify-content:center}
 .tc-del:hover{background:rgba(248,113,113,.35)}
+/* Teacher console layout — ensures tc-list scrolls correctly on all browsers */
+#pg-teacher{overflow:hidden}
+#tc-top{flex-shrink:0}
+#tc-list{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .modal-input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font-size:14px;margin-bottom:9px;outline:none;-webkit-appearance:none}
 .modal-input:focus{border-color:var(--gold)}
 </style>
@@ -2149,8 +2153,8 @@ function showResult(sc){
     <input id="tc-filter-class" oninput="filterScores()" style="display:none">
     <input id="tc-stat-total" style="display:none">
   </div>
-  <!-- 可捲動記錄區（高度由 JS 動態設定） -->
-  <div id="tc-list" style="overflow-y:auto;-webkit-overflow-scrolling:touch">
+  <!-- 可捲動記錄區（CSS flex:1 + JS backup 確保高度正確） -->
+  <div id="tc-list">
     <div class="tc-empty">載入中…</div>
   </div>
 </div>
@@ -2291,8 +2295,9 @@ function initTeacherConsole(){
   el('tc-list').innerHTML='<div class="tc-empty">連線中…</div>';
   el('tc-count').textContent='-';
   el('tc-stat-avg').textContent='';
-  /* 初始化後立即計算列表高度 */
-  setTimeout(resizeTcList,0);
+  /* 初始化後計算列表高度（CSS flex 為主，JS 為後備） */
+  resizeTcList();
+  setTimeout(resizeTcList,300);
 
   /* 監聽連線狀態 */
   _db.ref('.info/connected').on('value',snap=>{
@@ -2321,12 +2326,15 @@ function detachTeacherListener(){
   if(_db)_db.ref('.info/connected').off();
 }
 
-/* 動態計算並設定 tc-list 高度（確保所有瀏覽器正確捲動） */
+/* JS backup：在 CSS flex 失效時強制設定 tc-list 高度 */
 function resizeTcList(){
-  const top=el('tc-top');
-  const list=el('tc-list');
-  if(!top||!list)return;
-  list.style.height=(window.innerHeight-top.offsetHeight)+'px';
+  requestAnimationFrame(()=>{
+    const top=el('tc-top');
+    const list=el('tc-list');
+    if(!top||!list)return;
+    const h=window.innerHeight-top.getBoundingClientRect().height;
+    if(h>0)list.style.height=h+'px';
+  });
 }
 window.addEventListener('resize',resizeTcList);
 
