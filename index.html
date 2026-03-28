@@ -2228,6 +2228,12 @@ function _openSubmitConfirm(fromResult){
 function closeSubmitConfirm(){el('submit-confirm-modal').classList.remove('show');}
 
 function confirmSubmit(){
+  /* 確保 Firebase 已初始化（學生提交毋須先進老師控制台） */
+  if(!_initFB()||!_db){
+    toast('⚠️ 無法連線 Firebase，請稍後再試','bad');
+    el('sc-ok-btn').disabled=false;
+    return;
+  }
   el('sc-ok-btn').disabled=true;
   const progress=_submitFromResult?'全部完成':getCurrentProgress();
   _db.ref('submissions').push({
@@ -2311,8 +2317,13 @@ function initTeacherConsole(){
   _tcRef.on('value',
     snap=>{
       allScores=[];
-      snap.forEach(c=>allScores.push({key:c.key,...c.val()}));
-      allScores.sort((a,b)=>b.ts-a.ts);
+      const raw=snap.val();
+      if(raw){
+        Object.keys(raw).forEach(key=>{
+          allScores.push({key,...raw[key]});
+        });
+      }
+      allScores.sort((a,b)=>(b.ts||0)-(a.ts||0));
       filterScores();
     },
     err=>{
