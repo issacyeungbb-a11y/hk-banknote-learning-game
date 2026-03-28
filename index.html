@@ -873,6 +873,8 @@ function go(name){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   const pg=el('pg-'+name);
   if(pg)pg.classList.add('on');
+  const bar=el('total-sc-bar');
+  if(bar)bar.style.display=(name==='teacher')?'none':'';
 }
 function retry(){
   if(curGame==='count')initCnt();
@@ -2112,15 +2114,17 @@ function showResult(sc){
     <div class="htit">👩‍🏫 老師控制台</div>
     <button class="bk" onclick="confirmDeleteAll()" style="color:#f87171;border-color:rgba(248,113,113,.3)">清除</button>
   </div>
-  <div style="padding:6px 14px 6px;display:flex;gap:6px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--bd)">
-    <select id="tc-filter-game" onchange="filterScores()" style="flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
+  <div style="padding:6px 14px;display:grid;grid-template-columns:1fr 1fr;gap:6px;flex-shrink:0;background:var(--card);border-bottom:1px solid var(--bd)">
+    <select id="tc-filter-game" onchange="filterScores()" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
       <option value="">所有關卡</option>
       <option value="count">計算面值</option>
       <option value="pay">模擬付款</option>
       <option value="exchange">貨幣兌換</option>
       <option value="budget">精明消費</option>
     </select>
-    <input id="tc-filter-class" oninput="filterScores()" placeholder="班別篩選" style="flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
+    <input id="tc-filter-name" oninput="filterScores()" placeholder="篩選學生" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
+    <input id="tc-filter-class" oninput="filterScores()" placeholder="篩選班別" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px">
+    <input type="date" id="tc-filter-date" oninput="filterScores()" style="background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:12px;color-scheme:dark">
   </div>
   <div style="padding:3px 14px;font-size:11px;flex-shrink:0;background:var(--card);display:flex;justify-content:space-between">
     <span id="tc-count" style="color:var(--mu)">-</span>
@@ -2262,6 +2266,8 @@ function initTeacherConsole(){
   detachTeacherListener();
   el('tc-filter-game').value='';
   el('tc-filter-class').value='';
+  el('tc-filter-name').value='';
+  el('tc-filter-date').value='';
   el('tc-list').innerHTML='<div class="tc-empty">連線中…</div>';
   el('tc-count').textContent='連線中…';
 
@@ -2295,9 +2301,17 @@ function detachTeacherListener(){
 function filterScores(){
   const gf=el('tc-filter-game').value;
   const cf=(el('tc-filter-class').value||'').trim().toLowerCase();
+  const nf=(el('tc-filter-name').value||'').trim().toLowerCase();
+  const df=el('tc-filter-date').value;
   const list=allScores.filter(r=>{
     if(gf&&r.game!==gf)return false;
     if(cf&&!(r.cls||'').toLowerCase().includes(cf))return false;
+    if(nf&&!(r.name||'').toLowerCase().includes(nf))return false;
+    if(df){
+      const d=new Date(r.ts);
+      const rDate=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
+      if(rDate!==df)return false;
+    }
     return true;
   });
   const total=allScores.length;
