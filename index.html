@@ -56,6 +56,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .lv{background:var(--card);border:1px solid var(--bd);border-radius:11px;padding:10px 13px;display:flex;align-items:center;gap:9px;cursor:pointer}
 .lv:active{transform:scale(.98);background:rgba(200,168,75,.08)}
 .lv.off{opacity:.4;pointer-events:none}
+.lv.locked{opacity:.4;pointer-events:none;filter:grayscale(.6)}
 .lvic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .lvinfo{flex:1}.lvt{font-size:13px;font-weight:600}.lvd{font-size:10px;color:var(--mu);margin-top:1px}
 .lva{color:var(--gold);font-size:16px;opacity:.6}
@@ -846,32 +847,21 @@ function doLogout(){
   go('login');
 }
 
+const GAME_ORDER=['count','pay','exchange','budget'];
+const GAME_LV_LABEL={count:'Level 1　計算面值',pay:'Level 2　模擬付款',exchange:'Level 3　貨幣兌換',budget:'Level 4　精明消費'};
+
 function updateHomeLocks(){
   const d=doneMap[currentPlayer]||{};
-  /* count */
-  const lvCnt=document.querySelector('#pg-home .lv[data-game="count"]');
-  if(lvCnt){
-    if(d.count){lvCnt.classList.add('off');lvCnt.querySelector('.lva').textContent='✓';}
-    else{lvCnt.classList.remove('off');lvCnt.querySelector('.lva').textContent='›';}
-  }
-  /* pay */
-  const lvPay=document.querySelector('#pg-home .lv[data-game="pay"]');
-  if(lvPay){
-    if(d.pay){lvPay.classList.add('off');lvPay.querySelector('.lva').textContent='✓';}
-    else{lvPay.classList.remove('off');lvPay.querySelector('.lva').textContent='›';}
-  }
-  /* exchange */
-  const lvEx=document.querySelector('#pg-home .lv[data-game="exchange"]');
-  if(lvEx){
-    if(d.exchange){lvEx.classList.add('off');lvEx.querySelector('.lva').textContent='✓';}
-    else{lvEx.classList.remove('off');lvEx.querySelector('.lva').textContent='›';}
-  }
-  /* budget */
-  const lvBudget=document.querySelector('#pg-home .lv[data-game="budget"]');
-  if(lvBudget){
-    if(d.budget){lvBudget.classList.add('off');lvBudget.querySelector('.lva').textContent='✓';}
-    else{lvBudget.classList.remove('off');lvBudget.querySelector('.lva').textContent='›';}
-  }
+  GAME_ORDER.forEach((game,i)=>{
+    const lv=document.querySelector('#pg-home .lv[data-game="'+game+'"]');
+    if(!lv)return;
+    const arrow=lv.querySelector('.lva');
+    const done=d[game];
+    const locked=i>0&&!d[GAME_ORDER[i-1]]; /* previous not done */
+    lv.classList.toggle('off',!!done);
+    lv.classList.toggle('locked',!done&&locked);
+    arrow.textContent=done?'✓':locked?'🔒':'›';
+  });
 }
 
 function markDone(game){
@@ -2077,6 +2067,7 @@ function showResult(sc){
   const msg=el('submit-done-msg');if(msg)msg.textContent='';
   /* 記錄呢關已完成 */
   markDone(curGame);
+  updateHomeLocks();
   const max=curGame==='count'?200:curGame==='pay'?300:curGame==='budget'?200:200;
   const pct=sc/max;
   const[em,t,m]=pct>=.8
@@ -2085,9 +2076,36 @@ function showResult(sc){
     :['💪','繼續努力！','唔緊要，多練習就會進步！'];
   el('res-em').textContent=em;
   el('res-t').textContent=t;
-  el('res-s').textContent=totalSc;          /* 顯示累積總分 */
+  el('res-s').textContent=totalSc;
   el('res-msg').textContent=m+'（本關：'+sc+' 分）';
   go('result');
+  /* 如果有下一關，延遲顯示解鎖提示 */
+  const idx=GAME_ORDER.indexOf(curGame);
+  if(idx>=0&&idx<GAME_ORDER.length-1){
+    const nextGame=GAME_ORDER[idx+1];
+    setTimeout(()=>openUnlockModal(nextGame),1200);
+  }
+}
+
+let _unlockNext='';
+function openUnlockModal(nextGame){
+  _unlockNext=nextGame;
+  const ni=GAME_ORDER.indexOf(nextGame)+1;
+  const pi=ni-1;
+  el('unlock-title').textContent='Level '+ni+' 已解鎖！';
+  el('unlock-msg').innerHTML='恭喜完成 <b>'+GAME_LV_LABEL[GAME_ORDER[pi-1]]+'</b>！<br><br>🔓 <b>'+GAME_LV_LABEL[nextGame]+'</b><br>現已開放，準備好了嗎？';
+  el('unlock-next-btn').textContent='進入 Level '+ni+' →';
+  el('unlock-modal').classList.add('show');
+}
+function closeUnlockModal(){
+  el('unlock-modal').classList.remove('show');
+  go('home');updateHomeLocks();
+}
+function goNextLevel(){
+  el('unlock-modal').classList.remove('show');
+  if(_unlockNext==='pay'){go('pay');initPay();}
+  else if(_unlockNext==='exchange'){go('exchange');initExchange();}
+  else if(_unlockNext==='budget'){go('budget');initBudget();}
 }
 </script>
 
@@ -2439,6 +2457,19 @@ function confirmDeleteAll(){
   if(confirm('確定清除全部 '+allScores.length+' 筆記錄？'))_db.ref('submissions').remove().then(()=>toast('已清除','ok'));
 }
 </script>
+
+<!-- ══ LEVEL UNLOCK MODAL ══ -->
+<div class="confirm-overlay" id="unlock-modal">
+  <div class="confirm-box" style="text-align:center">
+    <div style="font-size:52px;margin-bottom:6px">🔓</div>
+    <div class="confirm-title" id="unlock-title">Level 2 已解鎖！</div>
+    <div class="confirm-msg" id="unlock-msg"></div>
+    <div class="confirm-btns" style="flex-direction:column;gap:8px">
+      <button class="confirm-ok" id="unlock-next-btn" onclick="goNextLevel()" style="width:100%">進入 Level 2 →</button>
+      <button class="confirm-cancel" onclick="closeUnlockModal()" style="width:100%">返回主頁</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ ERROR HINT MODAL ══ -->
 <div id="err-hint-overlay" onclick="closeErrHint()">
