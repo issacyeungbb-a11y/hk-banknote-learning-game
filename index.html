@@ -820,8 +820,10 @@ function buildLoginPage(){
   });
 }
 
+let hasSubmitted=false;
 function enterGame(name){
   currentPlayer=name;
+  hasSubmitted=false;
   if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false,budget:false};
   totalSc=20;
   const v=el('total-sc-val');if(v)v.textContent='20 分';
@@ -2148,6 +2150,9 @@ function goNextLevel(){
         <span style="font-size:20px;font-weight:700;color:var(--gold)" id="sc-score"></span>
       </div>
     </div>
+    <div style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:12px;color:#f87171;line-height:1.6">
+      ⚠️ 成績<b>只可提交一次</b>。<br>提交後遊戲將重新開始。
+    </div>
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="closeSubmitConfirm()">取消</button>
       <button class="confirm-ok" id="sc-ok-btn" onclick="confirmSubmit()" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">確認提交</button>
@@ -2266,6 +2271,7 @@ function getCurrentProgress(){
 let _submitFromResult=false;
 
 function _openSubmitConfirm(fromResult){
+  if(hasSubmitted){toast('成績已提交，請等待遊戲重新開始','bad');return;}
   if(!_initFB()){toast('Firebase 未設定','bad');return;}
   _submitFromResult=fromResult;
   const progress=fromResult?'全部完成':getCurrentProgress();
@@ -2297,13 +2303,22 @@ function confirmSubmit(){
     score:totalSc,
     ts:Date.now()
   }).then(()=>{
+    hasSubmitted=true;
     closeSubmitConfirm();
-    if(_submitFromResult){
-      const btn=el('submit-btn');if(btn)btn.style.display='none';
-      const msg=el('submit-done-msg');if(msg)msg.textContent='✓ 成績已提交';
-    }else{
-      toast('✓ 成績已提交','ok');
-    }
+    /* 顯示提交成功並重置遊戲 */
+    const btn=el('submit-btn');if(btn)btn.style.display='none';
+    const msg=el('submit-done-msg');if(msg)msg.textContent='✓ 成績已提交';
+    toast('✓ 成績已提交，遊戲即將重新開始…','ok');
+    setTimeout(()=>{
+      /* 重置該玩家進度並返回選名頁 */
+      doneMap[currentPlayer]={count:false,pay:false,exchange:false,budget:false};
+      totalSc=20;
+      currentPlayer='';
+      hasSubmitted=false;
+      const v=el('total-sc-val');if(v)v.textContent='20 分';
+      const n=el('total-sc-name');if(n)n.textContent='';
+      go('login');
+    },2500);
   }).catch(e=>{
     el('sc-ok-btn').disabled=false;
     toast('提交失敗：'+e.message,'bad');
