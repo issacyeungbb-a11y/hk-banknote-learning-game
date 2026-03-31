@@ -57,6 +57,52 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 .lv:active{transform:scale(.98);background:rgba(200,168,75,.08)}
 .lv.off{opacity:.4;pointer-events:none}
 .lv.locked{opacity:.4;pointer-events:none;filter:grayscale(.6)}
+/* ── MARKET GAME ── */
+.mar-stage{display:inline-block;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.4);border-radius:20px;padding:3px 12px;font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.4px}
+.mar-wallet-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 4px}
+.mar-bill{width:32px;height:55px;position:relative;overflow:hidden;border-radius:6px;border:1.5px solid rgba(200,168,75,.4);background:rgba(0,0,0,.2);flex-shrink:0}
+.mar-bill img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);height:32px;width:auto;max-height:none}
+.mar-wallet-total{text-align:center;font-size:12px;color:var(--mu);margin-bottom:4px}
+.mar-wallet-total b{color:var(--gold)}
+.mar-arrow{text-align:center;font-size:18px;color:var(--mu);margin:2px 0}
+.mar-item-card{background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:12px;text-align:center;margin:4px 0}
+.mar-item-emoji{font-size:34px;margin-bottom:3px}
+.mar-item-name{font-size:12px;color:var(--mu);margin-bottom:3px}
+.mar-item-price{font-size:26px;font-weight:700;color:var(--gold)}
+.mar-items-row{display:flex;gap:8px;margin:4px 0}
+.mar-yn-row{display:flex;gap:10px;margin-top:8px}
+.mar-yn-btn{flex:1;border:2px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font-size:16px;font-weight:700;padding:14px 8px;cursor:pointer;transition:all .2s;text-align:center}
+.mar-yn-btn:active{transform:scale(.97)}
+.mar-yn-btn.ok{background:rgba(134,239,172,.15);border-color:#86efac;color:#86efac;pointer-events:none}
+.mar-yn-btn.err{background:rgba(248,113,113,.1);border-color:#f87171;color:#f87171}
+.mar-shop-row{display:flex;gap:8px;margin:6px 0}
+.mar-shop{flex:1;border:2px solid var(--bd);border-radius:12px;padding:10px 7px;text-align:center;cursor:pointer;transition:all .2s;background:var(--card)}
+.mar-shop.shop-a{border-color:rgba(59,130,246,.55)}
+.mar-shop.shop-b{border-color:rgba(249,115,22,.55)}
+.mar-shop .s-emoji{font-size:24px;margin-bottom:3px}
+.mar-shop .s-lbl{font-size:11px;font-weight:700;margin-bottom:2px}
+.mar-shop.shop-a .s-lbl{color:#60a5fa}
+.mar-shop.shop-b .s-lbl{color:#fb923c}
+.mar-shop .s-item{font-size:10px;color:var(--mu);margin-bottom:3px}
+.mar-shop .s-price{font-size:19px;font-weight:700;color:var(--gold)}
+.mar-shop.correct{background:rgba(134,239,172,.12);border-color:#86efac!important}
+.mar-shop.wrong{opacity:.38;pointer-events:none}
+.mar-shop.cheaper-glow{animation:mGlow .7s ease infinite alternate}
+@keyframes mGlow{from{box-shadow:0 0 4px rgba(134,239,172,.1)}to{box-shadow:0 0 18px rgba(134,239,172,.6)}}
+.mar-step-info{background:rgba(200,168,75,.07);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--tx);text-align:center;margin-bottom:8px;line-height:1.7}
+.mar-step-q{font-size:14px;font-weight:600;color:var(--tx);text-align:center;margin-bottom:10px}
+.mar-pay-row{display:flex;gap:10px;margin-top:8px}
+.mar-pay-btn{flex:1;border:2px solid var(--bd);border-radius:12px;background:var(--card);padding:13px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.mar-pay-btn:active{transform:scale(.97)}
+.mar-pay-btn .p-icon{font-size:28px;margin-bottom:4px}
+.mar-pay-btn .p-lbl{font-size:12px;font-weight:700;color:var(--tx)}
+.mar-pay-btn .p-bal{font-size:11px;color:var(--mu);margin-top:2px}
+.mar-pay-btn.ok{background:rgba(134,239,172,.12);border-color:#86efac}
+.mar-pay-btn.warn{background:rgba(251,146,60,.1);border-color:#fb923c}
+.mar-pay-btn.fail{opacity:.38;pointer-events:none;border-color:#f87171;background:rgba(248,113,113,.07)}
+.mar-feedback{border-radius:10px;padding:10px 14px;margin:8px 0;font-size:13px;font-weight:600;text-align:center;animation:popIn .3s ease;line-height:1.6}
+.mar-feedback.ok{background:rgba(134,239,172,.12);color:#86efac}
+.mar-feedback.bad{background:rgba(248,113,113,.1);color:#f87171}
 .lvic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .lvinfo{flex:1}.lvt{font-size:13px;font-weight:600}.lvd{font-size:10px;color:var(--mu);margin-top:1px}
 .lva{color:var(--gold);font-size:16px;opacity:.6}
@@ -473,7 +519,14 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
         <div class="lvt">精明消費 <span class="lvbdg">Level 4</span></div>
         <div class="lvd">選擇最合適的付款方式</div>
       </div>
-      <span class="bdg" style="background:rgba(96,165,250,.25);color:#60a5fa;border:1px solid rgba(96,165,250,.35)">新</span>
+      <div class="lva">›</div>
+    </div>
+    <div class="lv" data-game="market" onclick="go('market');initMarket()">
+      <div class="lvic" style="background:rgba(22,101,52,.25)">🛒</div>
+      <div class="lvinfo">
+        <div class="lvt">街市大挑戰 <span class="lvbdg">Level 5</span></div>
+        <div class="lvd">日常消費判斷 · 比較價格 · 電子支付</div>
+      </div>
       <div class="lva">›</div>
     </div>
   </div>
@@ -686,6 +739,28 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
 </div>
 
+<!-- ══ MARKET ══ -->
+<div class="pg" id="pg-market">
+  <div class="hdr">
+    <button class="bk" onclick="go('home')">← 返回</button>
+    <div class="htit">街市大挑戰</div>
+    <div style="display:flex;gap:4px">
+      <button class="hint-btn" onclick="gameSubmit()" style="font-size:11px;padding:4px 7px">📤 提交成績</button>
+    </div>
+  </div>
+  <div class="pbrow"><div class="pb"><div class="pf" id="mar-pf" style="width:0%"></div></div></div>
+  <div class="body" style="gap:8px;padding:8px 14px;overflow-y:auto" id="mar-body">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+      <div class="qlbl" id="mar-ql">第 1 題 / 共 10 題</div>
+      <div class="mar-stage" id="mar-stage-lbl">階段一</div>
+    </div>
+    <div id="mar-content"></div>
+  </div>
+  <div class="ftr" id="mar-ftr" style="padding:6px 14px 46px">
+    <div id="mar-ftr-btns"></div>
+  </div>
+</div>
+
 <!-- ══ RESULT ══ -->
 <div class="pg" id="pg-result">
   <div class="hdr">
@@ -824,7 +899,7 @@ let hasSubmitted=false;
 function enterGame(name){
   currentPlayer=name;
   hasSubmitted=false;
-  if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false,budget:false};
+  if(!doneMap[name])doneMap[name]={count:false,pay:false,exchange:false,budget:false,market:false};
   totalSc=20;
   const v=el('total-sc-val');if(v)v.textContent='20 分';
   el('home-player-name').textContent='👤 '+name;
@@ -849,8 +924,8 @@ function doLogout(){
   go('login');
 }
 
-const GAME_ORDER=['count','pay','exchange','budget'];
-const GAME_LV_LABEL={count:'Level 1　計算面值',pay:'Level 2　模擬付款',exchange:'Level 3　貨幣兌換',budget:'Level 4　精明消費'};
+const GAME_ORDER=['count','pay','exchange','budget','market'];
+const GAME_LV_LABEL={count:'Level 1　計算面值',pay:'Level 2　模擬付款',exchange:'Level 3　貨幣兌換',budget:'Level 4　精明消費',market:'Level 5　街市大挑戰'};
 
 function updateHomeLocks(){
   const d=doneMap[currentPlayer]||{};
@@ -893,6 +968,7 @@ function retry(){
   else if(curGame==='pay')initPay();
   else if(curGame==='exchange')initExchange();
   else if(curGame==='budget')initBudget();
+  else if(curGame==='market')initMarket();
 }
 
 /* 頁面載入：建立選名頁 */
@@ -2108,6 +2184,498 @@ function goNextLevel(){
   if(_unlockNext==='pay'){go('pay');initPay();}
   else if(_unlockNext==='exchange'){go('exchange');initExchange();}
   else if(_unlockNext==='budget'){go('budget');initBudget();}
+  else if(_unlockNext==='market'){go('market');initMarket();}
+}
+
+/* ════ MARKET (Level 5) ════ */
+const MARKET_QS=[
+  /* ── 階段一：夠唔夠錢？ ── */
+  {stage:1,scene:'🚌 巴士站',wallet:[50,20],walletTotal:70,
+   items:[{name:'🚌 巴士車費',price:60}],cost:60,ans:true,
+   hintMsgs:['💡 先計算銀包總金額<br>$50 + $20 = <b>$70</b>',
+             '⚖️ 比較金額大小<br><b>$70</b> ＞ $60　→　足夠！']},
+  {stage:1,scene:'🍽️ 餐廳',wallet:[50,10],walletTotal:60,
+   items:[{name:'🍽️ 套餐',price:70}],cost:70,ans:false,
+   hintMsgs:['💡 先計算銀包總金額<br>$50 + $10 = <b>$60</b>',
+             '⚖️ 比較金額大小<br>$60 ＜ <b>$70</b>　→　金額不足！']},
+  {stage:1,scene:'🛒 超級市場',wallet:[100,20],walletTotal:120,
+   items:[{name:'🍪 餅乾',price:45},{name:'🧃 飲品',price:38}],cost:83,ans:true,
+   hintMsgs:['🛍️ 先計算購物總價<br>$45 + $38 = <b>$83</b>',
+             '💡 再計算銀包總金額<br>$100 + $20 = <b>$120</b>',
+             '⚖️ 比較金額大小<br><b>$120</b> ＞ $83　→　足夠！']},
+  /* ── 階段二：邊間平啲？ ── */
+  {stage:2,scene:'🍽️ 兩間餐廳',
+   shopA:{emoji:'🍽️',label:'A 餐廳',item:'午餐',price:48},
+   shopB:{emoji:'🍽️',label:'B 餐廳',item:'午餐',price:55},
+   ans:'A',diff:7,
+   hintMsgs:['⚖️ 比較兩個價錢，數字較小的代表較便宜',
+             '✅ A 餐廳 $48 較便宜，$48 ＜ $55',
+             '➖ 計算差額：$55 − $48 = <b>$7</b>']},
+  {stage:2,scene:'📓 兩間文具店',
+   shopA:{emoji:'📓',label:'A 文具店',item:'簿',price:15},
+   shopB:{emoji:'📓',label:'B 文具店',item:'簿',price:22},
+   ans:'A',diff:7,
+   hintMsgs:['⚖️ 比較兩個價錢，數字較小的代表較便宜',
+             '✅ A 文具店 $15 較便宜，$15 ＜ $22',
+             '➖ 計算差額：$22 − $15 = <b>$7</b>']},
+  {stage:2,scene:'🍪 兩間超市',
+   shopA:{emoji:'🍪',label:'A 超市',item:'餅乾',price:35},
+   shopB:{emoji:'🍪',label:'B 超市',item:'餅乾',price:28},
+   ans:'B',diff:7,
+   hintMsgs:['⚖️ 比較兩個價錢，數字較小的代表較便宜',
+             '✅ B 超市 $28 較便宜，$28 ＜ $35',
+             '➖ 計算差額：$35 − $28 = <b>$7</b>']},
+  /* ── 階段三：綜合挑戰 ── */
+  {stage:3,scene:'🍽️ 兩間餐廳',wallet:[100],walletTotal:100,
+   shopA:{label:'A 餐廳',price:45},shopB:{label:'B 餐廳',price:52},
+   steps:[
+     {type:'compare',ans:'A',
+      hintMsgs:['⚖️ 比較兩個價錢：$45 與 $52','✅ A 餐廳 $45 較便宜，$45 ＜ $52']},
+     {type:'diff',ans:7,bigPrice:52,smallPrice:45,
+      hintMsgs:['➖ 以較貴的減去較便宜的<br>$52 − $45 = <b>$7</b>']},
+     {type:'change',walletTotal:100,price:45,ans:55,
+      hintMsgs:['💡 付款金額減去價錢<br>$100 − $45 = <b>$55</b>']}
+   ]},
+  {stage:3,scene:'🛒 兩間超市',wallet:[100,50],walletTotal:150,
+   shopA:{label:'A 超市',items:[{name:'🍪 餅乾',price:35},{name:'🧃 飲品',price:40}],total:75},
+   shopB:{label:'B 超市',items:[{name:'🍪 餅乾',price:30},{name:'🧃 飲品',price:50}],total:80},
+   steps:[
+     {type:'sum_shop',shop:'A',ans:75,
+      hintMsgs:['➕ 計算 A 超市總價<br>$35 + $40 = <b>$75</b>']},
+     {type:'sum_shop',shop:'B',ans:80,
+      hintMsgs:['➕ 計算 B 超市總價<br>$30 + $50 = <b>$80</b>']},
+     {type:'compare',ans:'A',
+      hintMsgs:['⚖️ 比較兩個總價：$75 與 $80','✅ A 超市 $75 較便宜，$75 ＜ $80']},
+     {type:'change',walletTotal:150,price:75,ans:75,
+      hintMsgs:['💡 銀包總額減去總價<br>$150 − $75 = <b>$75</b>']}
+   ]},
+  /* ── 階段四：電子支付判斷 ── */
+  {stage:4,scene:'🏪 便利店',cash:[100,50],cashTotal:150,octopus:32,
+   item:{name:'🧃 飲品',price:18},
+   steps:[
+     {type:'choose_both_ok',price:18,octopus:32,
+      hintMsgs:['💳 八達通餘額 $32 ＞ $18，可直接付款','💵 現金亦可使用，但需要找續']},
+     {type:'octopus_balance',price:18,balance:32,ans:14,
+      hintMsgs:['💡 八達通餘額減去價錢<br>$32 − $18 = <b>$14</b>']}
+   ]},
+  {stage:4,scene:'🍔 快餐店',cash:[100],cashTotal:100,octopus:25,
+   itemA:{name:'🍔 A 套餐',price:42},itemB:{name:'🍗 B 套餐',price:38},
+   steps:[
+     {type:'compare_meals',ans:'B',
+      hintMsgs:['⚖️ 比較兩個套餐：$42 與 $38','✅ B 套餐 $38 較便宜，$38 ＜ $42']},
+     {type:'choose_cash_only',price:38,octopus:25,
+      hintMsgs:['❌ 八達通餘額 $25 不足以支付 $38','💵 請改用現金付款']},
+     {type:'change',walletTotal:100,price:38,ans:62,
+      hintMsgs:['💡 付款金額減去價錢<br>$100 − $38 = <b>$62</b>']}
+   ]}
+];
+
+let marQ=0,marStep=0,marV='',marLocked=false,marHintIdx=0,marStepData={};
+
+const MAR_STAGE_LABELS={1:'階段一：夠唔夠錢？',2:'階段二：邊間平啲？',3:'階段三：綜合挑戰',4:'階段四：電子支付判斷'};
+
+function initMarket(){
+  curGame='market';
+  marQ=0;marStep=0;marV='';marLocked=false;marHintIdx=0;marStepData={};
+  loadMarketQ();
+}
+
+function loadMarketQ(){
+  if(marQ>=MARKET_QS.length){showMarketResult();return;}
+  marStep=0;marV='';marLocked=false;marHintIdx=0;marStepData={};
+  closeErrHint();
+  const q=MARKET_QS[marQ];
+  el('mar-ql').textContent='第 '+(marQ+1)+' 題 / 共 '+MARKET_QS.length+' 題';
+  el('mar-stage-lbl').textContent=MAR_STAGE_LABELS[q.stage]||'';
+  el('mar-pf').style.width=Math.round(marQ/MARKET_QS.length*100)+'%';
+  renderMarQ(q);
+}
+
+function renderMarQ(q){
+  if(q.stage===1)renderMar1(q);
+  else if(q.stage===2)renderMar2(q);
+  else renderMarStep(q);
+}
+
+/* helper: bill thumbnail */
+function marBillHTML(v){
+  return `<div class="mar-bill"><img src="${IMGS[v]}" alt="HK$${v}"></div>`;
+}
+function marWalletHTML(bills){
+  return `<div class="mar-wallet-row">${bills.map(marBillHTML).join('')}</div>`;
+}
+
+/* ── Stage 1: 夠唔夠錢？ ── */
+function renderMar1(q){
+  const itemsHTML=q.items.map(i=>{
+    const m=i.name.match(/^(\S+)\s*(.*)/)||['','',i.name];
+    return `<div class="mar-item-card"><div class="mar-item-emoji">${m[1]}</div><div class="mar-item-name">${m[2]||i.name}</div><div class="mar-item-price">HK$${i.price}</div></div>`;
+  }).join('');
+  el('mar-content').innerHTML=`
+    <div style="font-size:11px;color:var(--mu);text-align:center;margin-bottom:3px">💼 銀包</div>
+    ${marWalletHTML(q.wallet)}
+    <div class="mar-wallet-total">銀包總額：<b>HK$${q.walletTotal}</b></div>
+    <div class="mar-arrow">⬇</div>
+    ${q.items.length>1?`<div class="mar-items-row">${itemsHTML}</div>`:itemsHTML}
+    <div class="mar-yn-row">
+      <button class="mar-yn-btn" id="mar-yn-yes" onclick="submitMar1(true)">✅ 足夠</button>
+      <button class="mar-yn-btn" id="mar-yn-no" onclick="submitMar1(false)">❌ 不足</button>
+    </div>`;
+  el('mar-ftr-btns').innerHTML='';
+}
+
+function submitMar1(choice){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ];
+  const yes=el('mar-yn-yes'),no=el('mar-yn-no');
+  if(choice===q.ans){
+    marLocked=true;
+    yes.style.pointerEvents='none';no.style.pointerEvents='none';
+    (choice?yes:no).classList.add('ok');
+    appendMarFeedback(true,choice?'✅ 正確！銀包金額足夠。':'✅ 正確！銀包金額不足。');
+    setTimeout(()=>{marQ++;loadMarketQ();},1600);
+  }else{
+    (choice?yes:no).classList.add('err');
+    setTimeout(()=>{(choice?yes:no).classList.remove('err');},1100);
+    showHint('',q.hintMsgs[Math.min(marHintIdx,q.hintMsgs.length-1)]);
+    marHintIdx++;
+  }
+}
+
+/* ── Stage 2: 邊間平啲？ ── */
+function renderMar2(q){
+  el('mar-content').innerHTML=`
+    <div style="font-size:12px;color:var(--mu);text-align:center;margin-bottom:4px">請選擇較便宜的店舖</div>
+    <div class="mar-shop-row">
+      <div class="mar-shop shop-a" id="mar-s2a" onclick="submitMar2('A')">
+        <div class="s-emoji">${q.shopA.emoji}</div>
+        <div class="s-lbl">${q.shopA.label}</div>
+        <div class="s-item">${q.shopA.item}</div>
+        <div class="s-price">HK$${q.shopA.price}</div>
+      </div>
+      <div class="mar-shop shop-b" id="mar-s2b" onclick="submitMar2('B')">
+        <div class="s-emoji">${q.shopB.emoji}</div>
+        <div class="s-lbl">${q.shopB.label}</div>
+        <div class="s-item">${q.shopB.item}</div>
+        <div class="s-price">HK$${q.shopB.price}</div>
+      </div>
+    </div>`;
+  el('mar-ftr-btns').innerHTML='';
+}
+
+function submitMar2(choice){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ];
+  const sa=el('mar-s2a'),sb=el('mar-s2b');
+  if(choice===q.ans){
+    marLocked=true;
+    sa.style.pointerEvents='none';sb.style.pointerEvents='none';
+    const winner=choice==='A'?sa:sb,loser=choice==='A'?sb:sa;
+    winner.classList.add('correct','cheaper-glow');loser.classList.add('wrong');
+    appendMarFeedback(true,'✅ 正確！'+q['shop'+choice].label+' 較便宜');
+    setTimeout(()=>{marHintIdx=0;renderMar2Diff(q);},1400);
+  }else{
+    const w=choice==='A'?sa:sb;
+    w.style.borderColor='#f87171';
+    setTimeout(()=>{w.style.borderColor='';},1100);
+    showHint('',q.hintMsgs[Math.min(marHintIdx,q.hintMsgs.length-1)]);
+    marHintIdx++;
+  }
+}
+
+function renderMar2Diff(q){
+  marV='';marLocked=false;
+  const cheap=q['shop'+q.ans],dear=q['shop'+(q.ans==='A'?'B':'A')];
+  el('mar-content').innerHTML=`
+    <div class="mar-step-info">
+      ${cheap.label} <span style="color:#86efac;font-weight:700">HK$${cheap.price}</span> 較便宜<br>
+      比 ${dear.label} <span style="color:var(--gold);font-weight:700">HK$${dear.price}</span> 便宜多少錢？
+    </div>
+    <div class="inprow" style="margin-bottom:8px"><span class="pre">HK$</span><input class="ni" id="mar-inp" type="text" placeholder="0" readonly></div>
+    <div class="numpad" id="mar-np"></div>`;
+  buildMarNp();
+  el('mar-ftr-btns').innerHTML=`<div style="display:flex;gap:6px">
+    <button class="btn" style="flex:1" onclick="submitMar2Diff()">確認答案</button>
+    <button class="btn2" onclick="clearMarInp()">清除</button></div>`;
+}
+
+function submitMar2Diff(){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ];
+  const inp=el('mar-inp');
+  if((parseInt(marV)||0)===q.diff){
+    marLocked=true;
+    if(inp)inp.className='ni ok';
+    appendMarFeedback(true,'✅ 正確！差額為 HK$'+q.diff);
+    setTimeout(()=>{marQ++;loadMarketQ();},1600);
+  }else{
+    if(inp)inp.className='ni err';
+    setTimeout(()=>{if(inp)inp.className='ni';},1100);
+    showHint('',q.hintMsgs[Math.min(marHintIdx,q.hintMsgs.length-1)]);
+    marHintIdx++;
+  }
+}
+
+/* ── Stage 3 & 4: multi-step ── */
+function renderMarStep(q){
+  const step=q.steps[marStep];
+  if(step.type==='compare')renderMarStepCompare(q,step);
+  else if(step.type==='compare_meals')renderMarStepMeals(q,step);
+  else if(step.type==='choose_both_ok')renderMarStepPayBoth(q,step);
+  else if(step.type==='choose_cash_only')renderMarStepPayCash(q,step);
+  else renderMarStepNumpad(q,step);
+}
+
+function renderMarStepCompare(q,step){
+  const sA=q.shopA,sB=q.shopB;
+  const hasItems=!!sA.items;
+  const priceA=hasItems?(marStepData.sumA!==undefined?'HK$'+marStepData.sumA:'HK$ ?'):'HK$'+sA.price;
+  const priceB=hasItems?(marStepData.sumB!==undefined?'HK$'+marStepData.sumB:'HK$ ?'):'HK$'+sB.price;
+  el('mar-content').innerHTML=`
+    <div class="mar-step-q">哪間店舖的價格較便宜？</div>
+    <div class="mar-shop-row">
+      <div class="mar-shop shop-a" id="mar-cpa" onclick="submitMarStepCompare('A',this)">
+        <div class="s-emoji">${hasItems?'🛒':'🍽️'}</div>
+        <div class="s-lbl">${sA.label}</div>
+        <div class="s-price">${priceA}</div>
+      </div>
+      <div class="mar-shop shop-b" id="mar-cpb" onclick="submitMarStepCompare('B',this)">
+        <div class="s-emoji">${hasItems?'🛒':'🍽️'}</div>
+        <div class="s-lbl">${sB.label}</div>
+        <div class="s-price">${priceB}</div>
+      </div>
+    </div>`;
+  el('mar-ftr-btns').innerHTML='';
+}
+
+function submitMarStepCompare(choice){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ],step=q.steps[marStep];
+  const sa=el('mar-cpa'),sb=el('mar-cpb');
+  if(choice===step.ans){
+    marLocked=true;
+    sa.style.pointerEvents='none';sb.style.pointerEvents='none';
+    (choice==='A'?sa:sb).classList.add('correct','cheaper-glow');
+    (choice==='A'?sb:sa).classList.add('wrong');
+    marStepData.compare=choice;
+    appendMarFeedback(true,'✅ 正確！');
+    marStep++;
+    setTimeout(()=>{marHintIdx=0;marLocked=false;renderMarStep(q);},1500);
+  }else{
+    const w=choice==='A'?sa:sb;
+    w.style.borderColor='#f87171';
+    setTimeout(()=>{w.style.borderColor='';},1100);
+    showHint('',step.hintMsgs[Math.min(marHintIdx,step.hintMsgs.length-1)]);
+    marHintIdx++;
+  }
+}
+
+function renderMarStepMeals(q,step){
+  el('mar-content').innerHTML=`
+    <div class="mar-step-q">哪個套餐的價格較便宜？</div>
+    <div class="mar-shop-row">
+      <div class="mar-shop shop-a" id="mar-mla" onclick="submitMarStepMeal('A')">
+        <div class="s-emoji">${q.itemA.name.split(' ')[0]}</div>
+        <div class="s-lbl">A 套餐</div>
+        <div class="s-price">HK$${q.itemA.price}</div>
+      </div>
+      <div class="mar-shop shop-b" id="mar-mlb" onclick="submitMarStepMeal('B')">
+        <div class="s-emoji">${q.itemB.name.split(' ')[0]}</div>
+        <div class="s-lbl">B 套餐</div>
+        <div class="s-price">HK$${q.itemB.price}</div>
+      </div>
+    </div>`;
+  el('mar-ftr-btns').innerHTML='';
+}
+
+function submitMarStepMeal(choice){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ],step=q.steps[marStep];
+  const ma=el('mar-mla'),mb=el('mar-mlb');
+  if(choice===step.ans){
+    marLocked=true;
+    ma.style.pointerEvents='none';mb.style.pointerEvents='none';
+    (choice==='A'?ma:mb).classList.add('correct','cheaper-glow');
+    (choice==='A'?mb:ma).classList.add('wrong');
+    marStepData.chosenMeal=choice;
+    appendMarFeedback(true,'✅ 正確！'+q['item'+choice].name+' 較便宜');
+    marStep++;
+    setTimeout(()=>{marHintIdx=0;marLocked=false;renderMarStep(q);},1500);
+  }else{
+    const w=choice==='A'?ma:mb;
+    w.style.borderColor='#f87171';
+    setTimeout(()=>{w.style.borderColor='';},1100);
+    showHint('',step.hintMsgs[Math.min(marHintIdx,step.hintMsgs.length-1)]);
+    marHintIdx++;
+  }
+}
+
+function renderMarStepPayBoth(q,step){
+  el('mar-content').innerHTML=`
+    <div class="mar-step-info">${q.item.name}　<span style="color:var(--gold);font-weight:700">HK$${q.item.price}</span></div>
+    <div class="mar-step-q">請選擇付款方式</div>
+    <div class="mar-pay-row">
+      <div class="mar-pay-btn" id="mar-oct" onclick="submitMarPayBoth('octopus')">
+        <div class="p-icon">💳</div>
+        <div class="p-lbl">八達通</div>
+        <div class="p-bal">餘額 HK$${step.octopus}</div>
+      </div>
+      <div class="mar-pay-btn" id="mar-cash" onclick="submitMarPayBoth('cash')">
+        <div class="p-icon">💵</div>
+        <div class="p-lbl">現金</div>
+        <div class="p-bal">${q.cash.map(v=>'HK$'+v).join(' + ')}</div>
+      </div>
+    </div>`;
+  el('mar-ftr-btns').innerHTML='';
+}
+
+function submitMarPayBoth(choice){
+  if(marLocked)return;
+  marLocked=true;
+  const q=MARKET_QS[marQ],step=q.steps[marStep];
+  const oct=el('mar-oct'),cash=el('mar-cash');
+  if(choice==='octopus'){
+    oct.classList.add('ok');
+    appendMarFeedback(true,'✅ 使用八達通，直接扣款，無需找續！');
+  }else{
+    cash.classList.add('warn');
+    appendMarFeedback(true,'⚠️ 使用現金亦可，但需要找續。');
+  }
+  marStepData.payChoice=choice;
+  marStep++;
+  setTimeout(()=>{marHintIdx=0;marLocked=false;renderMarStep(q);},1800);
+}
+
+function renderMarStepPayCash(q,step){
+  const chosenItem=q['item'+(marStepData.chosenMeal||'B')];
+  el('mar-content').innerHTML=`
+    <div class="mar-step-info">已選：${chosenItem.name}　<span style="color:var(--gold);font-weight:700">HK$${chosenItem.price}</span></div>
+    <div class="mar-step-q">請選擇付款方式</div>
+    <div class="mar-pay-row">
+      <div class="mar-pay-btn" id="mar-oct2" onclick="submitMarPayCash('octopus')">
+        <div class="p-icon">💳</div>
+        <div class="p-lbl">八達通</div>
+        <div class="p-bal">餘額 HK$${step.octopus}</div>
+      </div>
+      <div class="mar-pay-btn" id="mar-cash2" onclick="submitMarPayCash('cash')">
+        <div class="p-icon">💵</div>
+        <div class="p-lbl">現金</div>
+        <div class="p-bal">${q.cash.map(v=>'HK$'+v).join(' + ')}</div>
+      </div>
+    </div>`;
+  el('mar-ftr-btns').innerHTML='';
+}
+
+function submitMarPayCash(choice){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ],step=q.steps[marStep];
+  const oct=el('mar-oct2'),cash=el('mar-cash2');
+  if(choice==='octopus'){
+    oct.classList.add('fail');
+    appendMarFeedback(false,'❌ 八達通餘額 HK$'+step.octopus+' 不足，無法支付 HK$'+step.price+'！');
+    showHint('',step.hintMsgs[Math.min(marHintIdx,step.hintMsgs.length-1)]);
+    marHintIdx++;
+  }else{
+    marLocked=true;
+    cash.classList.add('ok');
+    oct.classList.add('fail');
+    appendMarFeedback(true,'✅ 正確！使用現金付款。');
+    marStep++;
+    setTimeout(()=>{marHintIdx=0;marLocked=false;renderMarStep(q);},1600);
+  }
+}
+
+function renderMarStepNumpad(q,step){
+  marV='';
+  let ctx='',ql='請輸入答案';
+  if(step.type==='change'){
+    ctx=`<div class="mar-step-info">💼 付款金額：<span style="color:var(--gold);font-weight:700">HK$${step.walletTotal}</span>　價錢：<span style="color:var(--gold);font-weight:700">HK$${step.price}</span></div>`;
+    ql='需要找續多少錢？';
+  }else if(step.type==='diff'){
+    ctx=`<div class="mar-step-info">${q.shopA.label} <span style="color:var(--gold)">HK$${q.shopA.price}</span>　${q.shopB.label} <span style="color:var(--gold)">HK$${q.shopB.price}</span></div>`;
+    ql='兩間店舖相差多少錢？';
+  }else if(step.type==='sum_shop'){
+    const sd=q['shop'+step.shop];
+    ctx=`<div class="mar-step-info">${sd.label}：${sd.items.map(i=>`${i.name} <span style="color:var(--gold)">HK$${i.price}</span>`).join(' + ')}</div>`;
+    ql='計算 '+sd.label+' 的總價格';
+  }else if(step.type==='octopus_balance'){
+    ctx=`<div class="mar-step-info">💳 八達通餘額：<span style="color:var(--gold);font-weight:700">HK$${step.balance}</span>　支付：<span style="color:var(--gold);font-weight:700">HK$${step.price}</span></div>`;
+    ql='付款後八達通餘額剩多少錢？';
+  }
+  el('mar-content').innerHTML=`${ctx}
+    <div class="mar-step-q">${ql}</div>
+    <div class="inprow" style="margin-bottom:8px"><span class="pre">HK$</span><input class="ni" id="mar-inp" type="text" placeholder="0" readonly></div>
+    <div class="numpad" id="mar-np"></div>`;
+  buildMarNp();
+  el('mar-ftr-btns').innerHTML=`<div style="display:flex;gap:6px">
+    <button class="btn" style="flex:1" onclick="submitMarStepNumpad()">確認答案</button>
+    <button class="btn2" onclick="clearMarInp()">清除</button></div>`;
+}
+
+function submitMarStepNumpad(){
+  if(marLocked)return;
+  const q=MARKET_QS[marQ],step=q.steps[marStep];
+  const inp=el('mar-inp'),val=parseInt(marV)||0;
+  if(val===step.ans){
+    marLocked=true;
+    if(inp)inp.className='ni ok';
+    if(step.type==='sum_shop'){
+      if(step.shop==='A')marStepData.sumA=val;
+      else marStepData.sumB=val;
+    }
+    appendMarFeedback(true,'✅ 正確！答案為 HK$'+step.ans);
+    marStep++;
+    if(marStep>=q.steps.length){
+      setTimeout(()=>{marQ++;loadMarketQ();},1600);
+    }else{
+      setTimeout(()=>{marHintIdx=0;marLocked=false;renderMarStep(q);},1600);
+    }
+  }else{
+    if(inp)inp.className='ni err';
+    setTimeout(()=>{if(inp)inp.className='ni';},1100);
+    showHint('',step.hintMsgs[Math.min(marHintIdx,step.hintMsgs.length-1)]);
+    marHintIdx++;
+  }
+}
+
+function buildMarNp(){
+  const np=el('mar-np');if(!np)return;np.innerHTML='';
+  [1,2,3,4,5,6,7,8,9,'.',0,'刪除'].forEach(k=>{
+    const b=document.createElement('div');
+    b.className='npb'+(k==='刪除'?' fn':'');
+    b.textContent=k;
+    b.addEventListener('pointerdown',e=>{e.preventDefault();marNpHit(k);});
+    np.appendChild(b);
+  });
+}
+function marNpHit(k){
+  if(k==='刪除')marV=marV.slice(0,-1);
+  else if(k==='.'){if(!marV.includes('.'))marV+=k;}
+  else if(marV.length<6)marV+=String(k);
+  const i=el('mar-inp');if(i)i.value=marV||'';
+}
+function clearMarInp(){
+  marV='';const i=el('mar-inp');if(i){i.value='';i.className='ni';}
+}
+
+function appendMarFeedback(ok,msg){
+  const fb=document.createElement('div');
+  fb.className='mar-feedback '+(ok?'ok':'bad');
+  fb.innerHTML=msg;
+  el('mar-content').appendChild(fb);
+  fb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function showMarketResult(){
+  markDone('market');
+  updateHomeLocks();
+  const btn=el('submit-btn');if(btn){btn.disabled=false;btn.style.display='';}
+  const msg=el('submit-done-msg');if(msg)msg.textContent='';
+  el('res-em').textContent='🏆';
+  el('res-t').textContent='全部關卡完成！';
+  el('res-s').textContent=totalSc;
+  el('res-msg').textContent='恭喜完成所有 5 個關卡！本關不設評分。';
+  go('result');
 }
 </script>
 
@@ -2231,7 +2799,7 @@ const FIREBASE_CONFIG={
 };
 
 const TEACHER_PWD='teacher2025';
-const GAME_NAMES={count:'計算面值',pay:'模擬付款',exchange:'貨幣兌換',budget:'精明消費'};
+const GAME_NAMES={count:'計算面值',pay:'模擬付款',exchange:'貨幣兌換',budget:'精明消費',market:'街市大挑戰'};
 
 let _fbApp=null,_db=null,_tcRef=null,allScores=[],lastGameScore=0;
 
@@ -2245,7 +2813,7 @@ function _initFB(){
 }
 
 /* ── Progress ── */
-const LEVEL_NUM={count:1,pay:2,exchange:3,budget:4};
+const LEVEL_NUM={count:1,pay:2,exchange:3,budget:4,market:5};
 
 function getCurrentProgress(){
   if(curGame==='count'){
@@ -2264,6 +2832,10 @@ function getCurrentProgress(){
   if(curGame==='budget'){
     const done=Math.min(budQ,BUDGET_QS.length);
     return done>=BUDGET_QS.length?'全部'+BUDGET_QS.length+'題完成':'已完成 '+done+' / '+BUDGET_QS.length+' 題';
+  }
+  if(curGame==='market'){
+    const done=Math.min(marQ,MARKET_QS.length);
+    return done>=MARKET_QS.length?'全部'+MARKET_QS.length+'題完成':'已完成 '+done+' / '+MARKET_QS.length+' 題';
   }
   return '-';
 }
@@ -2311,7 +2883,7 @@ function confirmSubmit(){
     toast('✓ 成績已提交，遊戲即將重新開始…','ok');
     setTimeout(()=>{
       /* 重置該玩家進度並返回選名頁 */
-      doneMap[currentPlayer]={count:false,pay:false,exchange:false,budget:false};
+      doneMap[currentPlayer]={count:false,pay:false,exchange:false,budget:false,market:false};
       totalSc=20;
       currentPlayer='';
       hasSubmitted=false;
