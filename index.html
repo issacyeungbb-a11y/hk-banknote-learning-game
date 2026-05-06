@@ -934,10 +934,9 @@ function updateHomeLocks(){
     if(!lv)return;
     const arrow=lv.querySelector('.lva');
     const done=d[game];
-    const locked=i>0&&!d[GAME_ORDER[i-1]]; /* previous not done */
     lv.classList.toggle('off',!!done);
-    lv.classList.toggle('locked',!done&&locked);
-    arrow.textContent=done?'✓':locked?'🔒':'›';
+    lv.classList.remove('locked');
+    arrow.textContent=done?'✓':'›';
   });
 }
 
