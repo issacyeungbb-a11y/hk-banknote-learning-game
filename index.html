@@ -559,10 +559,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
   </div>
   <div class="ftr" style="padding:6px 14px 46px">
     <button class="btn" onclick="submitCnt()">確認答案</button>
-    <div style="display:flex;gap:6px">
-      <button class="btn2" style="flex:1" onclick="openCalc()">🧮 計算機</button>
-      <button class="btn2" style="flex:1" onclick="clearCnt()">清除答案</button>
-    </div>
+    <button class="btn2" onclick="clearCnt()">清除答案</button>
   </div>
 </div>
 
@@ -1596,15 +1593,13 @@ function buildHintSteps_count(q){
     <div class="hint-txt">將以下紙幣加起來</div>
   </div>`);
 
-  /* Step 2：紙幣圖片 + 計算機按鈕，引導學生逐一輸入 */
+  /* Step 2：紙幣圖片，引導學生逐一查看 */
   const notesAbove=q.bills.map(v=>`<div class="hint-split-item">
     ${_hintNoteHTML(v,56)}
     <div style="font-size:14px;font-weight:700;color:var(--gold);margin-top:3px">$${v}</div>
   </div>`).join('');
   steps.push(`<div style="text-align:center;padding:6px 0">
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">${notesAbove}</div>
-    <div style="font-size:13px;color:var(--mu);margin-bottom:12px">請根據上方紙幣，逐一輸入計算機進行加法計算</div>
-    <button class="hint-calc-btn" onclick="openCalc()">🧮 打開計算機</button>
   </div>`);
   return steps;
 }
