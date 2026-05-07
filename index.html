@@ -445,6 +445,25 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Noto Sans HK',s
 #tc-list{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .modal-input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font-size:14px;margin-bottom:9px;outline:none;-webkit-appearance:none}
 .modal-input:focus{border-color:var(--gold)}
+/* Teacher tabs */
+.tc-tabs{display:flex;background:var(--card);border-bottom:1px solid var(--bd);flex-shrink:0}
+.tc-tab{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;color:var(--mu);border-bottom:2px solid transparent;transition:all .15s}
+.tc-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* Student list */
+.stu-list{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px 60px;display:flex;flex-direction:column;gap:8px}
+.stu-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all .15s}
+.stu-card:active{transform:scale(.98);background:rgba(200,168,75,.08);border-color:var(--gold)}
+.stu-avatar{width:40px;height:40px;border-radius:50%;background:rgba(200,168,75,.12);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stu-info{flex:1;min-width:0}
+.stu-name{font-size:14px;font-weight:700;color:var(--tx)}
+.stu-meta{font-size:11px;color:var(--mu);margin-top:3px}
+.stu-arrow{font-size:16px;color:var(--mu)}
+/* Student detail page */
+#pg-student-detail{overflow:hidden}
+#sd-top{flex-shrink:0}
+#sd-list{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sd-tr{display:grid;grid-template-columns:90px 68px minmax(100px,1.3fr) minmax(80px,1fr) 72px;gap:0 8px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(200,168,75,.08);font-size:12px}
+.sd-thead{display:grid;grid-template-columns:90px 68px minmax(100px,1.3fr) minmax(80px,1fr) 72px;gap:0 8px;align-items:center;padding:7px 16px;background:rgba(200,168,75,.1);border-bottom:2px solid var(--bd);font-size:11px;font-weight:700;color:var(--gold);flex-shrink:0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -2742,8 +2761,13 @@ function showMarketResult(){
       <span id="tc-status" style="color:var(--mu)">-</span>
       <span id="tc-stat-avg" style="color:var(--mu)"></span>
     </div>
-    <!-- 篩選欄 -->
-    <div style="padding:10px 16px;display:flex;gap:10px;align-items:center;background:var(--card);border-bottom:1px solid var(--bd);flex-wrap:wrap">
+    <!-- Tab 切換 -->
+    <div class="tc-tabs">
+      <div class="tc-tab active" id="tab-all" onclick="switchTcTab('all')">📋 所有記錄</div>
+      <div class="tc-tab" id="tab-students" onclick="switchTcTab('students')">👤 學生總覽</div>
+    </div>
+    <!-- 篩選欄（所有記錄 tab） -->
+    <div id="tc-filter-bar" style="padding:10px 16px;display:flex;gap:10px;align-items:center;background:var(--card);border-bottom:1px solid var(--bd);flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:6px">
         <span style="font-size:11px;color:var(--mu);white-space:nowrap">按日期</span>
         <input type="date" id="tc-filter-date" oninput="filterScores()" class="tc-fi" style="color-scheme:dark">
@@ -2755,8 +2779,8 @@ function showMarketResult(){
       <button onclick="el('tc-filter-game').value='';el('tc-filter-name').value='';el('tc-filter-class').value='';el('tc-filter-date').value='';filterScores()" style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--mu);cursor:pointer;padding:7px 14px;font-size:12px;white-space:nowrap">清除</button>
       <span id="tc-count" style="color:var(--mu);font-size:11px;white-space:nowrap;margin-left:auto">-</span>
     </div>
-    <!-- 表格標題列 -->
-    <div class="tc-thead">
+    <!-- 表格標題列（所有記錄 tab） -->
+    <div class="tc-thead" id="tc-thead-row">
       <span>日期</span><span>時間</span><span>姓名</span><span>關卡</span><span>進度</span><span>分數</span><span></span>
     </div>
     <!-- 隱藏的篩選欄（保留給 filterScores 邏輯使用） -->
@@ -2764,10 +2788,29 @@ function showMarketResult(){
     <input id="tc-filter-class" oninput="filterScores()" style="display:none">
     <input id="tc-stat-total" style="display:none">
   </div>
-  <!-- 可捲動記錄區（CSS flex:1 + JS backup 確保高度正確） -->
+  <!-- 可捲動記錄區（所有記錄 tab） -->
   <div id="tc-list">
     <div class="tc-empty">載入中…</div>
   </div>
+  <!-- 學生總覽 tab -->
+  <div class="stu-list" id="tc-stu-list" style="display:none">
+    <div class="tc-empty">載入中…</div>
+  </div>
+</div>
+
+<!-- ══ STUDENT DETAIL PAGE ══ -->
+<div class="pg" id="pg-student-detail">
+  <div id="sd-top">
+    <div class="hdr">
+      <button class="bk" onclick="go('teacher');switchTcTab('students')">← 返回</button>
+      <div class="htit" id="sd-title">學生記錄</div>
+    </div>
+    <div style="padding:5px 16px;background:var(--card);border-bottom:1px solid var(--bd);font-size:11px;color:var(--mu)" id="sd-meta"></div>
+    <div class="sd-thead">
+      <span>日期</span><span>時間</span><span>關卡</span><span>進度</span><span>分數</span>
+    </div>
+  </div>
+  <div id="sd-list"><div class="tc-empty">載入中…</div></div>
 </div>
 
 <script>
@@ -3025,6 +3068,82 @@ function deleteScore(key){
   if(!_db)return;
   _db.ref('submissions/'+key).remove();
 }
+
+/* ── Tab switching ── */
+let _tcTab='all';
+function switchTcTab(tab){
+  _tcTab=tab;
+  el('tab-all').classList.toggle('active',tab==='all');
+  el('tab-students').classList.toggle('active',tab==='students');
+  el('tc-filter-bar').style.display=tab==='all'?'flex':'none';
+  el('tc-thead-row').style.display=tab==='all'?'grid':'none';
+  el('tc-list').style.display=tab==='all'?'block':'none';
+  el('tc-stu-list').style.display=tab==='students'?'flex':'none';
+  if(tab==='students')renderStudentList();
+}
+
+function renderStudentList(){
+  const stuMap={};
+  allScores.forEach(r=>{
+    const n=r.name||'未知';
+    if(!stuMap[n])stuMap[n]={name:n,count:0,latest:0,latestScore:0};
+    stuMap[n].count++;
+    if((r.ts||0)>stuMap[n].latest){stuMap[n].latest=r.ts||0;stuMap[n].latestScore=r.score||0;}
+  });
+  const stus=Object.values(stuMap).sort((a,b)=>b.latest-a.latest);
+  if(!stus.length){el('tc-stu-list').innerHTML='<div class="tc-empty">暫無學生記錄</div>';return;}
+  const lvCls={1:'tc-lv-1',2:'tc-lv-2',3:'tc-lv-3',4:'tc-lv-4'};
+  el('tc-stu-list').innerHTML=stus.map(s=>{
+    const d=new Date(s.latest);
+    const dateStr=s.latest?d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0'):'—';
+    const sc=s.latestScore;
+    const scColor=sc>=80?'#4ade80':sc>=40?'#fbbf24':'#f87171';
+    return `<div class="stu-card" onclick="openStudentDetail('${s.name.replace(/'/g,"\\'")}')">
+  <div class="stu-avatar">👤</div>
+  <div class="stu-info">
+    <div class="stu-name">${s.name}</div>
+    <div class="stu-meta">共 ${s.count} 筆記錄　·　最新：${dateStr}　·　最新分數：<span style="color:${scColor}">${sc}★</span></div>
+  </div>
+  <div class="stu-arrow">›</div>
+</div>`;
+  }).join('');
+}
+
+function openStudentDetail(name){
+  go('student-detail');
+  el('sd-title').textContent=name+' 的記錄';
+  const records=allScores.filter(r=>(r.name||'未知')===name);
+  el('sd-meta').textContent='共 '+records.length+' 筆提交記錄';
+  if(!records.length){el('sd-list').innerHTML='<div class="tc-empty">暫無記錄</div>';resizeSdList();return;}
+  const lvCls={1:'tc-lv-1',2:'tc-lv-2',3:'tc-lv-3',4:'tc-lv-4'};
+  let h='';
+  records.forEach(r=>{
+    const d=new Date(r.ts);
+    const dateStr=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
+    const timeStr=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')+':'+d.getSeconds().toString().padStart(2,'0');
+    const lvBadge=r.level?`<span class="tc-lv ${lvCls[r.level]||'tc-lv-1'}">L${r.level}</span>`:'';
+    const gameName=r.gameName||r.game||'-';
+    const sc=r.score||0;
+    const scColor=sc>=80?'#4ade80':sc>=40?'#fbbf24':'#f87171';
+    h+=`<div class="sd-tr">
+  <span class="tc-td-dt">${dateStr}</span>
+  <span class="tc-td-dt">${timeStr}</span>
+  <span class="tc-td-lv">${lvBadge}${gameName}</span>
+  <span class="tc-td-prog">${r.progress||'-'}</span>
+  <span class="tc-td-sc" style="color:${scColor}">${sc}★</span>
+</div>`;
+  });
+  el('sd-list').innerHTML=h;
+  resizeSdList();
+}
+
+function resizeSdList(){
+  const top=el('sd-top');const list=el('sd-list');
+  if(!top||!list)return;
+  list.style.height=(window.innerHeight-top.getBoundingClientRect().bottom)+'px';
+}
+window.addEventListener('resize',()=>{resizeTcList();resizeSdList();});
+
 function confirmDeleteAll(){
   if(!allScores.length){toast('暫無記錄','bad');return;}
   if(confirm('確定清除全部 '+allScores.length+' 筆記錄？'))_db.ref('submissions').remove().then(()=>toast('已清除','ok'));
