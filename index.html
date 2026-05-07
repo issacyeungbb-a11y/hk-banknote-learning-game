@@ -1593,14 +1593,6 @@ function buildHintSteps_count(q){
     <div class="hint-txt">將以下紙幣加起來</div>
   </div>`);
 
-  /* Step 2：紙幣圖片，引導學生逐一查看 */
-  const notesAbove=q.bills.map(v=>`<div class="hint-split-item">
-    ${_hintNoteHTML(v,56)}
-    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-top:3px">$${v}</div>
-  </div>`).join('');
-  steps.push(`<div style="text-align:center;padding:6px 0">
-    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">${notesAbove}</div>
-  </div>`);
   return steps;
 }
 
